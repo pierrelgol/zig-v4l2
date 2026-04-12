@@ -7,10 +7,8 @@ pub fn build(b: *std.Build) void {
     const module = b.addModule("z4l2", .{
         .target = target,
         .optimize = optimize,
-        .link_libc = true,
         .root_source_file = b.path("src/root.zig"),
     });
-    module.addIncludePath(.{ .cwd_relative = "/usr/include" });
 
     const library = b.addLibrary(.{
         .name = "z4l2",
@@ -27,7 +25,6 @@ pub fn build(b: *std.Build) void {
             .imports = &.{
                 .{ .name = "z4l2", .module = module },
             },
-            .link_libc = true,
         }),
     });
     b.installArtifact(exe);
