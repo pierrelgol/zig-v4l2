@@ -2,11 +2,11 @@ const bindings = @import("bindings");
 const std = @import("std");
 
 pub const Type = enum(u32) {
-    radio = 1,
-    analog_tv = 2,
-    digital_tv = 3,
-    sdr = 4,
-    rf = 5,
+    radio = @intCast(bindings.V4L2_TUNER_RADIO),
+    analog_tv = @intCast(bindings.V4L2_TUNER_ANALOG_TV),
+    digital_tv = @intCast(bindings.V4L2_TUNER_DIGITAL_TV),
+    sdr = @intCast(bindings.V4L2_TUNER_SDR),
+    rf = @intCast(bindings.V4L2_TUNER_RF),
 };
 
 pub const Tuner = extern struct {
@@ -23,38 +23,38 @@ pub const Tuner = extern struct {
     reserved: [4]u32,
 
     pub const Capability = enum(u32) {
-        low = 0x0001,
-        norm = 0x0002,
-        hwseek_bounded = 0x0004,
-        hwseek_wrap = 0x0008,
-        stereo = 0x0010,
-        lang2 = 0x0020,
-        sap = 0x0020,
-        lang1 = 0x0040,
-        rds = 0x0080,
-        rds_block_io = 0x0100,
-        rds_controls = 0x0200,
-        freq_bands = 0x0400,
-        hwseek_prog_lim = 0x0800,
-        @"1hz" = 0x1000,
+        low = @intCast(bindings.V4L2_TUNER_CAP_LOW),
+        norm = @intCast(bindings.V4L2_TUNER_CAP_NORM),
+        hwseek_bounded = @intCast(bindings.V4L2_TUNER_CAP_HWSEEK_BOUNDED),
+        hwseek_wrap = @intCast(bindings.V4L2_TUNER_CAP_HWSEEK_WRAP),
+        stereo = @intCast(bindings.V4L2_TUNER_CAP_STEREO),
+        lang2 = @intCast(bindings.V4L2_TUNER_CAP_LANG2),
+        sap = @intCast(bindings.V4L2_TUNER_CAP_SAP),
+        lang1 = @intCast(bindings.V4L2_TUNER_CAP_LANG1),
+        rds = @intCast(bindings.V4L2_TUNER_CAP_RDS),
+        rds_block_io = @intCast(bindings.V4L2_TUNER_CAP_RDS_BLOCK_IO),
+        rds_controls = @intCast(bindings.V4L2_TUNER_CAP_RDS_CONTROLS),
+        freq_bands = @intCast(bindings.V4L2_TUNER_CAP_FREQ_BANDS),
+        hwseek_prog_lim = @intCast(bindings.V4L2_TUNER_CAP_HWSEEK_PROG_LIM),
+        @"1hz" = @intCast(bindings.V4L2_TUNER_CAP_1HZ),
     };
 
     pub const SubChannel = enum(u32) {
-        mono = 0x0001,
-        stereo = 0x0002,
-        lang2 = 0x0004,
-        sap = 0x0004,
-        lang1 = 0x0008,
-        rds = 0x0010,
+        mono = @intCast(bindings.V4L2_TUNER_SUB_MONO),
+        stereo = @intCast(bindings.V4L2_TUNER_SUB_STEREO),
+        lang2 = @intCast(bindings.V4L2_TUNER_SUB_LANG2),
+        sap = @intCast(bindings.V4L2_TUNER_SUB_SAP),
+        lang1 = @intCast(bindings.V4L2_TUNER_SUB_LANG1),
+        rds = @intCast(bindings.V4L2_TUNER_SUB_RDS),
     };
 
     pub const Mode = enum(u32) {
-        mono = 0x0000,
-        stereo = 0x0001,
-        lang2 = 0x0002,
-        sap = 0x0002,
-        lang1 = 0x0003,
-        lang1_lang2 = 0x0004,
+        mono = @intCast(bindings.V4L2_TUNER_MODE_MONO),
+        stereo = @intCast(bindings.V4L2_TUNER_MODE_STEREO),
+        lang2 = @intCast(bindings.V4L2_TUNER_MODE_LANG2),
+        sap = @intCast(bindings.V4L2_TUNER_MODE_SAP),
+        lang1 = @intCast(bindings.V4L2_TUNER_MODE_LANG1),
+        lang1_lang2 = @intCast(bindings.V4L2_TUNER_MODE_LANG1_LANG2),
     };
 };
 
@@ -87,9 +87,9 @@ pub const Band = extern struct {
     reserved: [9]u32,
 
     pub const Modulation = enum(u32) {
-        vsb = 1 << 1,
-        fm = 1 << 2,
-        am = 1 << 3,
+        vsb = @intCast(bindings.V4L2_BAND_MODULATION_VSB),
+        fm = @intCast(bindings.V4L2_BAND_MODULATION_FM),
+        am = @intCast(bindings.V4L2_BAND_MODULATION_AM),
     };
 };
 

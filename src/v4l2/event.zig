@@ -36,10 +36,10 @@ pub const Event = extern struct {
         default_value: i32,
 
         pub const Change = enum(u32) {
-            value = 1 << 0,
-            flags = 1 << 1,
-            range = 1 << 2,
-            dimensions = 1 << 3,
+            value = @intCast(bindings.V4L2_EVENT_CTRL_CH_VALUE),
+            flags = @intCast(bindings.V4L2_EVENT_CTRL_CH_FLAGS),
+            range = @intCast(bindings.V4L2_EVENT_CTRL_CH_RANGE),
+            dimensions = @intCast(bindings.V4L2_EVENT_CTRL_CH_DIMENSIONS),
         };
     };
 
@@ -51,7 +51,7 @@ pub const Event = extern struct {
         changes: u32,
 
         pub const Change = enum(u32) {
-            resolution = 1 << 0,
+            resolution = @intCast(bindings.V4L2_EVENT_SRC_CH_RESOLUTION),
         };
     };
 
@@ -61,19 +61,19 @@ pub const Event = extern struct {
         region_mask: u32,
 
         pub const Flag = enum(u32) {
-            have_frame_seq = 1 << 0,
+            have_frame_seq = @intCast(bindings.V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ),
         };
     };
 
     pub const Type = enum(u32) {
-        all = 0,
-        vsync = 1,
-        eos = 2,
-        ctrl = 3,
-        frame_sync = 4,
-        source_change = 5,
-        motion_detection = 6,
-        private_start = 0x08000000,
+        all = @intCast(bindings.V4L2_EVENT_ALL),
+        vsync = @intCast(bindings.V4L2_EVENT_VSYNC),
+        eos = @intCast(bindings.V4L2_EVENT_EOS),
+        ctrl = @intCast(bindings.V4L2_EVENT_CTRL),
+        frame_sync = @intCast(bindings.V4L2_EVENT_FRAME_SYNC),
+        source_change = @intCast(bindings.V4L2_EVENT_SOURCE_CHANGE),
+        motion_detection = @intCast(bindings.V4L2_EVENT_MOTION_DET),
+        private_start = @intCast(bindings.V4L2_EVENT_PRIVATE_START),
     };
 
     pub const Subscription = extern struct {
@@ -83,8 +83,8 @@ pub const Event = extern struct {
         reserved: [5]u32,
 
         pub const Flag = enum(u32) {
-            send_initial = 1 << 0,
-            allow_feedback = 1 << 1,
+            send_initial = @intCast(bindings.V4L2_EVENT_SUB_FL_SEND_INITIAL),
+            allow_feedback = @intCast(bindings.V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK),
         };
     };
 };

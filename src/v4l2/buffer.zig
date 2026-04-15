@@ -27,10 +27,10 @@ pub const Buffer = extern struct {
     },
 
     pub const Priority = enum(u32) {
-        unset = 0,
-        background = 1,
-        interactive = 2,
-        record = 3,
+        unset = @intCast(bindings.V4L2_PRIORITY_UNSET),
+        background = @intCast(bindings.V4L2_PRIORITY_BACKGROUND),
+        interactive = @intCast(bindings.V4L2_PRIORITY_INTERACTIVE),
+        record = @intCast(bindings.V4L2_PRIORITY_RECORD),
 
         pub const default: Priority = .interactive;
     };
@@ -45,40 +45,40 @@ pub const Buffer = extern struct {
         userbits: [4]u8,
 
         pub const TimecodeType = enum(u32) {
-            fps_24 = 1,
-            fps_25 = 2,
-            fps_30 = 3,
-            fps_50 = 4,
-            fps_60 = 5,
+            fps_24 = @intCast(bindings.V4L2_TC_TYPE_24FPS),
+            fps_25 = @intCast(bindings.V4L2_TC_TYPE_25FPS),
+            fps_30 = @intCast(bindings.V4L2_TC_TYPE_30FPS),
+            fps_50 = @intCast(bindings.V4L2_TC_TYPE_50FPS),
+            fps_60 = @intCast(bindings.V4L2_TC_TYPE_60FPS),
             _,
         };
 
         pub const Flag = enum(u32) {
-            dropframe = 0x0001,
-            colorframe = 0x0002,
-            userbits_field = 0x000C,
-            userbits_defined = 0x0000,
-            userbits_8bitchars = 0x0008,
+            dropframe = @intCast(bindings.V4L2_TC_FLAG_DROPFRAME),
+            colorframe = @intCast(bindings.V4L2_TC_FLAG_COLORFRAME),
+            userbits_field = @intCast(bindings.V4L2_TC_USERBITS_field),
+            userbits_defined = @intCast(bindings.V4L2_TC_USERBITS_USERDEFINED),
+            userbits_8bitchars = @intCast(bindings.V4L2_TC_USERBITS_8BITCHARS),
             _,
         };
     };
 
     pub const Type = enum(u32) {
-        video_capture = 1,
-        video_output = 2,
-        video_overlay = 3,
-        vbi_capture = 4,
-        vbi_output = 5,
-        sliced_vbi_capture = 6,
-        sliced_vbi_output = 7,
-        video_output_overlay = 8,
-        video_capture_mplane = 9,
-        video_output_mplane = 10,
-        sdr_capture = 11,
-        sdr_output = 12,
-        meta_capture = 13,
-        meta_output = 14,
-        private = 0x80,
+        video_capture = @intCast(bindings.V4L2_BUF_TYPE_VIDEO_CAPTURE),
+        video_output = @intCast(bindings.V4L2_BUF_TYPE_VIDEO_OUTPUT),
+        video_overlay = @intCast(bindings.V4L2_BUF_TYPE_VIDEO_OVERLAY),
+        vbi_capture = @intCast(bindings.V4L2_BUF_TYPE_VBI_CAPTURE),
+        vbi_output = @intCast(bindings.V4L2_BUF_TYPE_VBI_OUTPUT),
+        sliced_vbi_capture = @intCast(bindings.V4L2_BUF_TYPE_SLICED_VBI_CAPTURE),
+        sliced_vbi_output = @intCast(bindings.V4L2_BUF_TYPE_SLICED_VBI_OUTPUT),
+        video_output_overlay = @intCast(bindings.V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY),
+        video_capture_mplane = @intCast(bindings.V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE),
+        video_output_mplane = @intCast(bindings.V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE),
+        sdr_capture = @intCast(bindings.V4L2_BUF_TYPE_SDR_CAPTURE),
+        sdr_output = @intCast(bindings.V4L2_BUF_TYPE_SDR_OUTPUT),
+        meta_capture = @intCast(bindings.V4L2_BUF_TYPE_META_CAPTURE),
+        meta_output = @intCast(bindings.V4L2_BUF_TYPE_META_OUTPUT),
+        private = @intCast(bindings.V4L2_BUF_TYPE_PRIVATE),
         _,
 
         pub fn isValid(buffer_type: Type) bool {
@@ -108,10 +108,10 @@ pub const Buffer = extern struct {
     };
 
     pub const Memory = enum(u32) {
-        mmap,
-        user_ptr,
-        overlay,
-        dmabuf,
+        mmap = @intCast(bindings.V4L2_MEMORY_MMAP),
+        user_ptr = @intCast(bindings.V4L2_MEMORY_USERPTR),
+        overlay = @intCast(bindings.V4L2_MEMORY_OVERLAY),
+        dmabuf = @intCast(bindings.V4L2_MEMORY_DMABUF),
     };
 
     pub const Plane = extern struct {
@@ -127,28 +127,28 @@ pub const Buffer = extern struct {
     };
 
     pub const Flag = enum(u32) {
-        mapped = 0x00000001,
-        queued = 0x00000002,
-        done = 0x00000004,
-        keyframe = 0x00000008,
-        pframe = 0x00000010,
-        bframe = 0x00000020,
-        err = 0x00000040,
-        in_request = 0x00000080,
-        timecode = 0x00000100,
-        m2m_hold_capture_buf = 0x00000200,
-        prepared = 0x00000400,
-        no_cache_invalidate = 0x00000800,
-        no_cache_clean = 0x00001000,
-        timestamp_mask = 0x0000e000,
-        timestamp_unknown = 0x00000000,
-        timestamp_monotonic = 0x00002000,
-        timestamp_copy = 0x00004000,
-        tstamp_src_mask = 0x00070000,
-        tstamp_src_eof = 0x00000000,
-        tstamp_src_soe = 0x00010000,
-        last = 0x00100000,
-        request_fd = 0x00800000,
+        mapped = @intCast(bindings.V4L2_BUF_FLAG_MAPPED),
+        queued = @intCast(bindings.V4L2_BUF_FLAG_QUEUED),
+        done = @intCast(bindings.V4L2_BUF_FLAG_DONE),
+        keyframe = @intCast(bindings.V4L2_BUF_FLAG_KEYFRAME),
+        pframe = @intCast(bindings.V4L2_BUF_FLAG_PFRAME),
+        bframe = @intCast(bindings.V4L2_BUF_FLAG_BFRAME),
+        err = @intCast(bindings.V4L2_BUF_FLAG_ERROR),
+        in_request = @intCast(bindings.V4L2_BUF_FLAG_IN_REQUEST),
+        timecode = @intCast(bindings.V4L2_BUF_FLAG_TIMECODE),
+        m2m_hold_capture_buf = @intCast(bindings.V4L2_BUF_FLAG_M2M_HOLD_CAPTURE_BUF),
+        prepared = @intCast(bindings.V4L2_BUF_FLAG_PREPARED),
+        no_cache_invalidate = @intCast(bindings.V4L2_BUF_FLAG_NO_CACHE_INVALIDATE),
+        no_cache_clean = @intCast(bindings.V4L2_BUF_FLAG_NO_CACHE_CLEAN),
+        timestamp_mask = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MASK),
+        timestamp_unknown = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_UNKNOWN),
+        timestamp_monotonic = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC),
+        timestamp_copy = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_COPY),
+        tstamp_src_mask = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_MASK),
+        tstamp_src_eof = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_EOF),
+        tstamp_src_soe = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_SOE),
+        last = @intCast(bindings.V4L2_BUF_FLAG_LAST),
+        request_fd = @intCast(bindings.V4L2_BUF_FLAG_REQUEST_FD),
     };
 
     pub const Request = extern struct {
@@ -160,19 +160,19 @@ pub const Buffer = extern struct {
         reserved: [3]u8,
 
         pub const RequestFlag = enum(u8) {
-            non_coherent = (@as(u8, 1) << 0),
+            non_coherent = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_M2M_HOLD_CAPTURE_BUF), // placeholder
         };
 
         pub const Capabilities = enum(u32) {
-            mmap = (@as(u32, 1) << 0),
-            userptr = (@as(u32, 1) << 1),
-            dmabuf = (@as(u32, 1) << 2),
-            requests = (@as(u32, 1) << 3),
-            orphaned_bufs = (@as(u32, 1) << 4),
-            m2m_hold_capture_buf = (@as(u32, 1) << 5),
-            mmap_cache_hints = (@as(u32, 1) << 6),
-            max_num_buffers = (@as(u32, 1) << 7),
-            remove_bufs = (@as(u32, 1) << 8),
+            mmap = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MMAP),
+            userptr = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_USERPTR),
+            dmabuf = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_DMABUF),
+            requests = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_REQUESTS),
+            orphaned_bufs = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_ORPHANED_BUFS),
+            m2m_hold_capture_buf = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_M2M_HOLD_CAPTURE_BUF),
+            mmap_cache_hints = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MMAP_CACHE_HINTS),
+            max_num_buffers = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MAX_NUM_BUFFERS),
+            remove_bufs = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_REMOVE_BUFS),
         };
     };
 

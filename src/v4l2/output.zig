@@ -13,15 +13,15 @@ pub const Output = extern struct {
     reserved: [3]u32,
 
     pub const Type = enum(u32) {
-        modulator = 1,
-        analog = 2,
-        analogvgaoverlay = 3,
+        modulator = @intCast(bindings.V4L2_OUTPUT_TYPE_MODULATOR),
+        analog = @intCast(bindings.V4L2_OUTPUT_TYPE_ANALOG),
+        analogvgaoverlay = @intCast(bindings.V4L2_OUTPUT_TYPE_ANALOGVGAOVERLAY),
     };
 
     pub const Cap = enum(u32) {
-        dv_timings = 0x00000002,
-        std = 0x00000004,
-        native_size = 0x00000008,
+        dv_timings = @intCast(bindings.V4L2_OUT_CAP_DV_TIMINGS),
+        std = @intCast(bindings.V4L2_OUT_CAP_STD),
+        native_size = @intCast(bindings.V4L2_OUT_CAP_NATIVE_SIZE),
 
         pub const custom_timings: Cap = .dv_timings;
     };

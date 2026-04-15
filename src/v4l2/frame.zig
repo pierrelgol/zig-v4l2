@@ -29,24 +29,24 @@ pub const Buffer = extern struct {
     format: Format,
 
     pub const Capability = enum(u32) {
-        externoverlay = 0x0001,
-        chromakey = 0x0002,
-        list_clipping = 0x0004,
-        bitmap_clipping = 0x0008,
-        local_alpha = 0x0010,
-        global_alpha = 0x0020,
-        local_inv_alpha = 0x0040,
-        src_chromakey = 0x0080,
+        externoverlay = @intCast(bindings.V4L2_FBUF_CAP_EXTERNOVERLAY),
+        chromakey = @intCast(bindings.V4L2_FBUF_CAP_CHROMAKEY),
+        list_clipping = @intCast(bindings.V4L2_FBUF_CAP_LIST_CLIPPING),
+        bitmap_clipping = @intCast(bindings.V4L2_FBUF_CAP_BITMAP_CLIPPING),
+        local_alpha = @intCast(bindings.V4L2_FBUF_CAP_LOCAL_ALPHA),
+        global_alpha = @intCast(bindings.V4L2_FBUF_CAP_GLOBAL_ALPHA),
+        local_inv_alpha = @intCast(bindings.V4L2_FBUF_CAP_LOCAL_INV_ALPHA),
+        src_chromakey = @intCast(bindings.V4L2_FBUF_CAP_SRC_CHROMAKEY),
     };
 
     pub const Flag = enum(u32) {
-        primary = 0x0001,
-        overlay = 0x0002,
-        chromakey = 0x0004,
-        local_alpha = 0x0008,
-        global_alpha = 0x0010,
-        local_inv_alpha = 0x0020,
-        src_chromakey = 0x0040,
+        primary = @intCast(bindings.V4L2_FBUF_FLAG_PRIMARY),
+        overlay = @intCast(bindings.V4L2_FBUF_FLAG_OVERLAY),
+        chromakey = @intCast(bindings.V4L2_FBUF_FLAG_CHROMAKEY),
+        local_alpha = @intCast(bindings.V4L2_FBUF_FLAG_LOCAL_ALPHA),
+        global_alpha = @intCast(bindings.V4L2_FBUF_FLAG_GLOBAL_ALPHA),
+        local_inv_alpha = @intCast(bindings.V4L2_FBUF_FLAG_LOCAL_INV_ALPHA),
+        src_chromakey = @intCast(bindings.V4L2_FBUF_FLAG_SRC_CHROMAKEY),
     };
 
     pub const Format = extern struct {
@@ -72,9 +72,9 @@ pub const Size = extern struct {
     reserved: [2]u32,
 
     pub const Type = enum(u32) {
-        discrete = 1,
-        continuous = 2,
-        stepwise = 3,
+        discrete = @intCast(bindings.V4L2_FRMSIZE_TYPE_DISCRETE),
+        continuous = @intCast(bindings.V4L2_FRMSIZE_TYPE_CONTINUOUS),
+        stepwise = @intCast(bindings.V4L2_FRMSIZE_TYPE_STEPWISE),
     };
 
     pub const Discrete = extern struct {
@@ -105,9 +105,9 @@ pub const Interval = extern struct {
     reserved: [2]u32,
 
     pub const Type = enum(u32) {
-        discrete = 1,
-        continuous = 2,
-        step_wise = 3,
+        discrete = @intCast(bindings.V4L2_FRMIVAL_TYPE_DISCRETE),
+        continuous = @intCast(bindings.V4L2_FRMIVAL_TYPE_CONTINUOUS),
+        step_wise = @intCast(bindings.V4L2_FRMIVAL_TYPE_STEPWISE),
         _,
     };
 

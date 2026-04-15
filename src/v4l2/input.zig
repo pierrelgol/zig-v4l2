@@ -14,33 +14,33 @@ pub const Input = extern struct {
     reserved: [3]u32,
 
     pub const Type = enum(u32) {
-        tuner = 1,
-        camera = 2,
-        touch = 3,
+        tuner = @intCast(bindings.V4L2_INPUT_TYPE_TUNER),
+        camera = @intCast(bindings.V4L2_INPUT_TYPE_CAMERA),
+        touch = @intCast(bindings.V4L2_INPUT_TYPE_TOUCH),
     };
 
     pub const Status = enum(u32) {
-        no_power = 0x00000001,
-        no_signal = 0x00000002,
-        no_color = 0x00000004,
-        hflip = 0x00000010,
-        vflip = 0x00000020,
-        no_h_lock = 0x00000100,
-        color_kill = 0x00000200,
-        no_v_lock = 0x00000400,
-        no_std_lock = 0x00000800,
-        no_sync = 0x00010000,
-        no_equ = 0x00020000,
-        no_carrier = 0x00040000,
-        macrovision = 0x01000000,
-        no_access = 0x02000000,
-        vtr = 0x04000000,
+        no_power = @intCast(bindings.V4L2_IN_ST_NO_POWER),
+        no_signal = @intCast(bindings.V4L2_IN_ST_NO_SIGNAL),
+        no_color = @intCast(bindings.V4L2_IN_ST_NO_COLOR),
+        hflip = @intCast(bindings.V4L2_IN_ST_HFLIP),
+        vflip = @intCast(bindings.V4L2_IN_ST_VFLIP),
+        no_h_lock = @intCast(bindings.V4L2_IN_ST_NO_H_LOCK),
+        color_kill = @intCast(bindings.V4L2_IN_ST_COLOR_KILL),
+        no_v_lock = @intCast(bindings.V4L2_IN_ST_NO_V_LOCK),
+        no_std_lock = @intCast(bindings.V4L2_IN_ST_NO_STD_LOCK),
+        no_sync = @intCast(bindings.V4L2_IN_ST_NO_SYNC),
+        no_equ = @intCast(bindings.V4L2_IN_ST_NO_EQU),
+        no_carrier = @intCast(bindings.V4L2_IN_ST_NO_CARRIER),
+        macrovision = @intCast(bindings.V4L2_IN_ST_MACROVISION),
+        no_access = @intCast(bindings.V4L2_IN_ST_NO_ACCESS),
+        vtr = @intCast(bindings.V4L2_IN_ST_VTR),
     };
 
     pub const Cap = enum(u32) {
-        dv_timings = 0x00000002,
-        std = 0x00000004,
-        native_size = 0x00000008,
+        dv_timings = @intCast(bindings.V4L2_IN_CAP_DV_TIMINGS),
+        std = @intCast(bindings.V4L2_IN_CAP_STD),
+        native_size = @intCast(bindings.V4L2_IN_CAP_NATIVE_SIZE),
         pub const custom_timings: Cap = .dv_timings;
     };
 };

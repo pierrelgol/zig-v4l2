@@ -13,15 +13,15 @@ pub const Format = extern struct {
     reserved: [2]u32,
 
     pub const Flag = enum(u32) {
-        unsync = 1 << 0,
-        interlaced = 1 << 1,
+        unsync = @intCast(bindings.V4L2_VBI_UNSYNC),
+        interlaced = @intCast(bindings.V4L2_VBI_INTERLACED),
     };
 
     pub const Itu = enum(u32) {
-        @"525_f1_start" = 1,
-        @"525_f2_start" = 264,
-        @"625_f1_start" = 1,
-        @"625_f2_start" = 314,
+        @"525_f1_start" = @intCast(bindings.V4L2_VBI_ITU_525_F1_START),
+        @"525_f2_start" = @intCast(bindings.V4L2_VBI_ITU_525_F2_START),
+        @"625_f1_start" = @intCast(bindings.V4L2_VBI_ITU_625_F1_START),
+        @"625_f2_start" = @intCast(bindings.V4L2_VBI_ITU_625_F2_START),
     };
 };
 
@@ -39,12 +39,12 @@ pub const SlicedCapabilities = extern struct {
     reserved: [3]u32,
 
     pub const Service = enum(u16) {
-        teletext_b = 0x0001,
-        vps = 0x0400,
-        caption_525 = 0x1000,
-        wss_625 = 0x4000,
-        vbi_525 = 0x1000,
-        vbi_625 = 0x4401,
+        teletext_b = @intCast(bindings.V4L2_SLICED_TELETEXT_B),
+        vps = @intCast(bindings.V4L2_SLICED_VPS),
+        caption_525 = @intCast(bindings.V4L2_SLICED_CAPTION_525),
+        wss_625 = @intCast(bindings.V4L2_SLICED_WSS_625),
+        vbi_525 = @intCast(bindings.V4L2_SLICED_VBI_525),
+        vbi_625 = @intCast(bindings.V4L2_SLICED_VBI_625),
     };
 };
 
@@ -61,10 +61,10 @@ pub const MpegItv0Line = extern struct {
     data: [42]u8,
 
     pub const LineId = enum(u8) {
-        teletext_b = 1,
-        caption_525 = 4,
-        wss_625 = 5,
-        vps = 7,
+        teletext_b = @intCast(bindings.V4L2_MPEG_VBI_IVTV_TELETEXT_B),
+        caption_525 = @intCast(bindings.V4L2_MPEG_VBI_IVTV_CAPTION_525),
+        wss_625 = @intCast(bindings.V4L2_MPEG_VBI_IVTV_WSS_625),
+        vps = @intCast(bindings.V4L2_MPEG_VBI_IVTV_VPS),
     };
 };
 

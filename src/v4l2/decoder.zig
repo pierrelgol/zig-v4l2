@@ -11,11 +11,11 @@ pub const Decoder = extern struct {
     },
 
     pub const Command = enum(u32) {
-        start = 0,
-        stop = 1,
-        pause = 2,
-        @"resume" = 3,
-        flush = 4,
+        start = @intCast(bindings.V4L2_DEC_CMD_START),
+        stop = @intCast(bindings.V4L2_DEC_CMD_STOP),
+        pause = @intCast(bindings.V4L2_DEC_CMD_PAUSE),
+        @"resume" = @intCast(bindings.V4L2_DEC_CMD_RESUME),
+        flush = @intCast(bindings.V4L2_DEC_CMD_FLUSH),
     };
 
     pub const StartFlag = struct {
@@ -32,8 +32,8 @@ pub const Decoder = extern struct {
     };
 
     pub const StartFormat = enum(u32) {
-        none = 0,
-        gop = 1,
+        none = @intCast(bindings.V4L2_DEC_START_FMT_NONE),
+        gop = @intCast(bindings.V4L2_DEC_START_FMT_GOP),
     };
 };
 

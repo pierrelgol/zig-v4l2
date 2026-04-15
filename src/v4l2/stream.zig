@@ -27,12 +27,12 @@ pub const Parameters = extern struct {
     };
 
     pub const Capability = enum(u32) {
-        time_per_frame = 0x1000,
+        time_per_frame = @intCast(bindings.V4L2_CAP_TIMEPERFRAME),
         _,
     };
 
     pub const Mode = enum(u32) {
-        high_quality = 0x0001,
+        high_quality = @intCast(bindings.V4L2_MODE_HIGHQUALITY),
         _,
     };
 };
@@ -49,14 +49,14 @@ pub const Crop = extern struct {
     };
 
     pub const Target = enum(u32) {
-        crop = 0x0000,
-        crop_default = 0x0001,
-        crop_bounds = 0x0002,
-        native_size = 0x0003,
-        compose = 0x0100,
-        compose_default = 0x0101,
-        compose_bounds = 0x0102,
-        compose_padded = 0x0103,
+        crop = @intCast(bindings.V4L2_SEL_TGT_CROP),
+        crop_default = @intCast(bindings.V4L2_SEL_TGT_CROP_DEFAULT),
+        crop_bounds = @intCast(bindings.V4L2_SEL_TGT_CROP_BOUNDS),
+        native_size = @intCast(bindings.V4L2_SEL_TGT_NATIVE_SIZE),
+        compose = @intCast(bindings.V4L2_SEL_TGT_COMPOSE),
+        compose_default = @intCast(bindings.V4L2_SEL_TGT_COMPOSE_DEFAULT),
+        compose_bounds = @intCast(bindings.V4L2_SEL_TGT_COMPOSE_BOUNDS),
+        compose_padded = @intCast(bindings.V4L2_SEL_TGT_COMPOSE_PADDED),
     };
 };
 
@@ -68,9 +68,9 @@ pub const Selection = extern struct {
     reserved: [9]u32,
 
     pub const Flag = enum(u32) {
-        ge = (@as(u8, 1) << 0),
-        le = (@as(u8, 1) << 1),
-        keep_config = (@as(u8, 1) << 2),
+        ge = @intCast(bindings.V4L2_SEL_FLAG_GE),
+        le = @intCast(bindings.V4L2_SEL_FLAG_LE),
+        keep_config = @intCast(bindings.V4L2_SEL_FLAG_KEEP_CONFIG),
     };
 };
 

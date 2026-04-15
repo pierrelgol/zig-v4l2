@@ -9,12 +9,12 @@ pub const Audio = extern struct {
     reserved: [2]u32,
 
     pub const Capability = enum(u32) {
-        stereo = 0x00001,
-        avl = 0x00002,
+        stereo = @intCast(bindings.V4L2_AUDCAP_STEREO),
+        avl = @intCast(bindings.V4L2_AUDCAP_AVL),
     };
 
     pub const Mode = enum(u32) {
-        avl = 0x00001,
+        avl = @intCast(bindings.V4L2_AUDMODE_AVL),
     };
 
     pub const Output = extern struct {
@@ -31,16 +31,16 @@ pub const Audio = extern struct {
         block: u8,
 
         pub const Block = enum(u8) {
-            a = 0,
-            b = 1,
-            c = 2,
-            d = 3,
-            c_alt = 4,
-            invalid = 7,
+            a = @intCast(bindings.V4L2_RDS_BLOCK_A),
+            b = @intCast(bindings.V4L2_RDS_BLOCK_B),
+            c = @intCast(bindings.V4L2_RDS_BLOCK_C),
+            d = @intCast(bindings.V4L2_RDS_BLOCK_D),
+            c_alt = @intCast(bindings.V4L2_RDS_BLOCK_C_ALT),
+            invalid = @intCast(bindings.V4L2_RDS_BLOCK_INVALID),
 
-            pub const msk: u8 = 0x7;
-            pub const corrected: u8 = 0x40;
-            pub const @"error": u8 = 0x80;
+            pub const msk: u8 = @intCast(bindings.V4L2_RDS_BLOCK_MSK);
+            pub const corrected: u8 = @intCast(bindings.V4L2_RDS_BLOCK_CORRECTED);
+            pub const @"error": u8 = @intCast(bindings.V4L2_RDS_BLOCK_ERROR);
         };
     };
 };

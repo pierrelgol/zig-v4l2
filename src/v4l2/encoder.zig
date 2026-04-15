@@ -7,10 +7,10 @@ pub const Encoder = extern struct {
     raw: [8]u32,
 
     pub const Command = enum(u32) {
-        start = 0,
-        stop = 1,
-        pause = 2,
-        @"resume" = 3,
+        start = @intCast(bindings.V4L2_ENC_CMD_START),
+        stop = @intCast(bindings.V4L2_ENC_CMD_STOP),
+        pause = @intCast(bindings.V4L2_ENC_CMD_PAUSE),
+        @"resume" = @intCast(bindings.V4L2_ENC_CMD_RESUME),
     };
 
     pub const Flag = struct {
@@ -31,10 +31,10 @@ pub const Encoder = extern struct {
             reserved: [2]u32,
 
             pub const FrameType = struct {
-                pub const i: u32 = 0;
-                pub const p: u32 = 1;
-                pub const b: u32 = 2;
-                pub const mask: u32 = 0xf;
+                pub const i: u32 = @intCast(bindings.V4L2_ENC_IDX_FRAME_I);
+                pub const p: u32 = @intCast(bindings.V4L2_ENC_IDX_FRAME_P);
+                pub const b: u32 = @intCast(bindings.V4L2_ENC_IDX_FRAME_B);
+                pub const mask: u32 = @intCast(bindings.V4L2_ENC_IDX_FRAME_MASK);
             };
         };
     };

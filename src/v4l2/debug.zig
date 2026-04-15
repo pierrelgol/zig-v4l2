@@ -9,11 +9,11 @@ pub const Match = extern struct {
     } align(1),
 
     pub const Type = enum(u32) {
-        bridge = 0,
-        i2c_driver = 1,
-        i2c_addr = 2,
-        ac97 = 3,
-        subdev = 4,
+        bridge = @intCast(bindings.V4L2_CHIP_MATCH_BRIDGE),
+        i2c_driver = @intCast(bindings.V4L2_CHIP_MATCH_I2C_DRIVER),
+        i2c_addr = @intCast(bindings.V4L2_CHIP_MATCH_I2C_ADDR),
+        ac97 = @intCast(bindings.V4L2_CHIP_MATCH_AC97),
+        subdev = @intCast(bindings.V4L2_CHIP_MATCH_SUBDEV),
     };
 };
 
@@ -24,8 +24,8 @@ pub const Register = extern struct {
     val: u64 align(1),
 
     pub const Flag = enum(u32) {
-        readable = 1 << 0,
-        writable = 1 << 1,
+        readable = @intCast(bindings.V4L2_CHIP_FL_READABLE),
+        writable = @intCast(bindings.V4L2_CHIP_FL_WRITABLE),
     };
 };
 
