@@ -4,22 +4,31 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const header_path = b.option([]const u8, "header-path", "path to videodev2.h");
-    const triple = target.result.linuxTriple(b.allocator) catch unreachable;
-    defer b.allocator.free(triple);
+    const header_path = b.option([]const u8, "header-path", "path to v4l2 headers");
+
+    var final: []const u8 = undefined;
+    defer b.allocator.free(final);
+
+    if (header_path) |some| {
+        final = std.mem.concat(b.allocator, u8, &.{
+            "/usr/include/",
+            some,
+        }) catch unreachable;
+    } else {
+        const triple = target.result.linuxTriple(b.allocator) catch unreachable;
+        defer b.allocator.free(triple);
+        final = std.mem.concat(b.allocator, u8, &.{
+            "/usr/include/",
+            triple,
+        }) catch unreachable;
+    }
 
     const translate_c = b.addTranslateC(.{
-        .root_source_file = .{
-            .cwd_relative = header_path orelse "/usr/include/linux/videodev2.h",
-        },
+        .root_source_file = b.path("src/v4l2/bindings.c"),
         .optimize = optimize,
         .target = target,
         .link_libc = false,
     });
-    const final = std.mem.concat(b.allocator, u8, &.{
-        "/usr/include/",
-        triple,
-    }) catch unreachable;
     translate_c.addIncludePath(.{ .cwd_relative = "/usr/include" });
     translate_c.addIncludePath(.{ .cwd_relative = final });
 
