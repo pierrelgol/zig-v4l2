@@ -1,6 +1,8 @@
-const Buffer = @import("Buffer.zig").Buffer;
+const bindings = @import("bindings");
+const std = @import("std");
+const Buffer = @import("buffer.zig").Buffer;
 
-pub const Format = struct {
+pub const Format = extern struct {
     sampling_rate: u32,
     offset: u32,
     samples_per_line: u32,
@@ -23,14 +25,14 @@ pub const Format = struct {
     };
 };
 
-pub const SlicedFormat = struct {
+pub const SlicedFormat = extern struct {
     service_set: u16,
     service_lines: [2][24]u16,
     io_size: u32,
     reserved: [2]u32,
 };
 
-pub const SlicedCapabilities = struct {
+pub const SlicedCapabilities = extern struct {
     service_set: u16,
     service_lines: [2][24]u16,
     type: Buffer.Type,
@@ -46,7 +48,7 @@ pub const SlicedCapabilities = struct {
     };
 };
 
-pub const SlicedData = struct {
+pub const SlicedData = extern struct {
     id: u32,
     field: u32,
     line: u32,
@@ -67,7 +69,7 @@ pub const MpegItv0Line = extern struct {
 };
 
 pub const MpegItv0 = extern struct {
-    linemask: [2]u32,
+    linemask: [2]u32 align(1),
     line: [35]MpegItv0Line,
 };
 
@@ -82,3 +84,85 @@ pub const MpegFormatIvtv = extern struct {
         ITV0: MpegITV0,
     },
 };
+
+test "Vbi.Format ABI matches struct_v4l2_vbi_format" {
+    const C = bindings.struct_v4l2_vbi_format;
+    const Z = Format;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "sampling_rate"), @offsetOf(Z, "sampling_rate"));
+    try std.testing.expectEqual(@offsetOf(C, "offset"), @offsetOf(Z, "offset"));
+    try std.testing.expectEqual(@offsetOf(C, "samples_per_line"), @offsetOf(Z, "samples_per_line"));
+    try std.testing.expectEqual(@offsetOf(C, "sample_format"), @offsetOf(Z, "sample_format"));
+    try std.testing.expectEqual(@offsetOf(C, "start"), @offsetOf(Z, "start"));
+    try std.testing.expectEqual(@offsetOf(C, "count"), @offsetOf(Z, "count"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "Vbi.SlicedFormat ABI matches struct_v4l2_sliced_vbi_format" {
+    const C = bindings.struct_v4l2_sliced_vbi_format;
+    const Z = SlicedFormat;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "service_set"), @offsetOf(Z, "service_set"));
+    try std.testing.expectEqual(@offsetOf(C, "service_lines"), @offsetOf(Z, "service_lines"));
+    try std.testing.expectEqual(@offsetOf(C, "io_size"), @offsetOf(Z, "io_size"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "Vbi.SlicedCapabilities ABI matches struct_v4l2_sliced_vbi_cap" {
+    const C = bindings.struct_v4l2_sliced_vbi_cap;
+    const Z = SlicedCapabilities;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "service_set"), @offsetOf(Z, "service_set"));
+    try std.testing.expectEqual(@offsetOf(C, "service_lines"), @offsetOf(Z, "service_lines"));
+    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "Vbi.SlicedData ABI matches struct_v4l2_sliced_vbi_data" {
+    const C = bindings.struct_v4l2_sliced_vbi_data;
+    const Z = SlicedData;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "id"), @offsetOf(Z, "id"));
+    try std.testing.expectEqual(@offsetOf(C, "field"), @offsetOf(Z, "field"));
+    try std.testing.expectEqual(@offsetOf(C, "line"), @offsetOf(Z, "line"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "data"), @offsetOf(Z, "data"));
+}
+
+test "Vbi.MpegItv0Line ABI matches struct_v4l2_mpeg_vbi_itv0_line" {
+    const C = bindings.struct_v4l2_mpeg_vbi_itv0_line;
+    const Z = MpegItv0Line;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "id"), @offsetOf(Z, "id"));
+    try std.testing.expectEqual(@offsetOf(C, "data"), @offsetOf(Z, "data"));
+}
+
+test "Vbi.MpegItv0 ABI matches struct_v4l2_mpeg_vbi_itv0" {
+    const C = bindings.struct_v4l2_mpeg_vbi_itv0;
+    const Z = MpegItv0;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "linemask"), @offsetOf(Z, "linemask"));
+    try std.testing.expectEqual(@offsetOf(C, "line"), @offsetOf(Z, "line"));
+}
+
+test "Vbi.MpegITV0 ABI matches struct_v4l2_mpeg_vbi_ITV0" {
+    const C = bindings.struct_v4l2_mpeg_vbi_ITV0;
+    const Z = MpegITV0;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "line"), @offsetOf(Z, "line"));
+}
+
+test "Vbi.MpegFormatIvtv ABI matches struct_v4l2_mpeg_vbi_fmt_ivtv" {
+    const C = bindings.struct_v4l2_mpeg_vbi_fmt_ivtv;
+    const Z = MpegFormatIvtv;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "magic"), @offsetOf(Z, "magic"));
+}

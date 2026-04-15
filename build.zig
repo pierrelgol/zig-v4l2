@@ -4,10 +4,32 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const header_path = b.option([]const u8, "header-path", "path to videodev2.h");
+    const triple = target.result.linuxTriple(b.allocator) catch unreachable;
+    defer b.allocator.free(triple);
+
+    const translate_c = b.addTranslateC(.{
+        .root_source_file = .{
+            .cwd_relative = header_path orelse "/usr/include/linux/videodev2.h",
+        },
+        .optimize = optimize,
+        .target = target,
+        .link_libc = false,
+    });
+    const final = std.mem.concat(b.allocator, u8, &.{
+        "/usr/include/",
+        triple,
+    }) catch unreachable;
+    translate_c.addIncludePath(.{ .cwd_relative = "/usr/include" });
+    translate_c.addIncludePath(.{ .cwd_relative = final });
+
     const module = b.addModule("z4l2", .{
         .target = target,
         .optimize = optimize,
         .root_source_file = b.path("src/root.zig"),
+        .imports = &.{
+            .{ .name = "bindings", .module = translate_c.createModule() },
+        },
     });
 
     const library = b.addLibrary(.{

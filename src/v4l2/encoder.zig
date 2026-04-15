@@ -1,0 +1,73 @@
+const bindings = @import("bindings");
+const std = @import("std");
+
+pub const Encoder = extern struct {
+    cmd: Command,
+    flags: u32,
+    raw: [8]u32,
+
+    pub const Command = enum(u32) {
+        start = 0,
+        stop = 1,
+        pause = 2,
+        @"resume" = 3,
+    };
+
+    pub const Flag = struct {
+        pub const stop_at_gop_end: u32 = 1 << 0;
+    };
+
+    pub const Index = extern struct {
+        entries: u32,
+        entries_cap: u32,
+        reserved: [4]u32,
+        entry: [64]Entry,
+
+        pub const Entry = extern struct {
+            offset: u64,
+            pts: u64,
+            length: u32,
+            flags: u32,
+            reserved: [2]u32,
+
+            pub const FrameType = struct {
+                pub const i: u32 = 0;
+                pub const p: u32 = 1;
+                pub const b: u32 = 2;
+                pub const mask: u32 = 0xf;
+            };
+        };
+    };
+};
+
+test "Encoder ABI matches struct_v4l2_encoder_cmd" {
+    const C = bindings.struct_v4l2_encoder_cmd;
+    const Z = Encoder;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "cmd"), @offsetOf(Z, "cmd"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "Encoder.Index ABI matches struct_v4l2_enc_idx" {
+    const C = bindings.struct_v4l2_enc_idx;
+    const Z = Encoder.Index;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "entries"), @offsetOf(Z, "entries"));
+    try std.testing.expectEqual(@offsetOf(C, "entries_cap"), @offsetOf(Z, "entries_cap"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "entry"), @offsetOf(Z, "entry"));
+}
+
+test "Encoder.Index.Entry ABI matches struct_v4l2_enc_idx_entry" {
+    const C = bindings.struct_v4l2_enc_idx_entry;
+    const Z = Encoder.Index.Entry;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "offset"), @offsetOf(Z, "offset"));
+    try std.testing.expectEqual(@offsetOf(C, "pts"), @offsetOf(Z, "pts"));
+    try std.testing.expectEqual(@offsetOf(C, "length"), @offsetOf(Z, "length"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
