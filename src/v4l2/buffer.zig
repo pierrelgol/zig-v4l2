@@ -165,7 +165,7 @@ pub const Buffer = extern struct {
         reserved: [3]u8,
 
         pub const RequestFlag = enum(u8) {
-            non_coherent = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_M2M_HOLD_CAPTURE_BUF), // placeholder
+            non_coherent = @intCast(bindings.V4L2_MEMORY_FLAG_NON_COHERENT),
         };
 
         pub const Capabilities = enum(u32) {
@@ -335,4 +335,8 @@ test "Buffer.Remove ABI matches struct_v4l2_remove_buffers" {
         .{ .c_name = "type", .z_name = "type" },
         .{ .c_name = "reserved", .z_name = "reserved" },
     });
+}
+
+test "Buffer.Request.RequestFlag matches linux/videodev2.h" {
+    try std.testing.expectEqual(@as(u8, @intCast(bindings.V4L2_MEMORY_FLAG_NON_COHERENT)), @intFromEnum(Buffer.Request.RequestFlag.non_coherent));
 }

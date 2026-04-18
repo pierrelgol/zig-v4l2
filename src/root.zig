@@ -1,67 +1,50 @@
 const std = @import("std");
 const bindings = @import("bindings");
 
-const geometry = @import("v4l2/geometry.zig");
-pub const Rectangle = geometry.Rectangle;
-pub const Fraction = geometry.Fraction;
-pub const Area = geometry.Area;
-
-pub const Pixel = @import("v4l2/pixel.zig").Pixel;
-pub const fourcc = Pixel.fourcc;
-pub const fourcc_be = Pixel.fourcc_be;
-pub const private_magic = Pixel.private_magic;
-pub const Sdr = Pixel.Sdr;
-pub const Touch = Pixel.Touch;
-pub const Meta = Pixel.Meta;
-pub const C3isp = Pixel.C3isp;
-pub const Rkisp = Pixel.Rkisp;
-pub const RaspberryPi = Pixel.RaspberryPi;
-
-pub const Buffer = @import("v4l2/buffer.zig").Buffer;
-pub const CreateBuffer = Buffer.Create;
-pub const RequestBuffer = Buffer.Request;
-pub const RemoveBuffer = Buffer.Remove;
-pub const Priority = Buffer.Priority;
-pub const Timecode = Buffer.Timecode;
-
-pub const Capability = @import("v4l2/capability.zig").Capability;
-
-pub const Frame = @import("v4l2/frame.zig").Frame;
-pub const Clip = Frame.Clip;
-pub const Window = Frame.Window;
-
-pub const Stream = @import("v4l2/stream.zig");
-
-pub const Standard = @import("v4l2/standard.zig").Standard;
-pub const StandardId = Standard.Id;
-pub const StandardSet = Standard.Set;
-
-pub const Timings = @import("v4l2/timings.zig");
-
-pub const Input = @import("v4l2/input.zig").Input;
-pub const Output = @import("v4l2/output.zig").Output;
-pub const Control = @import("v4l2/control.zig").Control;
-
-const tuner = @import("v4l2/tuner.zig");
-pub const Tuner = tuner.Tuner;
-pub const TunerKind = tuner.Type;
-pub const Modulator = tuner.Modulator;
-pub const Frequency = tuner.Frequency;
-pub const FrequencyBand = tuner.Band;
-pub const HardwareFrequencySeek = tuner.HardwareFrequencySeek;
-
-pub const Audio = @import("v4l2/audio.zig").Audio;
-pub const Encoder = @import("v4l2/encoder.zig").Encoder;
-pub const Decoder = @import("v4l2/decoder.zig").Decoder;
-pub const Vbi = @import("v4l2/vbi.zig");
-pub const Event = @import("v4l2/event.zig").Event;
-pub const Media = @import("v4l2/media.zig");
-pub const Mediabus = @import("v4l2/mediabus.zig");
-pub const Subdev = @import("v4l2/subdev.zig");
-
-pub const Debug = @import("v4l2/debug.zig");
-
-const ioctl = @import("v4l2/ioctl.zig");
+pub const geometry = @import("v4l2/geometry.zig");
+pub const pixel = @import("v4l2/pixel.zig");
+pub const buffer = @import("v4l2/buffer.zig");
+pub const capability = @import("v4l2/capability.zig");
+pub const frame = @import("v4l2/frame.zig");
+pub const stream = @import("v4l2/stream.zig");
+pub const standard = @import("v4l2/standard.zig");
+pub const timings = @import("v4l2/timings.zig");
+pub const input = @import("v4l2/input.zig");
+pub const output = @import("v4l2/output.zig");
+pub const control = @import("v4l2/control.zig");
+pub const tuner = @import("v4l2/tuner.zig");
+pub const audio = @import("v4l2/audio.zig");
+pub const encoder = @import("v4l2/encoder.zig");
+pub const decoder = @import("v4l2/decoder.zig");
+pub const vbi = @import("v4l2/vbi.zig");
+pub const event = @import("v4l2/event.zig");
+pub const media = @import("v4l2/media.zig");
+pub const mediabus = @import("v4l2/mediabus.zig");
+pub const subdev = @import("v4l2/subdev.zig");
+pub const debug = @import("v4l2/debug.zig");
+pub const camera = @import("v4l2/control/camera.zig");
+pub const class = @import("v4l2/control/class.zig");
+pub const core = @import("v4l2/control/core.zig");
+pub const cx2341x = @import("v4l2/control/cx2341x.zig");
+pub const detect = @import("v4l2/control/detect.zig");
+pub const dv = @import("v4l2/control/dv.zig");
+pub const flash = @import("v4l2/control/flash.zig");
+pub const fm = @import("v4l2/control/fm.zig");
+pub const image = @import("v4l2/control/image.zig");
+pub const jpeg = @import("v4l2/control/jpeg.zig");
+pub const mfc51 = @import("v4l2/control/mfc51.zig");
+pub const mpeg = @import("v4l2/control/mpeg.zig");
+pub const rf_tuner = @import("v4l2/control/rf_tuner.zig");
+pub const user = @import("v4l2/control/user.zig");
+pub const av1 = @import("v4l2/control/stateless/av1.zig");
+pub const fwht = @import("v4l2/control/stateless/fwht.zig");
+pub const mpeg2 = @import("v4l2/control/stateless/mpeg2.zig");
+pub const h264 = @import("v4l2/control/stateless/h264.zig");
+pub const hevc = @import("v4l2/control/stateless/hevc.zig");
+pub const vp8 = @import("v4l2/control/stateless/vp8.zig");
+pub const vp9 = @import("v4l2/control/stateless/vp9.zig");
+pub const abi = @import("v4l2/abi.zig");
+pub const ioctl = @import("v4l2/ioctl.zig");
 pub const base_vidioc_private = ioctl.base_vidioc_private;
 pub const io = ioctl.io;
 pub const ior = ioctl.ior;

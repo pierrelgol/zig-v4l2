@@ -88,6 +88,8 @@ pub const Ioctl = struct {
     pub const cropcap: u32 = iowr('V', 58, Stream.Crop.Capabilities);
     pub const g_crop: u32 = iowr('V', 59, Stream.Crop);
     pub const s_crop: u32 = iow('V', 60, Stream.Crop);
+    pub const g_jpegcomp: u32 = ior('V', 61, Stream.JpegCompression);
+    pub const s_jpegcomp: u32 = iow('V', 62, Stream.JpegCompression);
     pub const querystd: u32 = ior('V', 63, StdId);
     pub const try_fmt: u32 = iowr('V', 64, Stream.Format);
     pub const enumaudio: u32 = iowr('V', 65, Audio);
@@ -126,3 +128,9 @@ pub const Ioctl = struct {
     pub const query_ext_ctrl: u32 = iowr('V', 103, Control.ExtendedQuery);
     pub const remove_bufs: u32 = iowr('V', 104, Buffer.Remove);
 };
+
+test "Ioctl JPEG compression constants match linux/videodev2.h" {
+    const bindings = @import("bindings");
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.VIDIOC_G_JPEGCOMP)), Ioctl.g_jpegcomp);
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.VIDIOC_S_JPEGCOMP)), Ioctl.s_jpegcomp);
+}

@@ -6,6 +6,8 @@ const c = @import("bindings");
 const geometry = @import("../geometry.zig");
 const Area = geometry.Area;
 const Rectangle = geometry.Rectangle;
+const colorimetry = @import("colorimetry.zig").colorimetry;
+const av1 = @import("stateless/av1.zig").av1;
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -33,12 +35,12 @@ pub const Control = extern struct {
     pub const HevcSliceParams = opaque {};
     pub const HevcScalingMatrix = opaque {};
     pub const HevcDecodeParams = opaque {};
-    pub const Av1Sequence = opaque {};
+    pub const Av1Sequence = av1.sequence.Ctrl;
     pub const Av1TileGroupEntry = opaque {};
     pub const Av1Frame = opaque {};
     pub const Av1FilmGrain = opaque {};
-    pub const Hdr10CllInfo = opaque {};
-    pub const Hdr10MasteringDisplay = opaque {};
+    pub const Hdr10CllInfo = colorimetry.hdr10_cll_info.Ctrl;
+    pub const Hdr10MasteringDisplay = colorimetry.hdr10_mastering_display.Ctrl;
 
     pub const Ext = extern struct {
         id: u32 align(1),
@@ -348,5 +350,41 @@ test "Control.MenuQuery.value ABI matches unnamed union in struct_v4l2_querymenu
     try abi.expectUnion(C, Z, &.{
         .{ .c_name = "name", .z_name = "name" },
         .{ .c_name = "value", .z_name = "s64" },
+    });
+}
+
+test "Control.Hdr10CllInfo ABI matches struct_v4l2_ctrl_hdr10_cll_info" {
+    const C = c.struct_v4l2_ctrl_hdr10_cll_info;
+    const Z = Control.Hdr10CllInfo;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "max_content_light_level", .z_name = "max_content_light_level" },
+        .{ .c_name = "max_pic_average_light_level", .z_name = "max_pic_average_light_level" },
+    });
+}
+
+test "Control.Hdr10MasteringDisplay ABI matches struct_v4l2_ctrl_hdr10_mastering_display" {
+    const C = c.struct_v4l2_ctrl_hdr10_mastering_display;
+    const Z = Control.Hdr10MasteringDisplay;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "display_primaries_x", .z_name = "display_primaries_x" },
+        .{ .c_name = "display_primaries_y", .z_name = "display_primaries_y" },
+        .{ .c_name = "white_point_x", .z_name = "white_point_x" },
+        .{ .c_name = "white_point_y", .z_name = "white_point_y" },
+        .{ .c_name = "max_display_mastering_luminance", .z_name = "max_display_mastering_luminance" },
+        .{ .c_name = "min_display_mastering_luminance", .z_name = "min_display_mastering_luminance" },
+    });
+}
+
+test "Control.Av1Sequence ABI matches struct_v4l2_ctrl_av1_sequence" {
+    const C = c.struct_v4l2_ctrl_av1_sequence;
+    const Z = Control.Av1Sequence;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "seq_profile", .z_name = "seq_profile" },
+        .{ .c_name = "order_hint_bits", .z_name = "order_hint_bits" },
+        .{ .c_name = "bit_depth", .z_name = "bit_depth" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+        .{ .c_name = "max_frame_width_minus_1", .z_name = "max_frame_width_minus_1" },
+        .{ .c_name = "max_frame_height_minus_1", .z_name = "max_frame_height_minus_1" },
     });
 }

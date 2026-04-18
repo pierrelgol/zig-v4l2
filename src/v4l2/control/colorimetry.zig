@@ -11,10 +11,24 @@ pub const class: u32 = c.V4L2_CID_COLORIMETRY_CLASS;
 
 pub const hdr10_cll_info = struct {
     pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_CLL_INFO;
+
+    pub const Ctrl = extern struct {
+        max_content_light_level: u16,
+        max_pic_average_light_level: u16,
+    };
 };
 
 pub const hdr10_mastering_display = struct {
     pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY;
+
+    pub const Ctrl = extern struct {
+        display_primaries_x: [3]u16,
+        display_primaries_y: [3]u16,
+        white_point_x: u16,
+        white_point_y: u16,
+        max_display_mastering_luminance: u32,
+        min_display_mastering_luminance: u32,
+    };
 
     pub const Primaries = enum(i32) {
         x_low = c.V4L2_HDR10_MASTERING_PRIMARIES_X_LOW,

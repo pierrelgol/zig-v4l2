@@ -46,6 +46,8 @@ pub const Capability = extern struct {
         touch = @intCast(bindings.V4L2_CAP_TOUCH),
         io_mc = @intCast(bindings.V4L2_CAP_IO_MC),
         device_caps = @intCast(bindings.V4L2_CAP_DEVICE_CAPS),
+
+        pub const asyncio: Flag = .edid;
     };
 
     pub const Description = extern struct {
@@ -74,6 +76,11 @@ pub const Capability = extern struct {
         };
     };
 };
+
+test "Capability.Flag aliases match linux/videodev2.h" {
+    try std.testing.expectEqual(@intFromEnum(Capability.Flag.edid), @intFromEnum(Capability.Flag.asyncio));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_CAP_ASYNCIO)), @intFromEnum(Capability.Flag.asyncio));
+}
 
 test "Capability ABI matches struct_v4l2_capability" {
     const C = bindings.struct_v4l2_capability;

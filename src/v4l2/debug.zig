@@ -19,6 +19,8 @@ pub const Match = extern struct {
         i2c_addr = @intCast(bindings.V4L2_CHIP_MATCH_I2C_ADDR),
         ac97 = @intCast(bindings.V4L2_CHIP_MATCH_AC97),
         subdev = @intCast(bindings.V4L2_CHIP_MATCH_SUBDEV),
+
+        pub const host: Type = .bridge;
     };
 };
 
@@ -79,4 +81,9 @@ test "Debug.ChipInfo ABI matches struct_v4l2_dbg_chip_info" {
         .{ .c_name = "flags", .z_name = "flags" },
         .{ .c_name = "reserved", .z_name = "reserved" },
     });
+}
+
+test "Debug.Match.Type aliases match linux/videodev2.h" {
+    try std.testing.expectEqual(@intFromEnum(Match.Type.bridge), @intFromEnum(Match.Type.host));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_CHIP_MATCH_HOST)), @intFromEnum(Match.Type.host));
 }

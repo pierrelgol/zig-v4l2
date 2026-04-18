@@ -135,6 +135,41 @@ pub const isSegmentFeatureEnabled = &c.V4L2_AV1_SEGMENT_FEATURE_ENABLED;
 
 pub const sequence = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_AV1_SEQUENCE;
+
+    pub const max_tile_count: u32 = c.V4L2_AV1_MAX_TILE_COUNT;
+
+    pub const flag = struct {
+        pub const still_picture: u32 = c.V4L2_AV1_SEQUENCE_FLAG_STILL_PICTURE;
+        pub const use_128x128_superblock: u32 = c.V4L2_AV1_SEQUENCE_FLAG_USE_128X128_SUPERBLOCK;
+        pub const enable_filter_intra: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_FILTER_INTRA;
+        pub const enable_intra_edge_filter: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_INTRA_EDGE_FILTER;
+        pub const enable_interintra_compound: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_INTERINTRA_COMPOUND;
+        pub const enable_masked_compound: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_MASKED_COMPOUND;
+        pub const enable_warped_motion: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_WARPED_MOTION;
+        pub const enable_dual_filter: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_DUAL_FILTER;
+        pub const enable_order_hint: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_ORDER_HINT;
+        pub const enable_jnt_comp: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_JNT_COMP;
+        pub const enable_ref_frame_mvs: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_REF_FRAME_MVS;
+        pub const enable_superres: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_SUPERRES;
+        pub const enable_cdef: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_CDEF;
+        pub const enable_restoration: u32 = c.V4L2_AV1_SEQUENCE_FLAG_ENABLE_RESTORATION;
+        pub const mono_chrome: u32 = c.V4L2_AV1_SEQUENCE_FLAG_MONO_CHROME;
+        pub const color_range: u32 = c.V4L2_AV1_SEQUENCE_FLAG_COLOR_RANGE;
+        pub const subsampling_x: u32 = c.V4L2_AV1_SEQUENCE_FLAG_SUBSAMPLING_X;
+        pub const subsampling_y: u32 = c.V4L2_AV1_SEQUENCE_FLAG_SUBSAMPLING_Y;
+        pub const film_grain_params_present: u32 = c.V4L2_AV1_SEQUENCE_FLAG_FILM_GRAIN_PARAMS_PRESENT;
+        pub const separate_uv_delta_q: u32 = c.V4L2_AV1_SEQUENCE_FLAG_SEPARATE_UV_DELTA_Q;
+    };
+
+    pub const Ctrl = extern struct {
+        flags: u32,
+        seq_profile: u8,
+        order_hint_bits: u8,
+        bit_depth: u8,
+        reserved: u8,
+        max_frame_width_minus_1: u16,
+        max_frame_height_minus_1: u16,
+    };
 };
 
 pub const tile_group_entry = struct {
@@ -307,6 +342,20 @@ test "stateless.av1.tile_group_entry.Ctrl ABI matches struct_v4l2_ctrl_av1_tile_
     try std.testing.expectEqual(@offsetOf(C, "tile_size"), @offsetOf(Z, "tile_size"));
     try std.testing.expectEqual(@offsetOf(C, "tile_row"), @offsetOf(Z, "tile_row"));
     try std.testing.expectEqual(@offsetOf(C, "tile_col"), @offsetOf(Z, "tile_col"));
+}
+
+test "stateless.av1.sequence.Ctrl ABI matches struct_v4l2_ctrl_av1_sequence" {
+    const C = c.struct_v4l2_ctrl_av1_sequence;
+    const Z = av1.sequence.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "seq_profile"), @offsetOf(Z, "seq_profile"));
+    try std.testing.expectEqual(@offsetOf(C, "order_hint_bits"), @offsetOf(Z, "order_hint_bits"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_depth"), @offsetOf(Z, "bit_depth"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "max_frame_width_minus_1"), @offsetOf(Z, "max_frame_width_minus_1"));
+    try std.testing.expectEqual(@offsetOf(C, "max_frame_height_minus_1"), @offsetOf(Z, "max_frame_height_minus_1"));
 }
 
 test "stateless.av1.global_motion.Ctrl ABI matches struct_v4l2_av1_global_motion" {

@@ -62,6 +62,9 @@ pub const Crop = extern struct {
         compose_default = @intCast(bindings.V4L2_SEL_TGT_COMPOSE_DEFAULT),
         compose_bounds = @intCast(bindings.V4L2_SEL_TGT_COMPOSE_BOUNDS),
         compose_padded = @intCast(bindings.V4L2_SEL_TGT_COMPOSE_PADDED),
+
+        pub const crop_active: Target = .crop;
+        pub const compose_active: Target = .compose;
     };
 };
 
@@ -85,6 +88,24 @@ pub const Edid = extern struct {
     blocks: u32,
     reserved: [5]u32,
     edid: ?[*]u8,
+};
+
+pub const JpegCompression = extern struct {
+    quality: i32,
+    APPn: i32,
+    APP_len: i32,
+    APP_data: [60]u8,
+    COM_len: i32,
+    COM_data: [60]u8,
+    jpeg_markers: u32,
+
+    pub const Marker = enum(u32) {
+        dht = @intCast(bindings.V4L2_JPEG_MARKER_DHT),
+        dqt = @intCast(bindings.V4L2_JPEG_MARKER_DQT),
+        dri = @intCast(bindings.V4L2_JPEG_MARKER_DRI),
+        com = @intCast(bindings.V4L2_JPEG_MARKER_COM),
+        app = @intCast(bindings.V4L2_JPEG_MARKER_APP),
+    };
 };
 
 pub const Format = extern struct {
@@ -178,6 +199,33 @@ test "Stream.Edid ABI matches struct_v4l2_edid" {
     try std.testing.expectEqual(@offsetOf(C, "blocks"), @offsetOf(Z, "blocks"));
     try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
     try std.testing.expectEqual(@offsetOf(C, "edid"), @offsetOf(Z, "edid"));
+}
+
+test "Stream.JpegCompression ABI matches struct_v4l2_jpegcompression" {
+    const C = bindings.struct_v4l2_jpegcompression;
+    const Z = JpegCompression;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "quality"), @offsetOf(Z, "quality"));
+    try std.testing.expectEqual(@offsetOf(C, "APPn"), @offsetOf(Z, "APPn"));
+    try std.testing.expectEqual(@offsetOf(C, "APP_len"), @offsetOf(Z, "APP_len"));
+    try std.testing.expectEqual(@offsetOf(C, "APP_data"), @offsetOf(Z, "APP_data"));
+    try std.testing.expectEqual(@offsetOf(C, "COM_len"), @offsetOf(Z, "COM_len"));
+    try std.testing.expectEqual(@offsetOf(C, "COM_data"), @offsetOf(Z, "COM_data"));
+    try std.testing.expectEqual(@offsetOf(C, "jpeg_markers"), @offsetOf(Z, "jpeg_markers"));
+}
+
+test "Stream target aliases and JPEG marker constants match linux/videodev2.h" {
+    try std.testing.expectEqual(@intFromEnum(Crop.Target.crop), @intFromEnum(Crop.Target.crop_active));
+    try std.testing.expectEqual(@intFromEnum(Crop.Target.compose), @intFromEnum(Crop.Target.compose_active));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_SEL_TGT_CROP_ACTIVE)), @intFromEnum(Crop.Target.crop_active));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_SEL_TGT_COMPOSE_ACTIVE)), @intFromEnum(Crop.Target.compose_active));
+
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DHT)), @intFromEnum(JpegCompression.Marker.dht));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DQT)), @intFromEnum(JpegCompression.Marker.dqt));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DRI)), @intFromEnum(JpegCompression.Marker.dri));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_COM)), @intFromEnum(JpegCompression.Marker.com));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_APP)), @intFromEnum(JpegCompression.Marker.app));
 }
 
 test "Stream.Format ABI matches struct_v4l2_format" {
