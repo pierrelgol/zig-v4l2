@@ -2,6 +2,10 @@ const bindings = @import("bindings");
 const std = @import("std");
 const Buffer = @import("buffer.zig").Buffer;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Format = extern struct {
     sampling_rate: u32,
     offset: u32,

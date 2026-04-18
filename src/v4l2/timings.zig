@@ -2,6 +2,10 @@ const bindings = @import("bindings");
 const std = @import("std");
 const Fraction = @import("geometry.zig").Fraction;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Blanking = extern struct {
     width: u32 align(1),
     height: u32 align(1),

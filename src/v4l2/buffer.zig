@@ -3,6 +3,10 @@ const std = @import("std");
 const Pixel = @import("pixel.zig").Pixel;
 const stream = @import("stream.zig");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Buffer = extern struct {
     index: u32,
     type: Type,

@@ -1,6 +1,10 @@
 const bindings = @import("bindings");
 const std = @import("std");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Encoder = extern struct {
     cmd: Command,
     flags: u32,

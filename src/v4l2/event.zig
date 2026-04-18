@@ -2,6 +2,10 @@ const bindings = @import("bindings");
 const std = @import("std");
 const ControlType = @import("control.zig").Control.Type;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Event = extern struct {
     type: u32,
     u: extern union {

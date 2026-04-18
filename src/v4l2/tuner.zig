@@ -1,6 +1,10 @@
 const bindings = @import("bindings");
 const std = @import("std");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Type = enum(u32) {
     radio = @intCast(bindings.V4L2_TUNER_RADIO),
     analog_tv = @intCast(bindings.V4L2_TUNER_ANALOG_TV),

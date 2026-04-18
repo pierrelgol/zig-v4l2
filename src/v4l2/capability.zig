@@ -2,6 +2,10 @@ const bindings = @import("bindings");
 const std = @import("std");
 const Buffer = @import("buffer.zig").Buffer;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Capability = extern struct {
     driver: [16]u8,
     card: [32]u8,

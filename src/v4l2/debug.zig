@@ -1,6 +1,10 @@
 const bindings = @import("bindings");
 const std = @import("std");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Match = extern struct {
     type: Type align(1),
     addr_or_name: extern union {

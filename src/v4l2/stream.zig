@@ -7,6 +7,10 @@ const Pixel = @import("pixel.zig").Pixel;
 const Vbi = @import("vbi.zig");
 const Window = @import("frame.zig").Window;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Parameters = extern struct {
     pub const Capture = extern struct {
         capability: Capability,

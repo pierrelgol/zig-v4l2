@@ -2,6 +2,10 @@ const bindings = @import("bindings");
 const std = @import("std");
 const StdId = @import("standard.zig").Standard.Id;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Input = extern struct {
     index: u32,
     name: [32]u8,

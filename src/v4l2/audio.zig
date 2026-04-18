@@ -1,6 +1,10 @@
 const bindings = @import("bindings");
 const std = @import("std");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Audio = extern struct {
     index: u32,
     name: [32]u8,

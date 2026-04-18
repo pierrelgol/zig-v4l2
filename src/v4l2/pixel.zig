@@ -2,6 +2,10 @@ const bindings = @import("bindings");
 const std = @import("std");
 const builtin = @import("builtin");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Pixel = extern struct {
     width: u32,
     height: u32,

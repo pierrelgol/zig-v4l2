@@ -1,6 +1,10 @@
 const bindings = @import("bindings");
 const std = @import("std");
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Rectangle = extern struct {
     left: i32,
     top: i32,

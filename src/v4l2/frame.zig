@@ -5,6 +5,10 @@ const geometry = @import("geometry.zig");
 const Rectangle = geometry.Rectangle;
 const Fraction = geometry.Fraction;
 
+comptime {
+    std.testing.refAllDecls(@This());
+}
+
 pub const Frame = @This();
 
 pub const Clip = extern struct {

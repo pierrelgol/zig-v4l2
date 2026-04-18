@@ -1,3 +1,4 @@
+const std = @import("std");
 const Audio = @import("audio.zig").Audio;
 const Buffer = @import("buffer.zig").Buffer;
 const Capability = @import("capability.zig").Capability;
@@ -15,6 +16,10 @@ const Stream = @import("stream.zig");
 const Timings = @import("timings.zig");
 const tuner = @import("tuner.zig");
 const Vbi = @import("vbi.zig");
+
+comptime {
+    std.testing.refAllDecls(@This());
+}
 
 pub const base_vidioc_private: u32 = 192;
 
