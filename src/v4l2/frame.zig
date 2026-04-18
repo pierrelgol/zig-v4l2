@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi_test.zig");
 const Pixel = @import("pixel.zig").Pixel;
 const geometry = @import("geometry.zig");
 const Rectangle = geometry.Rectangle;
@@ -212,4 +213,19 @@ test "Frame.Interval.StepWise ABI matches struct_v4l2_frmival_stepwise" {
     try std.testing.expectEqual(@offsetOf(C, "min"), @offsetOf(Z, "min"));
     try std.testing.expectEqual(@offsetOf(C, "max"), @offsetOf(Z, "max"));
     try std.testing.expectEqual(@offsetOf(C, "step"), @offsetOf(Z, "step"));
+}
+
+test "Frame.Buffer.Format ABI matches struct_v4l2_pix_format" {
+    const C = @FieldType(bindings.struct_v4l2_framebuffer, "fmt");
+    const Z = Buffer.Format;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "width", .z_name = "width" },
+        .{ .c_name = "height", .z_name = "height" },
+        .{ .c_name = "pixelformat", .z_name = "pixel_format" },
+        .{ .c_name = "field", .z_name = "field" },
+        .{ .c_name = "bytesperline", .z_name = "bytes_per_line" },
+        .{ .c_name = "sizeimage", .z_name = "size_image" },
+        .{ .c_name = "colorspace", .z_name = "colorspace" },
+        .{ .c_name = "priv", .z_name = "priv" },
+    });
 }

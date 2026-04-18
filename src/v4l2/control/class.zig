@@ -1,4 +1,5 @@
 const c = @import("bindings");
+pub const class = @This();
 const std = @import("std");
 
 comptime {

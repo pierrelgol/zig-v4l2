@@ -1,6 +1,7 @@
 const bindings = @import("bindings");
 const std = @import("std");
 const builtin = @import("builtin");
+const abi = @import("abi_test.zig");
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -569,4 +570,13 @@ test "Pixel.MetaFormat ABI matches struct_v4l2_meta_format" {
     try std.testing.expectEqual(@offsetOf(C, "width"), @offsetOf(Z, "width"));
     try std.testing.expectEqual(@offsetOf(C, "height"), @offsetOf(Z, "height"));
     try std.testing.expectEqual(@offsetOf(C, "bytesperline"), @offsetOf(Z, "bytesperline"));
+}
+
+test "Pixel.Encoding ABI matches unnamed union in struct_v4l2_pix_format" {
+    const C = @FieldType(bindings.struct_v4l2_pix_format, "unnamed_0");
+    const Z = Pixel.Encoding;
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "ycbcr_enc", .z_name = "ycbcr" },
+        .{ .c_name = "hsv_enc", .z_name = "hsv" },
+    });
 }

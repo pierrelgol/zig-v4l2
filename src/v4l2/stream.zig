@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi_test.zig");
 const Buffer = @import("buffer.zig").Buffer;
 const Fraction = @import("geometry.zig").Fraction;
 const Rectangle = @import("geometry.zig").Rectangle;
@@ -195,4 +196,48 @@ test "Stream.Parameter ABI matches struct_v4l2_streamparm" {
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
     try std.testing.expectEqual(@offsetOf(C, "parm"), @offsetOf(Z, "value"));
+}
+
+test "Stream.Parameters ABI groups match capture and output structs" {
+    try abi.expectStruct(bindings.struct_v4l2_captureparm, Parameters.Capture, &.{
+        .{ .c_name = "capability", .z_name = "capability" },
+        .{ .c_name = "capturemode", .z_name = "outputmode" },
+        .{ .c_name = "timeperframe", .z_name = "time_per_frame" },
+        .{ .c_name = "extendedmode", .z_name = "extended_mode" },
+        .{ .c_name = "readbuffers", .z_name = "read_buffers" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+    try abi.expectStruct(bindings.struct_v4l2_outputparm, Parameters.Output, &.{
+        .{ .c_name = "capability", .z_name = "capability" },
+        .{ .c_name = "outputmode", .z_name = "outputmode" },
+        .{ .c_name = "timeperframe", .z_name = "time_per_frame" },
+        .{ .c_name = "extendedmode", .z_name = "extended_mode" },
+        .{ .c_name = "writebuffers", .z_name = "write_buffers" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+}
+
+test "Stream.Format.value ABI matches unnamed union in struct_v4l2_format" {
+    const C = @FieldType(bindings.struct_v4l2_format, "fmt");
+    const Z = @FieldType(Format, "value");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "pix", .z_name = "pixel" },
+        .{ .c_name = "pix_mp", .z_name = "multi_plane" },
+        .{ .c_name = "win", .z_name = "window" },
+        .{ .c_name = "vbi", .z_name = "vbi" },
+        .{ .c_name = "sliced", .z_name = "sliced_vbi" },
+        .{ .c_name = "sdr", .z_name = "sdr" },
+        .{ .c_name = "meta", .z_name = "meta" },
+        .{ .c_name = "raw_data", .z_name = "raw_data" },
+    });
+}
+
+test "Stream.Parameter.value ABI matches unnamed union in struct_v4l2_streamparm" {
+    const C = @FieldType(bindings.struct_v4l2_streamparm, "parm");
+    const Z = @FieldType(Parameter, "value");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "capture", .z_name = "capture" },
+        .{ .c_name = "output", .z_name = "output" },
+        .{ .c_name = "raw_data", .z_name = "raw_data" },
+    });
 }

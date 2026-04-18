@@ -1,5 +1,8 @@
-const c = @import("bindings");
 const std = @import("std");
+const abi = @import("../abi_test.zig");
+
+const c = @import("bindings");
+
 const geometry = @import("../geometry.zig");
 const Area = geometry.Area;
 const Rectangle = geometry.Rectangle;
@@ -199,3 +202,151 @@ pub const Control = extern struct {
         reserved: u32 align(1),
     };
 };
+
+test "Control ABI matches struct_v4l2_control" {
+    const C = c.struct_v4l2_control;
+    const Z = Control;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "value", .z_name = "value" },
+    });
+}
+
+test "Control.Ext ABI matches struct_v4l2_ext_control" {
+    const C = c.struct_v4l2_ext_control;
+    const Z = Control.Ext;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "size", .z_name = "size" },
+        .{ .c_name = "reserved2", .z_name = "reserved2" },
+        .{ .c_name = "unnamed_0", .z_name = "value" },
+    });
+}
+
+test "Control.Ext.value ABI matches unnamed union in struct_v4l2_ext_control" {
+    const C = @FieldType(c.struct_v4l2_ext_control, "unnamed_0");
+    const Z = @FieldType(Control.Ext, "value");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "value", .z_name = "s32" },
+        .{ .c_name = "value64", .z_name = "s64" },
+        .{ .c_name = "string", .z_name = "string" },
+        .{ .c_name = "p_u8", .z_name = "p_u8" },
+        .{ .c_name = "p_u16", .z_name = "p_u16" },
+        .{ .c_name = "p_u32", .z_name = "p_u32" },
+        .{ .c_name = "p_s32", .z_name = "p_s32" },
+        .{ .c_name = "p_s64", .z_name = "p_s64" },
+        .{ .c_name = "p_area", .z_name = "p_area" },
+        .{ .c_name = "p_rect", .z_name = "p_rect" },
+        .{ .c_name = "p_h264_sps", .z_name = "p_h264_sps" },
+        .{ .c_name = "p_h264_pps", .z_name = "p_h264_pps" },
+        .{ .c_name = "p_h264_scaling_matrix", .z_name = "p_h264_scaling_matrix" },
+        .{ .c_name = "p_h264_pred_weights", .z_name = "p_h264_pred_weights" },
+        .{ .c_name = "p_h264_slice_params", .z_name = "p_h264_slice_params" },
+        .{ .c_name = "p_h264_decode_params", .z_name = "p_h264_decode_params" },
+        .{ .c_name = "p_fwht_params", .z_name = "p_fwht_params" },
+        .{ .c_name = "p_vp8_frame", .z_name = "p_vp8_frame" },
+        .{ .c_name = "p_mpeg2_sequence", .z_name = "p_mpeg2_sequence" },
+        .{ .c_name = "p_mpeg2_picture", .z_name = "p_mpeg2_picture" },
+        .{ .c_name = "p_mpeg2_quantisation", .z_name = "p_mpeg2_quantisation" },
+        .{ .c_name = "p_vp9_compressed_hdr_probs", .z_name = "p_vp9_compressed_hdr_probs" },
+        .{ .c_name = "p_vp9_frame", .z_name = "p_vp9_frame" },
+        .{ .c_name = "p_hevc_sps", .z_name = "p_hevc_sps" },
+        .{ .c_name = "p_hevc_pps", .z_name = "p_hevc_pps" },
+        .{ .c_name = "p_hevc_slice_params", .z_name = "p_hevc_slice_params" },
+        .{ .c_name = "p_hevc_scaling_matrix", .z_name = "p_hevc_scaling_matrix" },
+        .{ .c_name = "p_hevc_decode_params", .z_name = "p_hevc_decode_params" },
+        .{ .c_name = "p_av1_sequence", .z_name = "p_av1_sequence" },
+        .{ .c_name = "p_av1_tile_group_entry", .z_name = "p_av1_tile_group_entry" },
+        .{ .c_name = "p_av1_frame", .z_name = "p_av1_frame" },
+        .{ .c_name = "p_av1_film_grain", .z_name = "p_av1_film_grain" },
+        .{ .c_name = "p_hdr10_cll_info", .z_name = "p_hdr10_cll_info" },
+        .{ .c_name = "p_hdr10_mastering_display", .z_name = "p_hdr10_mastering_display" },
+        .{ .c_name = "ptr", .z_name = "ptr" },
+    });
+}
+
+test "Control.ExtSet ABI matches struct_v4l2_ext_controls" {
+    const C = c.struct_v4l2_ext_controls;
+    const Z = Control.ExtSet;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "unnamed_0", .z_name = "which" },
+        .{ .c_name = "count", .z_name = "count" },
+        .{ .c_name = "error_idx", .z_name = "error_idx" },
+        .{ .c_name = "request_fd", .z_name = "request_fd" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+        .{ .c_name = "controls", .z_name = "controls" },
+    });
+}
+
+test "Control.Flag ABI matches v4l2 control flag bitmasks" {
+    try abi.expectPackedStruct(Control.Flag, u32);
+    try abi.expectPackedFlag(Control.Flag, "disabled", c.V4L2_CTRL_FLAG_DISABLED);
+    try abi.expectPackedFlag(Control.Flag, "grabbed", c.V4L2_CTRL_FLAG_GRABBED);
+    try abi.expectPackedFlag(Control.Flag, "read_only", c.V4L2_CTRL_FLAG_READ_ONLY);
+    try abi.expectPackedFlag(Control.Flag, "update", c.V4L2_CTRL_FLAG_UPDATE);
+    try abi.expectPackedFlag(Control.Flag, "inactive", c.V4L2_CTRL_FLAG_INACTIVE);
+    try abi.expectPackedFlag(Control.Flag, "slider", c.V4L2_CTRL_FLAG_SLIDER);
+    try abi.expectPackedFlag(Control.Flag, "write_only", c.V4L2_CTRL_FLAG_WRITE_ONLY);
+    try abi.expectPackedFlag(Control.Flag, "volatile", c.V4L2_CTRL_FLAG_VOLATILE);
+    try abi.expectPackedFlag(Control.Flag, "has_payload", c.V4L2_CTRL_FLAG_HAS_PAYLOAD);
+    try abi.expectPackedFlag(Control.Flag, "execute_on_write", c.V4L2_CTRL_FLAG_EXECUTE_ON_WRITE);
+    try abi.expectPackedFlag(Control.Flag, "modify_layout", c.V4L2_CTRL_FLAG_MODIFY_LAYOUT);
+    try abi.expectPackedFlag(Control.Flag, "dynamic_array", c.V4L2_CTRL_FLAG_DYNAMIC_ARRAY);
+    try abi.expectPackedFlag(Control.Flag, "has_which_min_max", c.V4L2_CTRL_FLAG_HAS_WHICH_MIN_MAX);
+}
+
+test "Control.Query ABI matches struct_v4l2_queryctrl" {
+    const C = c.struct_v4l2_queryctrl;
+    const Z = Control.Query;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "name", .z_name = "name" },
+        .{ .c_name = "minimum", .z_name = "minimum" },
+        .{ .c_name = "maximum", .z_name = "maximum" },
+        .{ .c_name = "step", .z_name = "step" },
+        .{ .c_name = "default_value", .z_name = "default_value" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+}
+
+test "Control.ExtendedQuery ABI matches struct_v4l2_query_ext_ctrl" {
+    const C = c.struct_v4l2_query_ext_ctrl;
+    const Z = Control.ExtendedQuery;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "name", .z_name = "name" },
+        .{ .c_name = "minimum", .z_name = "minimum" },
+        .{ .c_name = "maximum", .z_name = "maximum" },
+        .{ .c_name = "step", .z_name = "step" },
+        .{ .c_name = "default_value", .z_name = "default_value" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "elem_size", .z_name = "elem_size" },
+        .{ .c_name = "elems", .z_name = "elems" },
+        .{ .c_name = "nr_of_dims", .z_name = "nr_of_dims" },
+        .{ .c_name = "dims", .z_name = "dims" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+}
+
+test "Control.MenuQuery ABI matches struct_v4l2_querymenu" {
+    const C = c.struct_v4l2_querymenu;
+    const Z = Control.MenuQuery;
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "unnamed_0", .z_name = "value" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+}
+
+test "Control.MenuQuery.value ABI matches unnamed union in struct_v4l2_querymenu" {
+    const C = @FieldType(c.struct_v4l2_querymenu, "unnamed_0");
+    const Z = @FieldType(Control.MenuQuery, "value");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "name", .z_name = "name" },
+        .{ .c_name = "value", .z_name = "s64" },
+    });
+}
