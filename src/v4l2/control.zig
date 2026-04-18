@@ -614,7 +614,7 @@ pub const mpeg = struct {
                 pub const id: u32 = c.V4L2_CID_MPEG_AUDIO_DEC_MULTILINGUAL_PLAYBACK;
             };
         };
-    }; // audio
+    };
 
     pub const video = struct {
         pub const Encoding = enum(i32) {
@@ -1613,6 +1613,64 @@ pub const mpeg = struct {
             pub const decoder = struct {
                 pub const h264_display_delay = struct {
                     pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY;
+
+                    pub const enable = struct {
+                        pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY_ENABLE;
+                    };
+                };
+            };
+
+            pub const FrameSkipMode = enum(i32) {
+                pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
+
+                disabled = c.V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_DISABLED,
+                level_limit = c.V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_LEVEL_LIMIT,
+                buf_limit = c.V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_BUF_LIMIT,
+            };
+
+            pub const ForceFrameType = enum(i32) {
+                pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_FORCE_FRAME_TYPE;
+
+                disabled = c.V4L2_MPEG_MFC51_VIDEO_FORCE_FRAME_TYPE_DISABLED,
+                i_frame = c.V4L2_MPEG_MFC51_VIDEO_FORCE_FRAME_TYPE_I_FRAME,
+                not_coded = c.V4L2_MPEG_MFC51_VIDEO_FORCE_FRAME_TYPE_NOT_CODED,
+            };
+
+            pub const padding = struct {
+                pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_PADDING;
+
+                pub const yuv = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_PADDING_YUV;
+                };
+            };
+
+            pub const rc_fixed_target_bit = struct {
+                pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_RC_FIXED_TARGET_BIT;
+            };
+
+            pub const rc_reaction_coeff = struct {
+                pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_RC_REACTION_COEFF;
+            };
+
+            pub const h264_adaptive_rc = struct {
+                pub const activity = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_ACTIVITY;
+                };
+
+                pub const dark = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_DARK;
+                };
+
+                pub const smooth = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_SMOOTH;
+                };
+
+                pub const static = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_STATIC;
+                };
+
+                pub const num_ref_pic_for_p = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_NUM_REF_PIC_FOR_P;
                 };
             };
         };
@@ -1626,943 +1684,759 @@ pub const mpeg = struct {
         pub const p_frame_qp = struct {
             pub const id: u32 = c.V4L2_CID_FWHT_P_FRAME_QP;
         };
-    }; // mpeg
+    };
 };
 
-pub const V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY = struct {};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY_ENABLE = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY_ENABLE;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_FORCE_FRAME_TYPE = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_FORCE_FRAME_TYPE;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_PADDING = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_PADDING;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_PADDING_YUV = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_PADDING_YUV;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_RC_FIXED_TARGET_BIT = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_RC_FIXED_TARGET_BIT;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_RC_REACTION_COEFF = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_RC_REACTION_COEFF;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_ACTIVITY = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_ACTIVITY;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_DARK = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_DARK;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_SMOOTH = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_SMOOTH;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_STATIC = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_ADAPTIVE_RC_STATIC;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_H264_NUM_REF_PIC_FOR_P = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_H264_NUM_REF_PIC_FOR_P;
-};
-pub const V4L2_CID_CAMERA_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_CAMERA_CLASS_BASE;
-};
-pub const V4L2_CID_CAMERA_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_CAMERA_CLASS;
-};
-pub const V4L2_CID_EXPOSURE_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO;
-};
-pub const V4L2_CID_EXPOSURE_ABSOLUTE = struct {
-    pub const id: u32 = c.V4L2_CID_EXPOSURE_ABSOLUTE;
-};
-pub const V4L2_CID_EXPOSURE_AUTO_PRIORITY = struct {
-    pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO_PRIORITY;
-};
-pub const V4L2_CID_PAN_RELATIVE = struct {
-    pub const id: u32 = c.V4L2_CID_PAN_RELATIVE;
-};
-pub const V4L2_CID_TILT_RELATIVE = struct {
-    pub const id: u32 = c.V4L2_CID_TILT_RELATIVE;
-};
-pub const V4L2_CID_PAN_RESET = struct {
-    pub const id: u32 = c.V4L2_CID_PAN_RESET;
-};
-pub const V4L2_CID_TILT_RESET = struct {
-    pub const id: u32 = c.V4L2_CID_TILT_RESET;
-};
-pub const V4L2_CID_PAN_ABSOLUTE = struct {
-    pub const id: u32 = c.V4L2_CID_PAN_ABSOLUTE;
-};
-pub const V4L2_CID_TILT_ABSOLUTE = struct {
-    pub const id: u32 = c.V4L2_CID_TILT_ABSOLUTE;
-};
-pub const V4L2_CID_FOCUS_ABSOLUTE = struct {
-    pub const id: u32 = c.V4L2_CID_FOCUS_ABSOLUTE;
-};
-pub const V4L2_CID_FOCUS_RELATIVE = struct {
-    pub const id: u32 = c.V4L2_CID_FOCUS_RELATIVE;
-};
-pub const V4L2_CID_FOCUS_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_FOCUS_AUTO;
-};
-pub const V4L2_CID_ZOOM_ABSOLUTE = struct {
-    pub const id: u32 = c.V4L2_CID_ZOOM_ABSOLUTE;
-};
-pub const V4L2_CID_ZOOM_RELATIVE = struct {
-    pub const id: u32 = c.V4L2_CID_ZOOM_RELATIVE;
-};
-pub const V4L2_CID_ZOOM_CONTINUOUS = struct {
-    pub const id: u32 = c.V4L2_CID_ZOOM_CONTINUOUS;
-};
-pub const V4L2_CID_PRIVACY = struct {
-    pub const id: u32 = c.V4L2_CID_PRIVACY;
-};
-pub const V4L2_CID_IRIS_ABSOLUTE = struct {
-    pub const id: u32 = c.V4L2_CID_IRIS_ABSOLUTE;
-};
-pub const V4L2_CID_IRIS_RELATIVE = struct {
-    pub const id: u32 = c.V4L2_CID_IRIS_RELATIVE;
-};
-pub const V4L2_CID_AUTO_EXPOSURE_BIAS = struct {
-    pub const id: u32 = c.V4L2_CID_AUTO_EXPOSURE_BIAS;
-};
-pub const V4L2_CID_AUTO_N_PRESET_WHITE_BALANCE = struct {
-    pub const id: u32 = c.V4L2_CID_AUTO_N_PRESET_WHITE_BALANCE;
-};
-pub const V4L2_CID_WIDE_DYNAMIC_RANGE = struct {
-    pub const id: u32 = c.V4L2_CID_WIDE_DYNAMIC_RANGE;
-};
-pub const V4L2_CID_IMAGE_STABILIZATION = struct {
-    pub const id: u32 = c.V4L2_CID_IMAGE_STABILIZATION;
-};
-pub const V4L2_CID_ISO_SENSITIVITY = struct {
-    pub const id: u32 = c.V4L2_CID_ISO_SENSITIVITY;
-};
-pub const V4L2_CID_ISO_SENSITIVITY_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_ISO_SENSITIVITY_AUTO;
-};
-pub const V4L2_CID_EXPOSURE_METERING = struct {
-    pub const id: u32 = c.V4L2_CID_EXPOSURE_METERING;
-};
-pub const V4L2_CID_SCENE_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_SCENE_MODE;
-};
-pub const V4L2_CID_3A_LOCK = struct {
-    pub const id: u32 = c.V4L2_CID_3A_LOCK;
-};
-pub const V4L2_LOCK_EXPOSURE = struct {
-    pub const id: u32 = c.V4L2_LOCK_EXPOSURE;
-};
-pub const V4L2_LOCK_WHITE_BALANCE = struct {
-    pub const id: u32 = c.V4L2_LOCK_WHITE_BALANCE;
-};
-pub const V4L2_LOCK_FOCUS = struct {
-    pub const id: u32 = c.V4L2_LOCK_FOCUS;
-};
-pub const V4L2_CID_AUTO_FOCUS_START = struct {
-    pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_START;
-};
-pub const V4L2_CID_AUTO_FOCUS_STOP = struct {
-    pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_STOP;
-};
-pub const V4L2_CID_AUTO_FOCUS_STATUS = struct {
-    pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_STATUS;
-};
-pub const V4L2_AUTO_FOCUS_STATUS_IDLE = struct {
-    pub const id: u32 = c.V4L2_AUTO_FOCUS_STATUS_IDLE;
-};
-pub const V4L2_AUTO_FOCUS_STATUS_BUSY = struct {
-    pub const id: u32 = c.V4L2_AUTO_FOCUS_STATUS_BUSY;
-};
-pub const V4L2_AUTO_FOCUS_STATUS_REACHED = struct {
-    pub const id: u32 = c.V4L2_AUTO_FOCUS_STATUS_REACHED;
-};
-pub const V4L2_AUTO_FOCUS_STATUS_FAILED = struct {
-    pub const id: u32 = c.V4L2_AUTO_FOCUS_STATUS_FAILED;
-};
-pub const V4L2_CID_AUTO_FOCUS_RANGE = struct {
-    pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_RANGE;
-};
-pub const V4L2_CID_PAN_SPEED = struct {
-    pub const id: u32 = c.V4L2_CID_PAN_SPEED;
-};
-pub const V4L2_CID_TILT_SPEED = struct {
-    pub const id: u32 = c.V4L2_CID_TILT_SPEED;
-};
-pub const V4L2_CID_CAMERA_ORIENTATION = struct {
-    pub const id: u32 = c.V4L2_CID_CAMERA_ORIENTATION;
+pub const camera = struct {
+    pub const base: u32 = c.V4L2_CID_CAMERA_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_CAMERA_CLASS;
+
+    pub const Exposure = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO;
+        auto = c.V4L2_EXPOSURE_AUTO,
+        manual = c.V4L2_EXPOSURE_MANUAL,
+        shutter_priority = c.V4L2_EXPOSURE_SHUTTER_PRIORITY,
+        aperture_priority = c.V4L2_EXPOSURE_APERTURE_PRIORITY,
+
+        pub const absolute = struct {
+            pub const id: u32 = c.V4L2_CID_EXPOSURE_ABSOLUTE;
+        };
+
+        pub const auto_priority = struct {
+            pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO_PRIORITY;
+        };
+    };
+
+    pub const pan = struct {
+        pub const relative = struct {
+            pub const id: u32 = c.V4L2_CID_PAN_RELATIVE;
+        };
+
+        pub const reset = struct {
+            pub const id: u32 = c.V4L2_CID_PAN_RESET;
+        };
+
+        pub const absolute = struct {
+            pub const id: u32 = c.V4L2_CID_PAN_ABSOLUTE;
+        };
+    };
+
+    pub const tilt = struct {
+        pub const relative = struct {
+            pub const id: u32 = c.V4L2_CID_TILT_RELATIVE;
+        };
+
+        pub const reset = struct {
+            pub const id: u32 = c.V4L2_CID_TILT_RESET;
+        };
+
+        pub const absolute = struct {
+            pub const id: u32 = c.V4L2_CID_TILT_ABSOLUTE;
+        };
+    };
+
+    pub const focus = struct {};
+
+    pub const focus_absolute = struct {
+        pub const id: u32 = c.V4L2_CID_FOCUS_ABSOLUTE;
+    };
+
+    pub const focus_relative = struct {
+        pub const id: u32 = c.V4L2_CID_FOCUS_RELATIVE;
+    };
+
+    pub const focus_auto = struct {
+        pub const id: u32 = c.V4L2_CID_FOCUS_AUTO;
+    };
+
+    pub const zoom_absolute = struct {
+        pub const id: u32 = c.V4L2_CID_ZOOM_ABSOLUTE;
+    };
+
+    pub const zoom_relative = struct {
+        pub const id: u32 = c.V4L2_CID_ZOOM_RELATIVE;
+    };
+
+    pub const zoom_continuous = struct {
+        pub const id: u32 = c.V4L2_CID_ZOOM_CONTINUOUS;
+    };
+
+    pub const privacy = struct {
+        pub const id: u32 = c.V4L2_CID_PRIVACY;
+    };
+
+    pub const iris_absolute = struct {
+        pub const id: u32 = c.V4L2_CID_IRIS_ABSOLUTE;
+    };
+
+    pub const iris_relative = struct {
+        pub const id: u32 = c.V4L2_CID_IRIS_RELATIVE;
+    };
+
+    pub const auto_exposure_bias = struct {
+        pub const id: u32 = c.V4L2_CID_AUTO_EXPOSURE_BIAS;
+    };
+
+    pub const WhiteBalance = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_AUTO_N_PRESET_WHITE_BALANCE;
+        manual = c.V4L2_WHITE_BALANCE_MANUAL,
+        auto = c.V4L2_WHITE_BALANCE_AUTO,
+        incandescent = c.V4L2_WHITE_BALANCE_INCANDESCENT,
+        fluorescent = c.V4L2_WHITE_BALANCE_FLUORESCENT,
+        fluorescent_h = c.V4L2_WHITE_BALANCE_FLUORESCENT_H,
+        horizon = c.V4L2_WHITE_BALANCE_HORIZON,
+        daylight = c.V4L2_WHITE_BALANCE_DAYLIGHT,
+        flash = c.V4L2_WHITE_BALANCE_FLASH,
+        cloudy = c.V4L2_WHITE_BALANCE_CLOUDY,
+        shade = c.V4L2_WHITE_BALANCE_SHADE,
+    };
+
+    pub const wide_dynamic_range = struct {
+        pub const id: u32 = c.V4L2_CID_WIDE_DYNAMIC_RANGE;
+    };
+
+    pub const image_stabilization = struct {
+        pub const id: u32 = c.V4L2_CID_IMAGE_STABILIZATION;
+    };
+
+    pub const iso_sensitivity = struct {
+        pub const id: u32 = c.V4L2_CID_ISO_SENSITIVITY;
+    };
+
+    pub const IsoSensitivityAuto = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_ISO_SENSITIVITY_AUTO;
+
+        manual = c.V4L2_ISO_SENSITIVITY_MANUAL,
+        auto = c.V4L2_ISO_SENSITIVITY_AUTO,
+    };
+
+    pub const ExposureMetering = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_EXPOSURE_METERING;
+
+        average = c.V4L2_EXPOSURE_METERING_AVERAGE,
+        center_weighted = c.V4L2_EXPOSURE_METERING_CENTER_WEIGHTED,
+        spot = c.V4L2_EXPOSURE_METERING_SPOT,
+        matrix = c.V4L2_EXPOSURE_METERING_MATRIX,
+    };
+
+    pub const SceneMode = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_SCENE_MODE;
+
+        none = c.V4L2_SCENE_MODE_NONE,
+        backlight = c.V4L2_SCENE_MODE_BACKLIGHT,
+        beach_snow = c.V4L2_SCENE_MODE_BEACH_SNOW,
+        candle_light = c.V4L2_SCENE_MODE_CANDLE_LIGHT,
+        dawn_dusk = c.V4L2_SCENE_MODE_DAWN_DUSK,
+        fall_colors = c.V4L2_SCENE_MODE_FALL_COLORS,
+        fireworks = c.V4L2_SCENE_MODE_FIREWORKS,
+        landscape = c.V4L2_SCENE_MODE_LANDSCAPE,
+        night = c.V4L2_SCENE_MODE_NIGHT,
+        party_indoor = c.V4L2_SCENE_MODE_PARTY_INDOOR,
+        portrait = c.V4L2_SCENE_MODE_PORTRAIT,
+        sports = c.V4L2_SCENE_MODE_SPORTS,
+        sunset = c.V4L2_SCENE_MODE_SUNSET,
+        text = c.V4L2_SCENE_MODE_TEXT,
+    };
+
+    pub const lock_3a = struct {
+        pub const id: u32 = c.V4L2_CID_3A_LOCK;
+        pub const exposure: u32 = c.V4L2_LOCK_EXPOSURE;
+        pub const white_balance: u32 = c.V4L2_LOCK_WHITE_BALANCE;
+        pub const focus: u32 = c.V4L2_LOCK_FOCUS;
+    };
+
+    pub const auto_focus = struct {
+        pub const start = struct {
+            pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_START;
+        };
+
+        pub const stop = struct {
+            pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_STOP;
+        };
+
+        pub const Status = enum(i32) {
+            id = c.V4L2_CID_AUTO_FOCUS_STATUS,
+            idle = c.V4L2_AUTO_FOCUS_STATUS_IDLE,
+            busy = c.V4L2_AUTO_FOCUS_STATUS_BUSY,
+            reached = c.V4L2_AUTO_FOCUS_STATUS_REACHED,
+            failed = c.V4L2_AUTO_FOCUS_STATUS_FAILED,
+        };
+
+        pub const Range = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_RANGE;
+
+            auto = c.V4L2_AUTO_FOCUS_RANGE_AUTO,
+            normal = c.V4L2_AUTO_FOCUS_RANGE_NORMAL,
+            macro = c.V4L2_AUTO_FOCUS_RANGE_MACRO,
+            infinity = c.V4L2_AUTO_FOCUS_RANGE_INFINITY,
+        };
+    };
+
+    pub const pan_speed = struct {
+        pub const id: u32 = c.V4L2_CID_PAN_SPEED;
+    };
+
+    pub const tilt_speed = struct {
+        pub const id: u32 = c.V4L2_CID_TILT_SPEED;
+    };
+
+    pub const orientation = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_CAMERA_ORIENTATION;
+
+        front = c.V4L2_CAMERA_ORIENTATION_FRONT,
+        back = c.V4L2_CAMERA_ORIENTATION_BACK,
+        external = c.V4L2_CAMERA_ORIENTATION_EXTERNAL,
+    };
+
+    pub const sensor_rotation = struct {
+        pub const id: u32 = c.V4L2_CID_CAMERA_SENSOR_ROTATION;
+    };
+
+    pub const hdr_sensor_mode = struct {
+        pub const id: u32 = c.V4L2_CID_HDR_SENSOR_MODE;
+    };
 };
 
-// #define V4L2_CAMERA_ORIENTATION_FRONT  0
-// #define V4L2_CAMERA_ORIENTATION_BACK  1
-// #define V4L2_CAMERA_ORIENTATION_EXTERNAL 2
+pub const fm_tx = struct {
+    pub const base: u32 = c.V4L2_CID_FM_TX_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_FM_TX_CLASS;
 
-pub const V4L2_CID_CAMERA_SENSOR_ROTATION = struct {
-    pub const id: u32 = c.V4L2_CID_CAMERA_SENSOR_ROTATION;
-};
-pub const V4L2_CID_HDR_SENSOR_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_HDR_SENSOR_MODE;
-};
-pub const V4L2_CID_FM_TX_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_FM_TX_CLASS_BASE;
-};
-pub const V4L2_CID_FM_TX_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_FM_TX_CLASS;
-};
-pub const V4L2_CID_RDS_TX_DEVIATION = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_DEVIATION;
-};
-pub const V4L2_CID_RDS_TX_PI = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_PI;
-};
-pub const V4L2_CID_RDS_TX_PTY = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_PTY;
-};
-pub const V4L2_CID_RDS_TX_PS_NAME = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_PS_NAME;
-};
-pub const V4L2_CID_RDS_TX_RADIO_TEXT = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_RADIO_TEXT;
-};
-pub const V4L2_CID_RDS_TX_MONO_STEREO = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_MONO_STEREO;
-};
-pub const V4L2_CID_RDS_TX_ARTIFICIAL_HEAD = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_ARTIFICIAL_HEAD;
-};
-pub const V4L2_CID_RDS_TX_COMPRESSED = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_COMPRESSED;
-};
-pub const V4L2_CID_RDS_TX_DYNAMIC_PTY = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_DYNAMIC_PTY;
-};
-pub const V4L2_CID_RDS_TX_TRAFFIC_ANNOUNCEMENT = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_TRAFFIC_ANNOUNCEMENT;
-};
-pub const V4L2_CID_RDS_TX_TRAFFIC_PROGRAM = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_TRAFFIC_PROGRAM;
-};
-pub const V4L2_CID_RDS_TX_MUSIC_SPEECH = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_MUSIC_SPEECH;
-};
-pub const V4L2_CID_RDS_TX_ALT_FREQS_ENABLE = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_ALT_FREQS_ENABLE;
-};
-pub const V4L2_CID_RDS_TX_ALT_FREQS = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_TX_ALT_FREQS;
-};
-pub const V4L2_CID_AUDIO_LIMITER_ENABLED = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_LIMITER_ENABLED;
-};
-pub const V4L2_CID_AUDIO_LIMITER_RELEASE_TIME = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_LIMITER_RELEASE_TIME;
-};
-pub const V4L2_CID_AUDIO_LIMITER_DEVIATION = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_LIMITER_DEVIATION;
-};
-pub const V4L2_CID_AUDIO_COMPRESSION_ENABLED = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_ENABLED;
-};
-pub const V4L2_CID_AUDIO_COMPRESSION_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_GAIN;
-};
-pub const V4L2_CID_AUDIO_COMPRESSION_THRESHOLD = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_THRESHOLD;
-};
-pub const V4L2_CID_AUDIO_COMPRESSION_ATTACK_TIME = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_ATTACK_TIME;
-};
-pub const V4L2_CID_AUDIO_COMPRESSION_RELEASE_TIME = struct {
-    pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_RELEASE_TIME;
-};
-pub const V4L2_CID_PILOT_TONE_ENABLED = struct {
-    pub const id: u32 = c.V4L2_CID_PILOT_TONE_ENABLED;
-};
-pub const V4L2_CID_PILOT_TONE_DEVIATION = struct {
-    pub const id: u32 = c.V4L2_CID_PILOT_TONE_DEVIATION;
-};
-pub const V4L2_CID_PILOT_TONE_FREQUENCY = struct {
-    pub const id: u32 = c.V4L2_CID_PILOT_TONE_FREQUENCY;
-};
-pub const V4L2_CID_TUNE_PREEMPHASIS = struct {
-    pub const id: u32 = c.V4L2_CID_TUNE_PREEMPHASIS;
-};
-pub const V4L2_CID_TUNE_POWER_LEVEL = struct {
-    pub const id: u32 = c.V4L2_CID_TUNE_POWER_LEVEL;
-};
-pub const V4L2_CID_TUNE_ANTENNA_CAPACITOR = struct {
-    pub const id: u32 = c.V4L2_CID_TUNE_ANTENNA_CAPACITOR;
-};
-pub const V4L2_CID_FLASH_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_CLASS_BASE;
-};
-pub const V4L2_CID_FLASH_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_CLASS;
-};
-pub const V4L2_CID_FLASH_LED_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_LED_MODE;
-};
-pub const V4L2_CID_FLASH_STROBE_SOURCE = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_STROBE_SOURCE;
-};
-pub const V4L2_CID_FLASH_STROBE = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_STROBE;
-};
-pub const V4L2_CID_FLASH_STROBE_STOP = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STOP;
-};
-pub const V4L2_CID_FLASH_STROBE_STATUS = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STATUS;
-};
-pub const V4L2_CID_FLASH_TIMEOUT = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_TIMEOUT;
-};
-pub const V4L2_CID_FLASH_INTENSITY = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_INTENSITY;
-};
-pub const V4L2_CID_FLASH_TORCH_INTENSITY = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_TORCH_INTENSITY;
-};
-pub const V4L2_CID_FLASH_INDICATOR_INTENSITY = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_INDICATOR_INTENSITY;
-};
-pub const V4L2_CID_FLASH_FAULT = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_FAULT;
-};
-pub const V4L2_FLASH_FAULT_OVER_VOLTAGE = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_OVER_VOLTAGE;
-};
-pub const V4L2_FLASH_FAULT_TIMEOUT = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_TIMEOUT;
-};
-pub const V4L2_FLASH_FAULT_OVER_TEMPERATURE = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_OVER_TEMPERATURE;
-};
-pub const V4L2_FLASH_FAULT_SHORT_CIRCUIT = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_SHORT_CIRCUIT;
-};
-pub const V4L2_FLASH_FAULT_OVER_CURRENT = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_OVER_CURRENT;
-};
-pub const V4L2_FLASH_FAULT_INDICATOR = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_INDICATOR;
-};
-pub const V4L2_FLASH_FAULT_UNDER_VOLTAGE = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_UNDER_VOLTAGE;
-};
-pub const V4L2_FLASH_FAULT_INPUT_VOLTAGE = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_INPUT_VOLTAGE;
-};
-pub const V4L2_FLASH_FAULT_LED_OVER_TEMPERATURE = struct {
-    pub const id: u32 = c.V4L2_FLASH_FAULT_LED_OVER_TEMPERATURE;
-};
-pub const V4L2_CID_FLASH_CHARGE = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_CHARGE;
-};
-pub const V4L2_CID_FLASH_READY = struct {
-    pub const id: u32 = c.V4L2_CID_FLASH_READY;
-};
-pub const V4L2_CID_JPEG_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_JPEG_CLASS_BASE;
-};
-pub const V4L2_CID_JPEG_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_JPEG_CLASS;
-};
-pub const V4L2_CID_JPEG_CHROMA_SUBSAMPLING = struct {
-    pub const id: u32 = c.V4L2_CID_JPEG_CHROMA_SUBSAMPLING;
-};
-pub const V4L2_CID_JPEG_RESTART_INTERVAL = struct {
-    pub const id: u32 = c.V4L2_CID_JPEG_RESTART_INTERVAL;
-};
-pub const V4L2_CID_JPEG_COMPRESSION_QUALITY = struct {
-    pub const id: u32 = c.V4L2_CID_JPEG_COMPRESSION_QUALITY;
-};
-pub const V4L2_CID_JPEG_ACTIVE_MARKER = struct {
-    pub const id: u32 = c.V4L2_CID_JPEG_ACTIVE_MARKER;
-};
-pub const V4L2_JPEG_ACTIVE_MARKER_APP0 = struct {
-    pub const id: u32 = c.V4L2_JPEG_ACTIVE_MARKER_APP0;
-};
-pub const V4L2_JPEG_ACTIVE_MARKER_APP1 = struct {
-    pub const id: u32 = c.V4L2_JPEG_ACTIVE_MARKER_APP1;
-};
-pub const V4L2_JPEG_ACTIVE_MARKER_COM = struct {
-    pub const id: u32 = c.V4L2_JPEG_ACTIVE_MARKER_COM;
-};
-pub const V4L2_JPEG_ACTIVE_MARKER_DQT = struct {
-    pub const id: u32 = c.V4L2_JPEG_ACTIVE_MARKER_DQT;
-};
-pub const V4L2_JPEG_ACTIVE_MARKER_DHT = struct {
-    pub const id: u32 = c.V4L2_JPEG_ACTIVE_MARKER_DHT;
-};
-pub const V4L2_CID_IMAGE_SOURCE_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS_BASE;
-};
-pub const V4L2_CID_IMAGE_SOURCE_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS;
-};
-pub const V4L2_CID_VBLANK = struct {
-    pub const id: u32 = c.V4L2_CID_VBLANK;
-};
-pub const V4L2_CID_HBLANK = struct {
-    pub const id: u32 = c.V4L2_CID_HBLANK;
-};
-pub const V4L2_CID_ANALOGUE_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_ANALOGUE_GAIN;
-};
-pub const V4L2_CID_TEST_PATTERN_RED = struct {
-    pub const id: u32 = c.V4L2_CID_TEST_PATTERN_RED;
-};
-pub const V4L2_CID_TEST_PATTERN_GREENR = struct {
-    pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENR;
-};
-pub const V4L2_CID_TEST_PATTERN_BLUE = struct {
-    pub const id: u32 = c.V4L2_CID_TEST_PATTERN_BLUE;
-};
-pub const V4L2_CID_TEST_PATTERN_GREENB = struct {
-    pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENB;
-};
-pub const V4L2_CID_UNIT_CELL_SIZE = struct {
-    pub const id: u32 = c.V4L2_CID_UNIT_CELL_SIZE;
-};
-pub const V4L2_CID_NOTIFY_GAINS = struct {
-    pub const id: u32 = c.V4L2_CID_NOTIFY_GAINS;
-};
-pub const V4L2_CID_IMAGE_PROC_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_IMAGE_PROC_CLASS_BASE;
-};
-pub const V4L2_CID_IMAGE_PROC_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_IMAGE_PROC_CLASS;
-};
-pub const V4L2_CID_LINK_FREQ = struct {
-    pub const id: u32 = c.V4L2_CID_LINK_FREQ;
-};
-pub const V4L2_CID_PIXEL_RATE = struct {
-    pub const id: u32 = c.V4L2_CID_PIXEL_RATE;
-};
-pub const V4L2_CID_TEST_PATTERN = struct {
-    pub const id: u32 = c.V4L2_CID_TEST_PATTERN;
-};
-pub const V4L2_CID_DEINTERLACING_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_DEINTERLACING_MODE;
-};
-pub const V4L2_CID_DIGITAL_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_DIGITAL_GAIN;
-};
-pub const V4L2_CID_DV_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_CLASS_BASE;
-};
-pub const V4L2_CID_DV_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_DV_CLASS;
-};
-pub const V4L2_CID_DV_TX_HOTPLUG = struct {
-    pub const id: u32 = c.V4L2_CID_DV_TX_HOTPLUG;
-};
-pub const V4L2_CID_DV_TX_RXSENSE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_TX_RXSENSE;
-};
-pub const V4L2_CID_DV_TX_EDID_PRESENT = struct {
-    pub const id: u32 = c.V4L2_CID_DV_TX_EDID_PRESENT;
-};
-pub const V4L2_CID_DV_TX_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_TX_MODE;
-};
-pub const V4L2_CID_DV_TX_RGB_RANGE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_TX_RGB_RANGE;
-};
-pub const V4L2_CID_DV_TX_IT_CONTENT_TYPE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_TX_IT_CONTENT_TYPE;
-};
-pub const V4L2_CID_DV_RX_POWER_PRESENT = struct {
-    pub const id: u32 = c.V4L2_CID_DV_RX_POWER_PRESENT;
-};
-pub const V4L2_CID_DV_RX_RGB_RANGE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_RX_RGB_RANGE;
-};
-pub const V4L2_CID_DV_RX_IT_CONTENT_TYPE = struct {
-    pub const id: u32 = c.V4L2_CID_DV_RX_IT_CONTENT_TYPE;
-};
-pub const V4L2_CID_FM_RX_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_FM_RX_CLASS_BASE;
-};
-pub const V4L2_CID_FM_RX_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_FM_RX_CLASS;
-};
-pub const V4L2_CID_TUNE_DEEMPHASIS = struct {
-    pub const id: u32 = c.V4L2_CID_TUNE_DEEMPHASIS;
-};
-pub const V4L2_CID_RDS_RECEPTION = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RECEPTION;
-};
-pub const V4L2_CID_RDS_RX_PTY = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RX_PTY;
-};
-pub const V4L2_CID_RDS_RX_PS_NAME = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RX_PS_NAME;
-};
-pub const V4L2_CID_RDS_RX_RADIO_TEXT = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RX_RADIO_TEXT;
-};
-pub const V4L2_CID_RDS_RX_TRAFFIC_ANNOUNCEMENT = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RX_TRAFFIC_ANNOUNCEMENT;
-};
-pub const V4L2_CID_RDS_RX_TRAFFIC_PROGRAM = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RX_TRAFFIC_PROGRAM;
-};
-pub const V4L2_CID_RDS_RX_MUSIC_SPEECH = struct {
-    pub const id: u32 = c.V4L2_CID_RDS_RX_MUSIC_SPEECH;
-};
-pub const V4L2_CID_RF_TUNER_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_CLASS_BASE;
-};
-pub const V4L2_CID_RF_TUNER_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_CLASS;
-};
-pub const V4L2_CID_RF_TUNER_BANDWIDTH_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH_AUTO;
-};
-pub const V4L2_CID_RF_TUNER_BANDWIDTH = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH;
-};
-pub const V4L2_CID_RF_TUNER_RF_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_RF_GAIN;
-};
-pub const V4L2_CID_RF_TUNER_LNA_GAIN_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_LNA_GAIN_AUTO;
-};
-pub const V4L2_CID_RF_TUNER_LNA_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_LNA_GAIN;
-};
-pub const V4L2_CID_RF_TUNER_MIXER_GAIN_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_MIXER_GAIN_AUTO;
-};
-pub const V4L2_CID_RF_TUNER_MIXER_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_MIXER_GAIN;
-};
-pub const V4L2_CID_RF_TUNER_IF_GAIN_AUTO = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_IF_GAIN_AUTO;
-};
-pub const V4L2_CID_RF_TUNER_IF_GAIN = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_IF_GAIN;
-};
-pub const V4L2_CID_RF_TUNER_PLL_LOCK = struct {
-    pub const id: u32 = c.V4L2_CID_RF_TUNER_PLL_LOCK;
-};
-pub const V4L2_CID_DETECT_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_DETECT_CLASS_BASE;
-};
-pub const V4L2_CID_DETECT_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_DETECT_CLASS;
-};
-pub const V4L2_CID_DETECT_MD_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_DETECT_MD_MODE;
-};
-pub const V4L2_CID_DETECT_MD_GLOBAL_THRESHOLD = struct {
-    pub const id: u32 = c.V4L2_CID_DETECT_MD_GLOBAL_THRESHOLD;
-};
-pub const V4L2_CID_DETECT_MD_THRESHOLD_GRID = struct {
-    pub const id: u32 = c.V4L2_CID_DETECT_MD_THRESHOLD_GRID;
-};
-pub const V4L2_CID_DETECT_MD_REGION_GRID = struct {
-    pub const id: u32 = c.V4L2_CID_DETECT_MD_REGION_GRID;
-};
-pub const V4L2_CID_CODEC_STATELESS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_CODEC_STATELESS_BASE;
-};
-pub const V4L2_CID_CODEC_STATELESS_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_CODEC_STATELESS_CLASS;
-};
-pub const V4L2_CID_STATELESS_H264_DECODE_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_MODE;
-};
-pub const V4L2_CID_STATELESS_H264_START_CODE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_START_CODE;
+    pub const rds_tx = struct {
+        pub const deviation = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_DEVIATION;
+        };
+
+        pub const pi = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_PI;
+        };
+
+        pub const pty = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_PTY;
+        };
+
+        pub const ps_name = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_PS_NAME;
+        };
+
+        pub const radio_text = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_RADIO_TEXT;
+        };
+
+        pub const mono_stereo = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_MONO_STEREO;
+        };
+
+        pub const artificial_head = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_ARTIFICIAL_HEAD;
+        };
+
+        pub const compressed = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_COMPRESSED;
+        };
+
+        pub const dynamic_pty = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_DYNAMIC_PTY;
+        };
+
+        pub const traffic_announcement = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_TRAFFIC_ANNOUNCEMENT;
+        };
+
+        pub const traffic_program = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_TRAFFIC_PROGRAM;
+        };
+
+        pub const music_speech = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_MUSIC_SPEECH;
+        };
+
+        pub const alt_freqs_enable = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_ALT_FREQS_ENABLE;
+        };
+
+        pub const alt_freqs = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_TX_ALT_FREQS;
+        };
+    };
+
+    pub const audio = struct {
+        pub const limiter = struct {
+            pub const enabled = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_LIMITER_ENABLED;
+            };
+
+            pub const release_time = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_LIMITER_RELEASE_TIME;
+            };
+
+            pub const deviation = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_LIMITER_DEVIATION;
+            };
+        };
+
+        pub const compression = struct {
+            pub const enabled = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_ENABLED;
+            };
+            pub const gain = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_GAIN;
+            };
+            pub const threshold = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_THRESHOLD;
+            };
+            pub const attack_time = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_ATTACK_TIME;
+            };
+            pub const release_time = struct {
+                pub const id: u32 = c.V4L2_CID_AUDIO_COMPRESSION_RELEASE_TIME;
+            };
+        };
+    };
+
+    pub const pilot_tone = struct {
+        pub const enabled = struct {
+            pub const id: u32 = c.V4L2_CID_PILOT_TONE_ENABLED;
+        };
+        pub const deviation = struct {
+            pub const id: u32 = c.V4L2_CID_PILOT_TONE_DEVIATION;
+        };
+        pub const frequency = struct {
+            pub const id: u32 = c.V4L2_CID_PILOT_TONE_FREQUENCY;
+        };
+    };
+
+    pub const Preemphasis = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_TUNE_PREEMPHASIS;
+
+        disabled = c.V4L2_PREEMPHASIS_DISABLED,
+        us_50 = c.V4L2_PREEMPHASIS_50_uS,
+        us_75 = c.V4L2_PREEMPHASIS_75_uS,
+    };
+
+    pub const tune_power_level = struct {
+        pub const id: u32 = c.V4L2_CID_TUNE_POWER_LEVEL;
+    };
+
+    pub const tune_antenna_capacitor = struct {
+        pub const id: u32 = c.V4L2_CID_TUNE_ANTENNA_CAPACITOR;
+    };
 };
 
-// #define V4L2_H264_SPS_CONSTRAINT_SET0_FLAG   0x01
-// #define V4L2_H264_SPS_CONSTRAINT_SET1_FLAG   0x02
-// #define V4L2_H264_SPS_CONSTRAINT_SET2_FLAG   0x04
-// #define V4L2_H264_SPS_CONSTRAINT_SET3_FLAG   0x08
-// #define V4L2_H264_SPS_CONSTRAINT_SET4_FLAG   0x10
-// #define V4L2_H264_SPS_CONSTRAINT_SET5_FLAG   0x20
-// #define V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE  0x01
-// #define V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS 0x02
-// #define V4L2_H264_SPS_FLAG_DELTA_PIC_ORDER_ALWAYS_ZERO  0x04
-// #define V4L2_H264_SPS_FLAG_GAPS_IN_FRAME_NUM_VALUE_ALLOWED 0x08
-// #define V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY   0x10
-// #define V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD  0x20
-// #define V4L2_H264_SPS_FLAG_DIRECT_8X8_INFERENCE   0x40
-// #define V4L2_H264_SPS_HAS_CHROMA_FORMAT(sps) \
-pub const V4L2_CID_STATELESS_H264_SPS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_SPS;
-};
-// #define V4L2_H264_PPS_FLAG_ENTROPY_CODING_MODE    0x0001
-// #define V4L2_H264_PPS_FLAG_BOTTOM_FIELD_PIC_ORDER_IN_FRAME_PRESENT 0x0002
-// #define V4L2_H264_PPS_FLAG_WEIGHTED_PRED    0x0004
-// #define V4L2_H264_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT  0x0008
-// #define V4L2_H264_PPS_FLAG_CONSTRAINED_INTRA_PRED   0x0010
-// #define V4L2_H264_PPS_FLAG_REDUNDANT_PIC_CNT_PRESENT   0x0020
-// #define V4L2_H264_PPS_FLAG_TRANSFORM_8X8_MODE    0x0040
-// #define V4L2_H264_PPS_FLAG_SCALING_MATRIX_PRESENT   0x0080
-pub const V4L2_CID_STATELESS_H264_PPS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_PPS;
-};
-pub const V4L2_CID_STATELESS_H264_SCALING_MATRIX = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_SCALING_MATRIX;
-};
-// #define V4L2_H264_CTRL_PRED_WEIGHTS_REQUIRED(pps, slice) \
-pub const V4L2_CID_STATELESS_H264_PRED_WEIGHTS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_PRED_WEIGHTS;
-};
-// #define V4L2_H264_SLICE_TYPE_P    0
-// #define V4L2_H264_SLICE_TYPE_B    1
-// #define V4L2_H264_SLICE_TYPE_I    2
-// #define V4L2_H264_SLICE_TYPE_SP    3
-// #define V4L2_H264_SLICE_TYPE_SI    4
-// #define V4L2_H264_SLICE_FLAG_DIRECT_SPATIAL_MV_PRED 0x01
-// #define V4L2_H264_SLICE_FLAG_SP_FOR_SWITCH  0x02
-// #define V4L2_H264_TOP_FIELD_REF    0x1
-// #define V4L2_H264_BOTTOM_FIELD_REF   0x2
-// #define V4L2_H264_FRAME_REF    0x3
-// #define V4L2_H264_NUM_DPB_ENTRIES 16
-// #define V4L2_H264_REF_LIST_LEN (2 * V4L2_H264_NUM_DPB_ENTRIES)
+pub const flash = struct {
+    pub const base: u32 = c.V4L2_CID_FLASH_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_FLASH_CLASS;
 
-pub const V4L2_CID_STATELESS_H264_SLICE_PARAMS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_SLICE_PARAMS;
+    pub const LedMode = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_FLASH_LED_MODE;
+        none = c.V4L2_FLASH_LED_MODE_NONE,
+        flash = c.V4L2_FLASH_LED_MODE_FLASH,
+        torch = c.V4L2_FLASH_LED_MODE_TORCH,
+    };
+
+    pub const StrobeSource = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_FLASH_STROBE_SOURCE;
+        software = c.V4L2_FLASH_STROBE_SOURCE_SOFTWARE,
+        external = c.V4L2_FLASH_STROBE_SOURCE_EXTERNAL,
+    };
+
+    pub const strobe = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_STROBE;
+    };
+
+    pub const strobe_stop = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STOP;
+    };
+
+    pub const strobe_status = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STATUS;
+    };
+
+    pub const timeout = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_TIMEOUT;
+    };
+
+    pub const intensity = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_INTENSITY;
+    };
+
+    pub const torch_intensity = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_TORCH_INTENSITY;
+    };
+
+    pub const indicator_intensity = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_INDICATOR_INTENSITY;
+    };
+
+    pub const fault = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_FAULT;
+        pub const over_voltage: u32 = c.V4L2_FLASH_FAULT_OVER_VOLTAGE;
+        pub const timeout: u32 = c.V4L2_FLASH_FAULT_TIMEOUT;
+        pub const over_temperature: u32 = c.V4L2_FLASH_FAULT_OVER_TEMPERATURE;
+        pub const short_circuit: u32 = c.V4L2_FLASH_FAULT_SHORT_CIRCUIT;
+        pub const over_current: u32 = c.V4L2_FLASH_FAULT_OVER_CURRENT;
+        pub const indicator: u32 = c.V4L2_FLASH_FAULT_INDICATOR;
+        pub const under_voltage: u32 = c.V4L2_FLASH_FAULT_UNDER_VOLTAGE;
+        pub const input_voltage: u32 = c.V4L2_FLASH_FAULT_INPUT_VOLTAGE;
+        pub const led_over_temperature: u32 = c.V4L2_FLASH_FAULT_LED_OVER_TEMPERATURE;
+    };
+    pub const charge = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_CHARGE;
+    };
+    pub const ready = struct {
+        pub const id: u32 = c.V4L2_CID_FLASH_READY;
+    };
 };
-// #define V4L2_H264_DPB_ENTRY_FLAG_VALID  0x01
-// #define V4L2_H264_DPB_ENTRY_FLAG_ACTIVE  0x02
-// #define V4L2_H264_DPB_ENTRY_FLAG_LONG_TERM 0x04
-// #define V4L2_H264_DPB_ENTRY_FLAG_FIELD  0x08
-// #define V4L2_H264_DECODE_PARAM_FLAG_IDR_PIC  0x01
-// #define V4L2_H264_DECODE_PARAM_FLAG_FIELD_PIC  0x02
-// #define V4L2_H264_DECODE_PARAM_FLAG_BOTTOM_FIELD 0x04
-// #define V4L2_H264_DECODE_PARAM_FLAG_PFRAME  0x08
-// #define V4L2_H264_DECODE_PARAM_FLAG_BFRAME  0x10
-pub const V4L2_CID_STATELESS_H264_DECODE_PARAMS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_PARAMS;
+
+pub const jpeg = struct {
+    pub const base: u32 = c.V4L2_CID_JPEG_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_JPEG_CLASS;
+    pub const ChromaSubsampling = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_JPEG_CHROMA_SUBSAMPLING;
+        s444 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_444,
+        s422 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_422,
+        s420 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_420,
+        s411 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_411,
+        s410 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_410,
+        gray = c.V4L2_JPEG_CHROMA_SUBSAMPLING_GRAY,
+    };
+    pub const restart_interval = struct {
+        pub const id: u32 = c.V4L2_CID_JPEG_RESTART_INTERVAL;
+    };
+    pub const compression_quality = struct {
+        pub const id: u32 = c.V4L2_CID_JPEG_COMPRESSION_QUALITY;
+    };
+    pub const active_marker = struct {
+        pub const id: u32 = c.V4L2_CID_JPEG_ACTIVE_MARKER;
+        pub const app0: u32 = c.V4L2_JPEG_ACTIVE_MARKER_APP0;
+        pub const app1: u32 = c.V4L2_JPEG_ACTIVE_MARKER_APP1;
+        pub const com: u32 = c.V4L2_JPEG_ACTIVE_MARKER_COM;
+        pub const dqt: u32 = c.V4L2_JPEG_ACTIVE_MARKER_DQT;
+        pub const dht: u32 = c.V4L2_JPEG_ACTIVE_MARKER_DHT;
+    };
 };
-// #define V4L2_FWHT_VERSION   3
-// #define V4L2_FWHT_FL_IS_INTERLACED  _BITUL(0)
-// #define V4L2_FWHT_FL_IS_BOTTOM_FIRST  _BITUL(1)
-// #define V4L2_FWHT_FL_IS_ALTERNATE  _BITUL(2)
-// #define V4L2_FWHT_FL_IS_BOTTOM_FIELD  _BITUL(3)
-// #define V4L2_FWHT_FL_LUMA_IS_UNCOMPRESSED _BITUL(4)
-// #define V4L2_FWHT_FL_CB_IS_UNCOMPRESSED  _BITUL(5)
-// #define V4L2_FWHT_FL_CR_IS_UNCOMPRESSED  _BITUL(6)
-// #define V4L2_FWHT_FL_CHROMA_FULL_HEIGHT  _BITUL(7)
-// #define V4L2_FWHT_FL_CHROMA_FULL_WIDTH  _BITUL(8)
-// #define V4L2_FWHT_FL_ALPHA_IS_UNCOMPRESSED _BITUL(9)
-// #define V4L2_FWHT_FL_I_FRAME   _BITUL(10)
-// #define V4L2_FWHT_FL_COMPONENTS_NUM_MSK  GENMASK(18, 16)
-// #define V4L2_FWHT_FL_COMPONENTS_NUM_OFFSET 16
-// #define V4L2_FWHT_FL_PIXENC_MSK   GENMASK(20, 19)
-// #define V4L2_FWHT_FL_PIXENC_OFFSET  19
-// #define V4L2_FWHT_FL_PIXENC_YUV   (1 << V4L2_FWHT_FL_PIXENC_OFFSET)
-// #define V4L2_FWHT_FL_PIXENC_RGB   (2 << V4L2_FWHT_FL_PIXENC_OFFSET)
-// #define V4L2_FWHT_FL_PIXENC_HSV   (3 << V4L2_FWHT_FL_PIXENC_OFFSET)
-pub const V4L2_CID_STATELESS_FWHT_PARAMS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_FWHT_PARAMS;
+
+pub const image_source = struct {
+    pub const base: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS;
+    pub const vblank = struct {
+        pub const id: u32 = c.V4L2_CID_VBLANK;
+    };
+    pub const hblank = struct {
+        pub const id: u32 = c.V4L2_CID_HBLANK;
+    };
+    pub const analogue_gain = struct {
+        pub const id: u32 = c.V4L2_CID_ANALOGUE_GAIN;
+    };
+    pub const test_pattern = struct {
+        pub const red = struct {
+            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_RED;
+        };
+        pub const greenr = struct {
+            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENR;
+        };
+        pub const blue = struct {
+            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_BLUE;
+        };
+        pub const greenb = struct {
+            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENB;
+        };
+    };
+    pub const unit_cell_size = struct {
+        pub const id: u32 = c.V4L2_CID_UNIT_CELL_SIZE;
+    };
+    pub const notify_gains = struct {
+        pub const id: u32 = c.V4L2_CID_NOTIFY_GAINS;
+    };
 };
-// #define V4L2_VP8_SEGMENT_FLAG_ENABLED              0x01
-// #define V4L2_VP8_SEGMENT_FLAG_UPDATE_MAP           0x02
-// #define V4L2_VP8_SEGMENT_FLAG_UPDATE_FEATURE_DATA  0x04
-// #define V4L2_VP8_SEGMENT_FLAG_DELTA_VALUE_MODE     0x08
-// #define V4L2_VP8_LF_ADJ_ENABLE 0x01
-// #define V4L2_VP8_LF_DELTA_UPDATE 0x02
-// #define V4L2_VP8_LF_FILTER_TYPE_SIMPLE 0x04
-// #define V4L2_VP8_COEFF_PROB_CNT 11
-// #define V4L2_VP8_MV_PROB_CNT 19
-// #define V4L2_VP8_FRAME_FLAG_KEY_FRAME  0x01
-// #define V4L2_VP8_FRAME_FLAG_EXPERIMENTAL  0x02
-// #define V4L2_VP8_FRAME_FLAG_SHOW_FRAME  0x04
-// #define V4L2_VP8_FRAME_FLAG_MB_NO_SKIP_COEFF 0x08
-// #define V4L2_VP8_FRAME_FLAG_SIGN_BIAS_GOLDEN 0x10
-// #define V4L2_VP8_FRAME_FLAG_SIGN_BIAS_ALT 0x20
-// #define V4L2_VP8_FRAME_IS_KEY_FRAME(hdr) \
-pub const V4L2_CID_STATELESS_VP8_FRAME = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_VP8_FRAME;
+
+pub const image_proc = struct {
+    pub const base: u32 = c.V4L2_CID_IMAGE_PROC_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_IMAGE_PROC_CLASS;
+    pub const link_freq = struct {
+        pub const id: u32 = c.V4L2_CID_LINK_FREQ;
+    };
+    pub const pixel_rate = struct {
+        pub const id: u32 = c.V4L2_CID_PIXEL_RATE;
+    };
+    pub const test_pattern = struct {
+        pub const id: u32 = c.V4L2_CID_TEST_PATTERN;
+    };
+    pub const deinterlacing_mode = struct {
+        pub const id: u32 = c.V4L2_CID_DEINTERLACING_MODE;
+    };
+    pub const digital_gain = struct {
+        pub const id: u32 = c.V4L2_CID_DIGITAL_GAIN;
+    };
 };
-// #define V4L2_MPEG2_SEQ_FLAG_PROGRESSIVE 0x01
-pub const V4L2_CID_STATELESS_MPEG2_SEQUENCE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_SEQUENCE;
+
+pub const dv = struct {
+    pub const base: u32 = c.V4L2_CID_DV_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_DV_CLASS;
+    pub const tx = struct {
+        pub const hotplug = struct {
+            pub const id: u32 = c.V4L2_CID_DV_TX_HOTPLUG;
+        };
+        pub const rxsense = struct {
+            pub const id: u32 = c.V4L2_CID_DV_TX_RXSENSE;
+        };
+        pub const edid_present = struct {
+            pub const id: u32 = c.V4L2_CID_DV_TX_EDID_PRESENT;
+        };
+        pub const TxMode = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_DV_TX_MODE;
+            dvi_d = c.V4L2_DV_TX_MODE_DVI_D,
+            hdmi = c.V4L2_DV_TX_MODE_HDMI,
+        };
+        pub const RgbRange = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_DV_TX_RGB_RANGE;
+            auto = c.V4L2_DV_RGB_RANGE_AUTO,
+            limited = c.V4L2_DV_RGB_RANGE_LIMITED,
+            full = c.V4L2_DV_RGB_RANGE_FULL,
+        };
+        pub const ItContentType = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_DV_TX_IT_CONTENT_TYPE;
+            graphics = c.V4L2_DV_IT_CONTENT_TYPE_GRAPHICS,
+            photo = c.V4L2_DV_IT_CONTENT_TYPE_PHOTO,
+            cinema = c.V4L2_DV_IT_CONTENT_TYPE_CINEMA,
+            game = c.V4L2_DV_IT_CONTENT_TYPE_GAME,
+            no_itc = c.V4L2_DV_IT_CONTENT_TYPE_NO_ITC,
+        };
+    };
+    pub const rx = struct {
+        pub const power_present = struct {
+            pub const id: u32 = c.V4L2_CID_DV_RX_POWER_PRESENT;
+        };
+        pub const rgb_range = struct {
+            pub const id: u32 = c.V4L2_CID_DV_RX_RGB_RANGE;
+        };
+        pub const it_content_type = struct {
+            pub const id: u32 = c.V4L2_CID_DV_RX_IT_CONTENT_TYPE;
+        };
+    };
 };
-// #define V4L2_MPEG2_PIC_CODING_TYPE_I   1
-// #define V4L2_MPEG2_PIC_CODING_TYPE_P   2
-// #define V4L2_MPEG2_PIC_CODING_TYPE_B   3
-// #define V4L2_MPEG2_PIC_CODING_TYPE_D   4
-// #define V4L2_MPEG2_PIC_TOP_FIELD   0x1
-// #define V4L2_MPEG2_PIC_BOTTOM_FIELD   0x2
-// #define V4L2_MPEG2_PIC_FRAME    0x3
-// #define V4L2_MPEG2_PIC_FLAG_TOP_FIELD_FIRST  0x0001
-// #define V4L2_MPEG2_PIC_FLAG_FRAME_PRED_DCT  0x0002
-// #define V4L2_MPEG2_PIC_FLAG_CONCEALMENT_MV  0x0004
-// #define V4L2_MPEG2_PIC_FLAG_Q_SCALE_TYPE  0x0008
-// #define V4L2_MPEG2_PIC_FLAG_INTRA_VLC   0x0010
-// #define V4L2_MPEG2_PIC_FLAG_ALT_SCAN   0x0020
-// #define V4L2_MPEG2_PIC_FLAG_REPEAT_FIRST  0x0040
-// #define V4L2_MPEG2_PIC_FLAG_PROGRESSIVE   0x0080
-pub const V4L2_CID_STATELESS_MPEG2_PICTURE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_PICTURE;
+
+pub const fm_rx = struct {
+    pub const base: u32 = c.V4L2_CID_FM_RX_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_FM_RX_CLASS;
+    pub const Deemphasis = enum(i32) {
+        pub const id: u32 = c.V4L2_CID_TUNE_DEEMPHASIS;
+        disabled = c.V4L2_DEEMPHASIS_DISABLED,
+        us_50 = c.V4L2_DEEMPHASIS_50_uS,
+        us_75 = c.V4L2_DEEMPHASIS_75_uS,
+    };
+    pub const rds_reception = struct {
+        pub const id: u32 = c.V4L2_CID_RDS_RECEPTION;
+    };
+    pub const rds_rx = struct {
+        pub const pty = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_RX_PTY;
+        };
+        pub const ps_name = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_RX_PS_NAME;
+        };
+        pub const radio_text = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_RX_RADIO_TEXT;
+        };
+        pub const traffic_announcement = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_RX_TRAFFIC_ANNOUNCEMENT;
+        };
+        pub const traffic_program = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_RX_TRAFFIC_PROGRAM;
+        };
+        pub const music_speech = struct {
+            pub const id: u32 = c.V4L2_CID_RDS_RX_MUSIC_SPEECH;
+        };
+    };
 };
-pub const V4L2_CID_STATELESS_MPEG2_QUANTISATION = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_QUANTISATION;
+
+pub const rf_tuner = struct {
+    pub const base: u32 = c.V4L2_CID_RF_TUNER_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_RF_TUNER_CLASS;
+    pub const bandwidth_auto = struct {
+        pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH_AUTO;
+    };
+    pub const bandwidth = struct {
+        pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH;
+    };
+    pub const rf_gain = struct {
+        pub const id: u32 = c.V4L2_CID_RF_TUNER_RF_GAIN;
+    };
+    pub const lna = struct {
+        pub const gain_auto = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_LNA_GAIN_AUTO;
+        };
+        pub const gain = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_LNA_GAIN;
+        };
+    };
+    pub const mixer = struct {
+        pub const gain_auto = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_MIXER_GAIN_AUTO;
+        };
+        pub const gain = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_MIXER_GAIN;
+        };
+    };
+    pub const if_gain = struct {
+        pub const auto = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_IF_GAIN_AUTO;
+        };
+        pub const gain = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_IF_GAIN;
+        };
+    };
+    pub const pll_lock = struct {
+        pub const id: u32 = c.V4L2_CID_RF_TUNER_PLL_LOCK;
+    };
 };
-pub const V4L2_CID_STATELESS_HEVC_SPS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SPS;
+
+pub const detect = struct {
+    pub const base: u32 = c.V4L2_CID_DETECT_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_DETECT_CLASS;
+    pub const motion = struct {
+        pub const Mode = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_DETECT_MD_MODE;
+            disabled = c.V4L2_DETECT_MD_MODE_DISABLED,
+            global = c.V4L2_DETECT_MD_MODE_GLOBAL,
+            threshold_grid = c.V4L2_DETECT_MD_MODE_THRESHOLD_GRID,
+            region_grid = c.V4L2_DETECT_MD_MODE_REGION_GRID,
+        };
+        pub const global_threshold = struct {
+            pub const id: u32 = c.V4L2_CID_DETECT_MD_GLOBAL_THRESHOLD;
+        };
+        pub const threshold_grid = struct {
+            pub const id: u32 = c.V4L2_CID_DETECT_MD_THRESHOLD_GRID;
+        };
+        pub const region_grid = struct {
+            pub const id: u32 = c.V4L2_CID_DETECT_MD_REGION_GRID;
+        };
+    };
 };
-pub const V4L2_CID_STATELESS_HEVC_PPS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_PPS;
+
+pub const stateless = struct {
+    pub const base: u32 = c.V4L2_CID_CODEC_STATELESS_BASE;
+    pub const class: u32 = c.V4L2_CID_CODEC_STATELESS_CLASS;
+    pub const h264 = struct {
+        pub const DecodeMode = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_MODE;
+            slice_based = c.V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
+            frame_based = c.V4L2_STATELESS_H264_DECODE_MODE_FRAME_BASED,
+        };
+        pub const StartCode = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_START_CODE;
+            none = c.V4L2_STATELESS_H264_START_CODE_NONE,
+            annex_b = c.V4L2_STATELESS_H264_START_CODE_ANNEX_B,
+        };
+        pub const sps = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_SPS;
+        };
+        pub const pps = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_PPS;
+        };
+        pub const scaling_matrix = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_SCALING_MATRIX;
+        };
+        pub const pred_weights = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_PRED_WEIGHTS;
+        };
+        pub const slice_params = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_SLICE_PARAMS;
+        };
+        pub const decode_params = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_PARAMS;
+        };
+    };
+    pub const fwht_params = struct {
+        pub const id: u32 = c.V4L2_CID_STATELESS_FWHT_PARAMS;
+    };
+    pub const vp8_frame = struct {
+        pub const id: u32 = c.V4L2_CID_STATELESS_VP8_FRAME;
+    };
+    pub const mpeg2 = struct {
+        pub const sequence = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_SEQUENCE;
+        };
+        pub const picture = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_PICTURE;
+        };
+        pub const quantisation = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_QUANTISATION;
+        };
+    };
+    pub const hevc = struct {
+        pub const sps = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SPS;
+        };
+        pub const pps = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_PPS;
+        };
+        pub const slice_params = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SLICE_PARAMS;
+        };
+        pub const scaling_matrix = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SCALING_MATRIX;
+        };
+        pub const decode_params = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_PARAMS;
+        };
+        pub const decode_mode = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_MODE;
+        };
+        pub const start_code = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_START_CODE;
+        };
+        pub const entry_point_offsets = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS;
+        };
+    };
+    pub const vp9 = struct {
+        pub const frame = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_VP9_FRAME;
+        };
+        pub const compressed_hdr = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_VP9_COMPRESSED_HDR;
+        };
+    };
+    pub const av1 = struct {
+        pub const sequence = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_AV1_SEQUENCE;
+        };
+        pub const tile_group_entry = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_AV1_TILE_GROUP_ENTRY;
+        };
+        pub const frame = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_AV1_FRAME;
+        };
+        pub const film_grain = struct {
+            pub const id: u32 = c.V4L2_CID_STATELESS_AV1_FILM_GRAIN;
+        };
+    };
 };
-pub const V4L2_CID_STATELESS_HEVC_SLICE_PARAMS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SLICE_PARAMS;
+
+pub const colorimetry = struct {
+    pub const base: u32 = c.V4L2_CID_COLORIMETRY_CLASS_BASE;
+    pub const class: u32 = c.V4L2_CID_COLORIMETRY_CLASS;
+    pub const hdr10_cll_info = struct {
+        pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_CLL_INFO;
+    };
+    pub const hdr10_mastering_display = struct {
+        pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY;
+        // #define V4L2_HDR10_MASTERING_PRIMARIES_X_LOW  5
+        // #define V4L2_HDR10_MASTERING_PRIMARIES_X_HIGH 37000
+        // #define V4L2_HDR10_MASTERING_PRIMARIES_Y_LOW  5
+        // #define V4L2_HDR10_MASTERING_PRIMARIES_Y_HIGH 42000
+        // #define V4L2_HDR10_MASTERING_WHITE_POINT_X_LOW  5
+        // #define V4L2_HDR10_MASTERING_WHITE_POINT_X_HIGH 37000
+        // #define V4L2_HDR10_MASTERING_WHITE_POINT_Y_LOW  5
+        // #define V4L2_HDR10_MASTERING_WHITE_POINT_Y_HIGH 42000
+        // #define V4L2_HDR10_MASTERING_MAX_LUMA_LOW  50000
+        // #define V4L2_HDR10_MASTERING_MAX_LUMA_HIGH 100000000
+        // #define V4L2_HDR10_MASTERING_MIN_LUMA_LOW  1
+        // #define V4L2_HDR10_MASTERING_MIN_LUMA_HIGH 50000
+    };
 };
-pub const V4L2_CID_STATELESS_HEVC_SCALING_MATRIX = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SCALING_MATRIX;
-};
-pub const V4L2_CID_STATELESS_HEVC_DECODE_PARAMS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_PARAMS;
-};
-pub const V4L2_CID_STATELESS_HEVC_DECODE_MODE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_MODE;
-};
-pub const V4L2_CID_STATELESS_HEVC_START_CODE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_START_CODE;
-};
-pub const V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS;
-};
-// #define V4L2_HEVC_SLICE_TYPE_B 0
-// #define V4L2_HEVC_SLICE_TYPE_P 1
-// #define V4L2_HEVC_SLICE_TYPE_I 2
-// #define V4L2_HEVC_SPS_FLAG_SEPARATE_COLOUR_PLANE  (1ULL << 0)
-// #define V4L2_HEVC_SPS_FLAG_SCALING_LIST_ENABLED   (1ULL << 1)
-// #define V4L2_HEVC_SPS_FLAG_AMP_ENABLED    (1ULL << 2)
-// #define V4L2_HEVC_SPS_FLAG_SAMPLE_ADAPTIVE_OFFSET  (1ULL << 3)
-// #define V4L2_HEVC_SPS_FLAG_PCM_ENABLED    (1ULL << 4)
-// #define V4L2_HEVC_SPS_FLAG_PCM_LOOP_FILTER_DISABLED  (1ULL << 5)
-// #define V4L2_HEVC_SPS_FLAG_LONG_TERM_REF_PICS_PRESENT  (1ULL << 6)
-// #define V4L2_HEVC_SPS_FLAG_SPS_TEMPORAL_MVP_ENABLED  (1ULL << 7)
-// #define V4L2_HEVC_SPS_FLAG_STRONG_INTRA_SMOOTHING_ENABLED (1ULL << 8)
-// #define V4L2_HEVC_PPS_FLAG_DEPENDENT_SLICE_SEGMENT_ENABLED (1ULL << 0)
-// #define V4L2_HEVC_PPS_FLAG_OUTPUT_FLAG_PRESENT   (1ULL << 1)
-// #define V4L2_HEVC_PPS_FLAG_SIGN_DATA_HIDING_ENABLED  (1ULL << 2)
-// #define V4L2_HEVC_PPS_FLAG_CABAC_INIT_PRESENT   (1ULL << 3)
-// #define V4L2_HEVC_PPS_FLAG_CONSTRAINED_INTRA_PRED  (1ULL << 4)
-// #define V4L2_HEVC_PPS_FLAG_TRANSFORM_SKIP_ENABLED  (1ULL << 5)
-// #define V4L2_HEVC_PPS_FLAG_CU_QP_DELTA_ENABLED   (1ULL << 6)
-// #define V4L2_HEVC_PPS_FLAG_PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT (1ULL << 7)
-// #define V4L2_HEVC_PPS_FLAG_WEIGHTED_PRED   (1ULL << 8)
-// #define V4L2_HEVC_PPS_FLAG_WEIGHTED_BIPRED   (1ULL << 9)
-// #define V4L2_HEVC_PPS_FLAG_TRANSQUANT_BYPASS_ENABLED  (1ULL << 10)
-// #define V4L2_HEVC_PPS_FLAG_TILES_ENABLED   (1ULL << 11)
-// #define V4L2_HEVC_PPS_FLAG_ENTROPY_CODING_SYNC_ENABLED  (1ULL << 12)
-// #define V4L2_HEVC_PPS_FLAG_LOOP_FILTER_ACROSS_TILES_ENABLED (1ULL << 13)
-// #define V4L2_HEVC_PPS_FLAG_PPS_LOOP_FILTER_ACROSS_SLICES_ENABLED (1ULL << 14)
-// #define V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_OVERRIDE_ENABLED (1ULL << 15)
-// #define V4L2_HEVC_PPS_FLAG_PPS_DISABLE_DEBLOCKING_FILTER (1ULL << 16)
-// #define V4L2_HEVC_PPS_FLAG_LISTS_MODIFICATION_PRESENT  (1ULL << 17)
-// #define V4L2_HEVC_PPS_FLAG_SLICE_SEGMENT_HEADER_EXTENSION_PRESENT (1ULL << 18)
-// #define V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT (1ULL << 19)
-// #define V4L2_HEVC_PPS_FLAG_UNIFORM_SPACING   (1ULL << 20)
-// #define V4L2_HEVC_DPB_ENTRY_LONG_TERM_REFERENCE 0x01
-// #define V4L2_HEVC_SEI_PIC_STRUCT_FRAME    0
-// #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_FIELD   1
-// #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_FIELD   2
-// #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_BOTTOM   3
-// #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_TOP   4
-// #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_BOTTOM_TOP   5
-// #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_TOP_BOTTOM  6
-// #define V4L2_HEVC_SEI_PIC_STRUCT_FRAME_DOUBLING   7
-// #define V4L2_HEVC_SEI_PIC_STRUCT_FRAME_TRIPLING   8
-// #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_PAIRED_PREVIOUS_BOTTOM 9
-// #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_PAIRED_PREVIOUS_TOP 10
-// #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_PAIRED_NEXT_BOTTOM  11
-// #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_PAIRED_NEXT_TOP  12
-// #define V4L2_HEVC_DPB_ENTRIES_NUM_MAX  16
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_LUMA  (1ULL << 0)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_CHROMA  (1ULL << 1)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_TEMPORAL_MVP_ENABLED (1ULL << 2)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_MVD_L1_ZERO   (1ULL << 3)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_CABAC_INIT   (1ULL << 4)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_COLLOCATED_FROM_L0  (1ULL << 5)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_USE_INTEGER_MV  (1ULL << 6)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_DEBLOCKING_FILTER_DISABLED (1ULL << 7)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_LOOP_FILTER_ACROSS_SLICES_ENABLED (1ULL << 8)
-// #define V4L2_HEVC_SLICE_PARAMS_FLAG_DEPENDENT_SLICE_SEGMENT (1ULL << 9)
-// #define V4L2_HEVC_DECODE_PARAM_FLAG_IRAP_PIC  0x1
-// #define V4L2_HEVC_DECODE_PARAM_FLAG_IDR_PIC  0x2
-// #define V4L2_HEVC_DECODE_PARAM_FLAG_NO_OUTPUT_OF_PRIOR  0x4
-pub const V4L2_CID_COLORIMETRY_CLASS_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_COLORIMETRY_CLASS_BASE;
-};
-pub const V4L2_CID_COLORIMETRY_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_COLORIMETRY_CLASS;
-};
-pub const V4L2_CID_COLORIMETRY_HDR10_CLL_INFO = struct {
-    pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_CLL_INFO;
-};
-pub const V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY = struct {
-    pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY;
-};
-// #define V4L2_HDR10_MASTERING_PRIMARIES_X_LOW 5
-// #define V4L2_HDR10_MASTERING_PRIMARIES_X_HIGH 37000
-// #define V4L2_HDR10_MASTERING_PRIMARIES_Y_LOW 5
-// #define V4L2_HDR10_MASTERING_PRIMARIES_Y_HIGH 42000
-// #define V4L2_HDR10_MASTERING_WHITE_POINT_X_LOW 5
-// #define V4L2_HDR10_MASTERING_WHITE_POINT_X_HIGH 37000
-// #define V4L2_HDR10_MASTERING_WHITE_POINT_Y_LOW 5
-// #define V4L2_HDR10_MASTERING_WHITE_POINT_Y_HIGH 42000
-// #define V4L2_HDR10_MASTERING_MAX_LUMA_LOW 50000
-// #define V4L2_HDR10_MASTERING_MAX_LUMA_HIGH 100000000
-// #define V4L2_HDR10_MASTERING_MIN_LUMA_LOW 1
-// #define V4L2_HDR10_MASTERING_MIN_LUMA_HIGH 50000
-// #define V4L2_VP9_LOOP_FILTER_FLAG_DELTA_ENABLED 0x1
-// #define V4L2_VP9_LOOP_FILTER_FLAG_DELTA_UPDATE 0x2
-// #define V4L2_VP9_SEGMENTATION_FLAG_ENABLED  0x01
-// #define V4L2_VP9_SEGMENTATION_FLAG_UPDATE_MAP  0x02
-// #define V4L2_VP9_SEGMENTATION_FLAG_TEMPORAL_UPDATE 0x04
-// #define V4L2_VP9_SEGMENTATION_FLAG_UPDATE_DATA  0x08
-// #define V4L2_VP9_SEGMENTATION_FLAG_ABS_OR_DELTA_UPDATE 0x10
-// #define V4L2_VP9_SEG_LVL_ALT_Q    0
-// #define V4L2_VP9_SEG_LVL_ALT_L    1
-// #define V4L2_VP9_SEG_LVL_REF_FRAME   2
-// #define V4L2_VP9_SEG_LVL_SKIP    3
-// #define V4L2_VP9_SEG_LVL_MAX    4
-// #define V4L2_VP9_SEGMENT_FEATURE_ENABLED(id) (1 << (id))
-// #define V4L2_VP9_SEGMENT_FEATURE_ENABLED_MASK 0xf
-// #define V4L2_VP9_FRAME_FLAG_KEY_FRAME   0x001
-// #define V4L2_VP9_FRAME_FLAG_SHOW_FRAME   0x002
-// #define V4L2_VP9_FRAME_FLAG_ERROR_RESILIENT  0x004
-// #define V4L2_VP9_FRAME_FLAG_INTRA_ONLY   0x008
-// #define V4L2_VP9_FRAME_FLAG_ALLOW_HIGH_PREC_MV  0x010
-// #define V4L2_VP9_FRAME_FLAG_REFRESH_FRAME_CTX  0x020
-// #define V4L2_VP9_FRAME_FLAG_PARALLEL_DEC_MODE  0x040
-// #define V4L2_VP9_FRAME_FLAG_X_SUBSAMPLING  0x080
-// #define V4L2_VP9_FRAME_FLAG_Y_SUBSAMPLING  0x100
-// #define V4L2_VP9_FRAME_FLAG_COLOR_RANGE_FULL_SWING 0x200
-// #define V4L2_VP9_SIGN_BIAS_LAST    0x1
-// #define V4L2_VP9_SIGN_BIAS_GOLDEN   0x2
-// #define V4L2_VP9_SIGN_BIAS_ALT    0x4
-// #define V4L2_VP9_RESET_FRAME_CTX_NONE   0
-// #define V4L2_VP9_RESET_FRAME_CTX_SPEC   1
-// #define V4L2_VP9_RESET_FRAME_CTX_ALL   2
-// #define V4L2_VP9_INTERP_FILTER_EIGHTTAP   0
-// #define V4L2_VP9_INTERP_FILTER_EIGHTTAP_SMOOTH  1
-// #define V4L2_VP9_INTERP_FILTER_EIGHTTAP_SHARP  2
-// #define V4L2_VP9_INTERP_FILTER_BILINEAR   3
-// #define V4L2_VP9_INTERP_FILTER_SWITCHABLE  4
-// #define V4L2_VP9_REFERENCE_MODE_SINGLE_REFERENCE 0
-// #define V4L2_VP9_REFERENCE_MODE_COMPOUND_REFERENCE 1
-// #define V4L2_VP9_REFERENCE_MODE_SELECT   2
-// #define V4L2_VP9_PROFILE_MAX    3
-pub const V4L2_CID_STATELESS_VP9_FRAME = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_VP9_FRAME;
-};
-// #define V4L2_VP9_NUM_FRAME_CTX 4
-pub const V4L2_CID_STATELESS_VP9_COMPRESSED_HDR = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_VP9_COMPRESSED_HDR;
-};
-// #define V4L2_VP9_TX_MODE_ONLY_4X4   0
-// #define V4L2_VP9_TX_MODE_ALLOW_8X8   1
-// #define V4L2_VP9_TX_MODE_ALLOW_16X16   2
-// #define V4L2_VP9_TX_MODE_ALLOW_32X32   3
-// #define V4L2_VP9_TX_MODE_SELECT    4
-// #define V4L2_AV1_TOTAL_REFS_PER_FRAME 8
-// #define V4L2_AV1_CDEF_MAX  8
-// #define V4L2_AV1_NUM_PLANES_MAX  3 /* 1 if monochrome, 3 otherwise */
-// #define V4L2_AV1_MAX_SEGMENTS  8
-// #define V4L2_AV1_MAX_OPERATING_POINTS (1 << 5) /* 5 bits to encode */
-// #define V4L2_AV1_REFS_PER_FRAME  7
-// #define V4L2_AV1_MAX_NUM_Y_POINTS (1 << 4) /* 4 bits to encode */
-// #define V4L2_AV1_MAX_NUM_CB_POINTS (1 << 4) /* 4 bits to encode */
-// #define V4L2_AV1_MAX_NUM_CR_POINTS (1 << 4) /* 4 bits to encode */
-// #define V4L2_AV1_AR_COEFFS_SIZE  25 /* (2 * 3 * (3 + 1)) + 1 */
-// #define V4L2_AV1_MAX_NUM_PLANES  3
-// #define V4L2_AV1_MAX_TILE_COLS  64
-// #define V4L2_AV1_MAX_TILE_ROWS  64
-// #define V4L2_AV1_MAX_TILE_COUNT  512
-// #define V4L2_AV1_SEQUENCE_FLAG_STILL_PICTURE    0x00000001
-// #define V4L2_AV1_SEQUENCE_FLAG_USE_128X128_SUPERBLOCK   0x00000002
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_FILTER_INTRA   0x00000004
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_INTRA_EDGE_FILTER   0x00000008
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_INTERINTRA_COMPOUND 0x00000010
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_MASKED_COMPOUND   0x00000020
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_WARPED_MOTION   0x00000040
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_DUAL_FILTER   0x00000080
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_ORDER_HINT   0x00000100
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_JNT_COMP    0x00000200
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_REF_FRAME_MVS   0x00000400
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_SUPERRES    0x00000800
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_CDEF    0x00001000
-// #define V4L2_AV1_SEQUENCE_FLAG_ENABLE_RESTORATION   0x00002000
-// #define V4L2_AV1_SEQUENCE_FLAG_MONO_CHROME    0x00004000
-// #define V4L2_AV1_SEQUENCE_FLAG_COLOR_RANGE    0x00008000
-// #define V4L2_AV1_SEQUENCE_FLAG_SUBSAMPLING_X    0x00010000
-// #define V4L2_AV1_SEQUENCE_FLAG_SUBSAMPLING_Y    0x00020000
-// #define V4L2_AV1_SEQUENCE_FLAG_FILM_GRAIN_PARAMS_PRESENT  0x00040000
-// #define V4L2_AV1_SEQUENCE_FLAG_SEPARATE_UV_DELTA_Q   0x00080000
-pub const V4L2_CID_STATELESS_AV1_SEQUENCE = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_AV1_SEQUENCE;
-};
-pub const V4L2_CID_STATELESS_AV1_TILE_GROUP_ENTRY = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_AV1_TILE_GROUP_ENTRY;
-};
-// #define V4L2_AV1_GLOBAL_MOTION_IS_INVALID(ref) (1 << (ref))
-// #define V4L2_AV1_GLOBAL_MOTION_FLAG_IS_GLOBAL    0x1
-// #define V4L2_AV1_GLOBAL_MOTION_FLAG_IS_ROT_ZOOM    0x2
-// #define V4L2_AV1_GLOBAL_MOTION_FLAG_IS_TRANSLATION 0x4
-// #define V4L2_AV1_LOOP_RESTORATION_FLAG_USES_LR  0x1
-// #define V4L2_AV1_LOOP_RESTORATION_FLAG_USES_CHROMA_LR 0x2
-// #define V4L2_AV1_SEGMENTATION_FLAG_ENABLED    0x1
-// #define V4L2_AV1_SEGMENTATION_FLAG_UPDATE_MAP    0x2
-// #define V4L2_AV1_SEGMENTATION_FLAG_TEMPORAL_UPDATE 0x4
-// #define V4L2_AV1_SEGMENTATION_FLAG_UPDATE_DATA    0x8
-// #define V4L2_AV1_SEGMENTATION_FLAG_SEG_ID_PRE_SKIP 0x10
-// #define V4L2_AV1_SEGMENT_FEATURE_ENABLED(id) (1 << (id))
-// #define V4L2_AV1_LOOP_FILTER_FLAG_DELTA_ENABLED    0x1
-// #define V4L2_AV1_LOOP_FILTER_FLAG_DELTA_UPDATE     0x2
-// #define V4L2_AV1_LOOP_FILTER_FLAG_DELTA_LF_PRESENT 0x4
-// #define V4L2_AV1_LOOP_FILTER_FLAG_DELTA_LF_MULTI   0x8
-// #define V4L2_AV1_QUANTIZATION_FLAG_DIFF_UV_DELTA   0x1
-// #define V4L2_AV1_QUANTIZATION_FLAG_USING_QMATRIX   0x2
-// #define V4L2_AV1_QUANTIZATION_FLAG_DELTA_Q_PRESENT 0x4
-// #define V4L2_AV1_TILE_INFO_FLAG_UNIFORM_TILE_SPACING 0x1
-// #define V4L2_AV1_FRAME_FLAG_SHOW_FRAME    0x00000001
-// #define V4L2_AV1_FRAME_FLAG_SHOWABLE_FRAME   0x00000002
-// #define V4L2_AV1_FRAME_FLAG_ERROR_RESILIENT_MODE  0x00000004
-// #define V4L2_AV1_FRAME_FLAG_DISABLE_CDF_UPDATE   0x00000008
-// #define V4L2_AV1_FRAME_FLAG_ALLOW_SCREEN_CONTENT_TOOLS  0x00000010
-// #define V4L2_AV1_FRAME_FLAG_FORCE_INTEGER_MV   0x00000020
-// #define V4L2_AV1_FRAME_FLAG_ALLOW_INTRABC   0x00000040
-// #define V4L2_AV1_FRAME_FLAG_USE_SUPERRES   0x00000080
-// #define V4L2_AV1_FRAME_FLAG_ALLOW_HIGH_PRECISION_MV  0x00000100
-// #define V4L2_AV1_FRAME_FLAG_IS_MOTION_MODE_SWITCHABLE  0x00000200
-// #define V4L2_AV1_FRAME_FLAG_USE_REF_FRAME_MVS   0x00000400
-// #define V4L2_AV1_FRAME_FLAG_DISABLE_FRAME_END_UPDATE_CDF 0x00000800
-// #define V4L2_AV1_FRAME_FLAG_ALLOW_WARPED_MOTION   0x00001000
-// #define V4L2_AV1_FRAME_FLAG_REFERENCE_SELECT   0x00002000
-// #define V4L2_AV1_FRAME_FLAG_REDUCED_TX_SET   0x00004000
-// #define V4L2_AV1_FRAME_FLAG_SKIP_MODE_ALLOWED   0x00008000
-// #define V4L2_AV1_FRAME_FLAG_SKIP_MODE_PRESENT   0x00010000
-// #define V4L2_AV1_FRAME_FLAG_FRAME_SIZE_OVERRIDE   0x00020000
-// #define V4L2_AV1_FRAME_FLAG_BUFFER_REMOVAL_TIME_PRESENT  0x00040000
-// #define V4L2_AV1_FRAME_FLAG_FRAME_REFS_SHORT_SIGNALING  0x00080000
-pub const V4L2_CID_STATELESS_AV1_FRAME = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_AV1_FRAME;
-};
-// #define V4L2_AV1_FILM_GRAIN_FLAG_APPLY_GRAIN 0x1
-// #define V4L2_AV1_FILM_GRAIN_FLAG_UPDATE_GRAIN 0x2
-// #define V4L2_AV1_FILM_GRAIN_FLAG_CHROMA_SCALING_FROM_LUMA 0x4
-// #define V4L2_AV1_FILM_GRAIN_FLAG_OVERLAP 0x8
-// #define V4L2_AV1_FILM_GRAIN_FLAG_CLIP_TO_RESTRICTED_RANGE 0x10
-pub const V4L2_CID_STATELESS_AV1_FILM_GRAIN = struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_AV1_FILM_GRAIN;
-};
-// #define V4L2_CTRL_CLASS_MPEG            (V4L2_CTRL_CLASS_CODEC)
+
+// #define V4L2_CTRL_CLASS_MPEG (V4L2_CTRL_CLASS_CODEC)
 pub const V4L2_CID_MPEG_CLASS = struct {
     pub const id: u32 = c.V4L2_CID_MPEG_CLASS;
 };
