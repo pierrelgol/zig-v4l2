@@ -1693,7 +1693,7 @@ pub const camera = struct {
 
     pub const Exposure = enum(i32) {
         pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO;
-        auto = c.V4L2_EXPOSURE_AUTO,
+        automatic = c.V4L2_EXPOSURE_AUTO,
         manual = c.V4L2_EXPOSURE_MANUAL,
         shutter_priority = c.V4L2_EXPOSURE_SHUTTER_PRIORITY,
         aperture_priority = c.V4L2_EXPOSURE_APERTURE_PRIORITY,
@@ -1702,8 +1702,23 @@ pub const camera = struct {
             pub const id: u32 = c.V4L2_CID_EXPOSURE_ABSOLUTE;
         };
 
-        pub const auto_priority = struct {
-            pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO_PRIORITY;
+        pub const auto = struct {
+            pub const priority = struct {
+                pub const id: u32 = c.V4L2_CID_EXPOSURE_AUTO_PRIORITY;
+            };
+
+            pub const bias = struct {
+                pub const id: u32 = c.V4L2_CID_AUTO_EXPOSURE_BIAS;
+            };
+        };
+
+        pub const Metering = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_EXPOSURE_METERING;
+
+            average = c.V4L2_EXPOSURE_METERING_AVERAGE,
+            center_weighted = c.V4L2_EXPOSURE_METERING_CENTER_WEIGHTED,
+            spot = c.V4L2_EXPOSURE_METERING_SPOT,
+            matrix = c.V4L2_EXPOSURE_METERING_MATRIX,
         };
     };
 
@@ -1719,6 +1734,10 @@ pub const camera = struct {
         pub const absolute = struct {
             pub const id: u32 = c.V4L2_CID_PAN_ABSOLUTE;
         };
+
+        pub const speed = struct {
+            pub const id: u32 = c.V4L2_CID_PAN_SPEED;
+        };
     };
 
     pub const tilt = struct {
@@ -1733,52 +1752,82 @@ pub const camera = struct {
         pub const absolute = struct {
             pub const id: u32 = c.V4L2_CID_TILT_ABSOLUTE;
         };
+
+        pub const speed = struct {
+            pub const id: u32 = c.V4L2_CID_TILT_SPEED;
+        };
     };
 
-    pub const focus = struct {};
+    pub const focus = struct {
+        pub const absolute = struct {
+            pub const id: u32 = c.V4L2_CID_FOCUS_ABSOLUTE;
+        };
 
-    pub const focus_absolute = struct {
-        pub const id: u32 = c.V4L2_CID_FOCUS_ABSOLUTE;
+        pub const relative = struct {
+            pub const id: u32 = c.V4L2_CID_FOCUS_RELATIVE;
+        };
+
+        pub const auto = struct {
+            pub const id: u32 = c.V4L2_CID_FOCUS_AUTO;
+
+            pub const start = struct {
+                pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_START;
+            };
+
+            pub const stop = struct {
+                pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_STOP;
+            };
+
+            pub const Status = enum(i32) {
+                id = c.V4L2_CID_AUTO_FOCUS_STATUS,
+                idle = c.V4L2_AUTO_FOCUS_STATUS_IDLE,
+                busy = c.V4L2_AUTO_FOCUS_STATUS_BUSY,
+                reached = c.V4L2_AUTO_FOCUS_STATUS_REACHED,
+                failed = c.V4L2_AUTO_FOCUS_STATUS_FAILED,
+            };
+
+            pub const Range = enum(i32) {
+                pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_RANGE;
+
+                auto = c.V4L2_AUTO_FOCUS_RANGE_AUTO,
+                normal = c.V4L2_AUTO_FOCUS_RANGE_NORMAL,
+                macro = c.V4L2_AUTO_FOCUS_RANGE_MACRO,
+                infinity = c.V4L2_AUTO_FOCUS_RANGE_INFINITY,
+            };
+        };
     };
 
-    pub const focus_relative = struct {
-        pub const id: u32 = c.V4L2_CID_FOCUS_RELATIVE;
-    };
+    pub const zoom = struct {
+        pub const absolute = struct {
+            pub const id: u32 = c.V4L2_CID_ZOOM_ABSOLUTE;
+        };
 
-    pub const focus_auto = struct {
-        pub const id: u32 = c.V4L2_CID_FOCUS_AUTO;
-    };
+        pub const relative = struct {
+            pub const id: u32 = c.V4L2_CID_ZOOM_RELATIVE;
+        };
 
-    pub const zoom_absolute = struct {
-        pub const id: u32 = c.V4L2_CID_ZOOM_ABSOLUTE;
-    };
-
-    pub const zoom_relative = struct {
-        pub const id: u32 = c.V4L2_CID_ZOOM_RELATIVE;
-    };
-
-    pub const zoom_continuous = struct {
-        pub const id: u32 = c.V4L2_CID_ZOOM_CONTINUOUS;
+        pub const continuous = struct {
+            pub const id: u32 = c.V4L2_CID_ZOOM_CONTINUOUS;
+        };
     };
 
     pub const privacy = struct {
         pub const id: u32 = c.V4L2_CID_PRIVACY;
     };
 
-    pub const iris_absolute = struct {
-        pub const id: u32 = c.V4L2_CID_IRIS_ABSOLUTE;
-    };
+    pub const iris = struct {
+        pub const absolute = struct {
+            pub const id: u32 = c.V4L2_CID_IRIS_ABSOLUTE;
+        };
 
-    pub const iris_relative = struct {
-        pub const id: u32 = c.V4L2_CID_IRIS_RELATIVE;
-    };
-
-    pub const auto_exposure_bias = struct {
-        pub const id: u32 = c.V4L2_CID_AUTO_EXPOSURE_BIAS;
+        pub const relative = struct {
+            pub const id: u32 = c.V4L2_CID_IRIS_RELATIVE;
+        };
     };
 
     pub const WhiteBalance = enum(i32) {
         pub const id: u32 = c.V4L2_CID_AUTO_N_PRESET_WHITE_BALANCE;
+
         manual = c.V4L2_WHITE_BALANCE_MANUAL,
         auto = c.V4L2_WHITE_BALANCE_AUTO,
         incandescent = c.V4L2_WHITE_BALANCE_INCANDESCENT,
@@ -1810,15 +1859,6 @@ pub const camera = struct {
         auto = c.V4L2_ISO_SENSITIVITY_AUTO,
     };
 
-    pub const ExposureMetering = enum(i32) {
-        pub const id: u32 = c.V4L2_CID_EXPOSURE_METERING;
-
-        average = c.V4L2_EXPOSURE_METERING_AVERAGE,
-        center_weighted = c.V4L2_EXPOSURE_METERING_CENTER_WEIGHTED,
-        spot = c.V4L2_EXPOSURE_METERING_SPOT,
-        matrix = c.V4L2_EXPOSURE_METERING_MATRIX,
-    };
-
     pub const SceneMode = enum(i32) {
         pub const id: u32 = c.V4L2_CID_SCENE_MODE;
 
@@ -1838,46 +1878,12 @@ pub const camera = struct {
         text = c.V4L2_SCENE_MODE_TEXT,
     };
 
-    pub const lock_3a = struct {
+    pub const lock_3a = enum(i32) {
         pub const id: u32 = c.V4L2_CID_3A_LOCK;
-        pub const exposure: u32 = c.V4L2_LOCK_EXPOSURE;
-        pub const white_balance: u32 = c.V4L2_LOCK_WHITE_BALANCE;
-        pub const focus: u32 = c.V4L2_LOCK_FOCUS;
-    };
 
-    pub const auto_focus = struct {
-        pub const start = struct {
-            pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_START;
-        };
-
-        pub const stop = struct {
-            pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_STOP;
-        };
-
-        pub const Status = enum(i32) {
-            id = c.V4L2_CID_AUTO_FOCUS_STATUS,
-            idle = c.V4L2_AUTO_FOCUS_STATUS_IDLE,
-            busy = c.V4L2_AUTO_FOCUS_STATUS_BUSY,
-            reached = c.V4L2_AUTO_FOCUS_STATUS_REACHED,
-            failed = c.V4L2_AUTO_FOCUS_STATUS_FAILED,
-        };
-
-        pub const Range = enum(i32) {
-            pub const id: u32 = c.V4L2_CID_AUTO_FOCUS_RANGE;
-
-            auto = c.V4L2_AUTO_FOCUS_RANGE_AUTO,
-            normal = c.V4L2_AUTO_FOCUS_RANGE_NORMAL,
-            macro = c.V4L2_AUTO_FOCUS_RANGE_MACRO,
-            infinity = c.V4L2_AUTO_FOCUS_RANGE_INFINITY,
-        };
-    };
-
-    pub const pan_speed = struct {
-        pub const id: u32 = c.V4L2_CID_PAN_SPEED;
-    };
-
-    pub const tilt_speed = struct {
-        pub const id: u32 = c.V4L2_CID_TILT_SPEED;
+        exposure = c.V4L2_LOCK_EXPOSURE,
+        white_balance = c.V4L2_LOCK_WHITE_BALANCE,
+        focus = c.V4L2_LOCK_FOCUS,
     };
 
     pub const orientation = enum(i32) {
@@ -1888,12 +1894,14 @@ pub const camera = struct {
         external = c.V4L2_CAMERA_ORIENTATION_EXTERNAL,
     };
 
-    pub const sensor_rotation = struct {
-        pub const id: u32 = c.V4L2_CID_CAMERA_SENSOR_ROTATION;
-    };
+    pub const sensor = struct {
+        pub const rotation = struct {
+            pub const id: u32 = c.V4L2_CID_CAMERA_SENSOR_ROTATION;
+        };
 
-    pub const hdr_sensor_mode = struct {
-        pub const id: u32 = c.V4L2_CID_HDR_SENSOR_MODE;
+        pub const hdr_mode = struct {
+            pub const id: u32 = c.V4L2_CID_HDR_SENSOR_MODE;
+        };
     };
 };
 
@@ -2033,22 +2041,22 @@ pub const flash = struct {
         torch = c.V4L2_FLASH_LED_MODE_TORCH,
     };
 
-    pub const StrobeSource = enum(i32) {
-        pub const id: u32 = c.V4L2_CID_FLASH_STROBE_SOURCE;
-        software = c.V4L2_FLASH_STROBE_SOURCE_SOFTWARE,
-        external = c.V4L2_FLASH_STROBE_SOURCE_EXTERNAL,
-    };
-
     pub const strobe = struct {
         pub const id: u32 = c.V4L2_CID_FLASH_STROBE;
-    };
 
-    pub const strobe_stop = struct {
-        pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STOP;
-    };
+        pub const Source = enum(i32) {
+            pub const id: u32 = c.V4L2_CID_FLASH_STROBE_SOURCE;
+            software = c.V4L2_FLASH_STROBE_SOURCE_SOFTWARE,
+            external = c.V4L2_FLASH_STROBE_SOURCE_EXTERNAL,
+        };
 
-    pub const strobe_status = struct {
-        pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STATUS;
+        pub const stop = struct {
+            pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STOP;
+        };
+
+        pub const status = struct {
+            pub const id: u32 = c.V4L2_CID_FLASH_STROBE_STATUS;
+        };
     };
 
     pub const timeout = struct {
@@ -2079,9 +2087,11 @@ pub const flash = struct {
         pub const input_voltage: u32 = c.V4L2_FLASH_FAULT_INPUT_VOLTAGE;
         pub const led_over_temperature: u32 = c.V4L2_FLASH_FAULT_LED_OVER_TEMPERATURE;
     };
+
     pub const charge = struct {
         pub const id: u32 = c.V4L2_CID_FLASH_CHARGE;
     };
+
     pub const ready = struct {
         pub const id: u32 = c.V4L2_CID_FLASH_READY;
     };
@@ -2090,6 +2100,7 @@ pub const flash = struct {
 pub const jpeg = struct {
     pub const base: u32 = c.V4L2_CID_JPEG_CLASS_BASE;
     pub const class: u32 = c.V4L2_CID_JPEG_CLASS;
+
     pub const ChromaSubsampling = enum(i32) {
         pub const id: u32 = c.V4L2_CID_JPEG_CHROMA_SUBSAMPLING;
         s444 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_444,
@@ -2099,12 +2110,15 @@ pub const jpeg = struct {
         s410 = c.V4L2_JPEG_CHROMA_SUBSAMPLING_410,
         gray = c.V4L2_JPEG_CHROMA_SUBSAMPLING_GRAY,
     };
+
     pub const restart_interval = struct {
         pub const id: u32 = c.V4L2_CID_JPEG_RESTART_INTERVAL;
     };
+
     pub const compression_quality = struct {
         pub const id: u32 = c.V4L2_CID_JPEG_COMPRESSION_QUALITY;
     };
+
     pub const active_marker = struct {
         pub const id: u32 = c.V4L2_CID_JPEG_ACTIVE_MARKER;
         pub const app0: u32 = c.V4L2_JPEG_ACTIVE_MARKER_APP0;
@@ -2115,84 +2129,106 @@ pub const jpeg = struct {
     };
 };
 
-pub const image_source = struct {
-    pub const base: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS_BASE;
-    pub const class: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS;
-    pub const vblank = struct {
-        pub const id: u32 = c.V4L2_CID_VBLANK;
-    };
-    pub const hblank = struct {
-        pub const id: u32 = c.V4L2_CID_HBLANK;
-    };
-    pub const analogue_gain = struct {
-        pub const id: u32 = c.V4L2_CID_ANALOGUE_GAIN;
-    };
-    pub const test_pattern = struct {
-        pub const red = struct {
-            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_RED;
-        };
-        pub const greenr = struct {
-            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENR;
-        };
-        pub const blue = struct {
-            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_BLUE;
-        };
-        pub const greenb = struct {
-            pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENB;
-        };
-    };
-    pub const unit_cell_size = struct {
-        pub const id: u32 = c.V4L2_CID_UNIT_CELL_SIZE;
-    };
-    pub const notify_gains = struct {
-        pub const id: u32 = c.V4L2_CID_NOTIFY_GAINS;
-    };
-};
+pub const image = struct {
+    pub const source = struct {
+        pub const base: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS_BASE;
+        pub const class: u32 = c.V4L2_CID_IMAGE_SOURCE_CLASS;
 
-pub const image_proc = struct {
-    pub const base: u32 = c.V4L2_CID_IMAGE_PROC_CLASS_BASE;
-    pub const class: u32 = c.V4L2_CID_IMAGE_PROC_CLASS;
-    pub const link_freq = struct {
-        pub const id: u32 = c.V4L2_CID_LINK_FREQ;
+        pub const vblank = struct {
+            pub const id: u32 = c.V4L2_CID_VBLANK;
+        };
+
+        pub const hblank = struct {
+            pub const id: u32 = c.V4L2_CID_HBLANK;
+        };
+
+        pub const analogue_gain = struct {
+            pub const id: u32 = c.V4L2_CID_ANALOGUE_GAIN;
+        };
+
+        pub const test_pattern = struct {
+            pub const red = struct {
+                pub const id: u32 = c.V4L2_CID_TEST_PATTERN_RED;
+            };
+
+            pub const greenr = struct {
+                pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENR;
+            };
+
+            pub const blue = struct {
+                pub const id: u32 = c.V4L2_CID_TEST_PATTERN_BLUE;
+            };
+
+            pub const greenb = struct {
+                pub const id: u32 = c.V4L2_CID_TEST_PATTERN_GREENB;
+            };
+        };
+
+        pub const unit_cell_size = struct {
+            pub const id: u32 = c.V4L2_CID_UNIT_CELL_SIZE;
+        };
+
+        pub const notify_gains = struct {
+            pub const id: u32 = c.V4L2_CID_NOTIFY_GAINS;
+        };
     };
-    pub const pixel_rate = struct {
-        pub const id: u32 = c.V4L2_CID_PIXEL_RATE;
-    };
-    pub const test_pattern = struct {
-        pub const id: u32 = c.V4L2_CID_TEST_PATTERN;
-    };
-    pub const deinterlacing_mode = struct {
-        pub const id: u32 = c.V4L2_CID_DEINTERLACING_MODE;
-    };
-    pub const digital_gain = struct {
-        pub const id: u32 = c.V4L2_CID_DIGITAL_GAIN;
+
+    pub const processing = struct {
+        pub const base: u32 = c.V4L2_CID_IMAGE_PROC_CLASS_BASE;
+        pub const class: u32 = c.V4L2_CID_IMAGE_PROC_CLASS;
+
+        pub const link_freq = struct {
+            pub const id: u32 = c.V4L2_CID_LINK_FREQ;
+        };
+
+        pub const pixel_rate = struct {
+            pub const id: u32 = c.V4L2_CID_PIXEL_RATE;
+        };
+
+        pub const test_pattern = struct {
+            pub const id: u32 = c.V4L2_CID_TEST_PATTERN;
+        };
+
+        pub const deinterlacing_mode = struct {
+            pub const id: u32 = c.V4L2_CID_DEINTERLACING_MODE;
+        };
+
+        pub const digital_gain = struct {
+            pub const id: u32 = c.V4L2_CID_DIGITAL_GAIN;
+        };
     };
 };
 
 pub const dv = struct {
     pub const base: u32 = c.V4L2_CID_DV_CLASS_BASE;
     pub const class: u32 = c.V4L2_CID_DV_CLASS;
+
     pub const tx = struct {
         pub const hotplug = struct {
             pub const id: u32 = c.V4L2_CID_DV_TX_HOTPLUG;
         };
+
         pub const rxsense = struct {
             pub const id: u32 = c.V4L2_CID_DV_TX_RXSENSE;
         };
+
         pub const edid_present = struct {
             pub const id: u32 = c.V4L2_CID_DV_TX_EDID_PRESENT;
         };
+
         pub const TxMode = enum(i32) {
             pub const id: u32 = c.V4L2_CID_DV_TX_MODE;
             dvi_d = c.V4L2_DV_TX_MODE_DVI_D,
             hdmi = c.V4L2_DV_TX_MODE_HDMI,
         };
+
         pub const RgbRange = enum(i32) {
             pub const id: u32 = c.V4L2_CID_DV_TX_RGB_RANGE;
             auto = c.V4L2_DV_RGB_RANGE_AUTO,
             limited = c.V4L2_DV_RGB_RANGE_LIMITED,
             full = c.V4L2_DV_RGB_RANGE_FULL,
         };
+
         pub const ItContentType = enum(i32) {
             pub const id: u32 = c.V4L2_CID_DV_TX_IT_CONTENT_TYPE;
             graphics = c.V4L2_DV_IT_CONTENT_TYPE_GRAPHICS,
@@ -2202,6 +2238,7 @@ pub const dv = struct {
             no_itc = c.V4L2_DV_IT_CONTENT_TYPE_NO_ITC,
         };
     };
+
     pub const rx = struct {
         pub const power_present = struct {
             pub const id: u32 = c.V4L2_CID_DV_RX_POWER_PRESENT;
@@ -2218,31 +2255,39 @@ pub const dv = struct {
 pub const fm_rx = struct {
     pub const base: u32 = c.V4L2_CID_FM_RX_CLASS_BASE;
     pub const class: u32 = c.V4L2_CID_FM_RX_CLASS;
+
     pub const Deemphasis = enum(i32) {
         pub const id: u32 = c.V4L2_CID_TUNE_DEEMPHASIS;
         disabled = c.V4L2_DEEMPHASIS_DISABLED,
         us_50 = c.V4L2_DEEMPHASIS_50_uS,
         us_75 = c.V4L2_DEEMPHASIS_75_uS,
     };
+
     pub const rds_reception = struct {
         pub const id: u32 = c.V4L2_CID_RDS_RECEPTION;
     };
+
     pub const rds_rx = struct {
         pub const pty = struct {
             pub const id: u32 = c.V4L2_CID_RDS_RX_PTY;
         };
+
         pub const ps_name = struct {
             pub const id: u32 = c.V4L2_CID_RDS_RX_PS_NAME;
         };
+
         pub const radio_text = struct {
             pub const id: u32 = c.V4L2_CID_RDS_RX_RADIO_TEXT;
         };
+
         pub const traffic_announcement = struct {
             pub const id: u32 = c.V4L2_CID_RDS_RX_TRAFFIC_ANNOUNCEMENT;
         };
+
         pub const traffic_program = struct {
             pub const id: u32 = c.V4L2_CID_RDS_RX_TRAFFIC_PROGRAM;
         };
+
         pub const music_speech = struct {
             pub const id: u32 = c.V4L2_CID_RDS_RX_MUSIC_SPEECH;
         };
@@ -2252,39 +2297,49 @@ pub const fm_rx = struct {
 pub const rf_tuner = struct {
     pub const base: u32 = c.V4L2_CID_RF_TUNER_CLASS_BASE;
     pub const class: u32 = c.V4L2_CID_RF_TUNER_CLASS;
-    pub const bandwidth_auto = struct {
-        pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH_AUTO;
-    };
+
     pub const bandwidth = struct {
         pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH;
+
+        pub const auto = struct {
+            pub const id: u32 = c.V4L2_CID_RF_TUNER_BANDWIDTH_AUTO;
+        };
     };
+
     pub const rf_gain = struct {
         pub const id: u32 = c.V4L2_CID_RF_TUNER_RF_GAIN;
     };
+
     pub const lna = struct {
         pub const gain_auto = struct {
             pub const id: u32 = c.V4L2_CID_RF_TUNER_LNA_GAIN_AUTO;
         };
+
         pub const gain = struct {
             pub const id: u32 = c.V4L2_CID_RF_TUNER_LNA_GAIN;
         };
     };
+
     pub const mixer = struct {
         pub const gain_auto = struct {
             pub const id: u32 = c.V4L2_CID_RF_TUNER_MIXER_GAIN_AUTO;
         };
+
         pub const gain = struct {
             pub const id: u32 = c.V4L2_CID_RF_TUNER_MIXER_GAIN;
         };
     };
+
     pub const if_gain = struct {
         pub const auto = struct {
             pub const id: u32 = c.V4L2_CID_RF_TUNER_IF_GAIN_AUTO;
         };
+
         pub const gain = struct {
             pub const id: u32 = c.V4L2_CID_RF_TUNER_IF_GAIN;
         };
     };
+
     pub const pll_lock = struct {
         pub const id: u32 = c.V4L2_CID_RF_TUNER_PLL_LOCK;
     };
@@ -2293,6 +2348,7 @@ pub const rf_tuner = struct {
 pub const detect = struct {
     pub const base: u32 = c.V4L2_CID_DETECT_CLASS_BASE;
     pub const class: u32 = c.V4L2_CID_DETECT_CLASS;
+
     pub const motion = struct {
         pub const Mode = enum(i32) {
             pub const id: u32 = c.V4L2_CID_DETECT_MD_MODE;
@@ -2301,12 +2357,15 @@ pub const detect = struct {
             threshold_grid = c.V4L2_DETECT_MD_MODE_THRESHOLD_GRID,
             region_grid = c.V4L2_DETECT_MD_MODE_REGION_GRID,
         };
+
         pub const global_threshold = struct {
             pub const id: u32 = c.V4L2_CID_DETECT_MD_GLOBAL_THRESHOLD;
         };
+
         pub const threshold_grid = struct {
             pub const id: u32 = c.V4L2_CID_DETECT_MD_THRESHOLD_GRID;
         };
+
         pub const region_grid = struct {
             pub const id: u32 = c.V4L2_CID_DETECT_MD_REGION_GRID;
         };
@@ -2316,42 +2375,207 @@ pub const detect = struct {
 pub const stateless = struct {
     pub const base: u32 = c.V4L2_CID_CODEC_STATELESS_BASE;
     pub const class: u32 = c.V4L2_CID_CODEC_STATELESS_CLASS;
+
+    // @TODO in v4l2-controls.h from line 1300 to 1700
     pub const h264 = struct {
         pub const DecodeMode = enum(i32) {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_MODE;
+
             slice_based = c.V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
             frame_based = c.V4L2_STATELESS_H264_DECODE_MODE_FRAME_BASED,
         };
+
         pub const StartCode = enum(i32) {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_START_CODE;
+
             none = c.V4L2_STATELESS_H264_START_CODE_NONE,
             annex_b = c.V4L2_STATELESS_H264_START_CODE_ANNEX_B,
         };
-        pub const sps = struct {
+
+        pub const sps = extern struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_SPS;
+
+            pub const Contraint = enum(i32) {
+                set0_flag = c.V4L2_H264_SPS_CONSTRAINT_SET0_FLAG,
+                set1_flag = c.V4L2_H264_SPS_CONSTRAINT_SET1_FLAG,
+                set2_flag = c.V4L2_H264_SPS_CONSTRAINT_SET2_FLAG,
+                set3_flag = c.V4L2_H264_SPS_CONSTRAINT_SET3_FLAG,
+                set4_flag = c.V4L2_H264_SPS_CONSTRAINT_SET4_FLAG,
+                set5_flag = c.V4L2_H264_SPS_CONSTRAINT_SET5_FLAG,
+            };
+
+            pub const Flag = enum(i32) {
+                separate_colour_plane = c.V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE,
+                qpprime_y_zero_transform_bypass = c.V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS,
+                delta_pic_order_always_zero = c.V4L2_H264_SPS_FLAG_DELTA_PIC_ORDER_ALWAYS_ZERO,
+                gaps_in_frame_num_value_allowed = c.V4L2_H264_SPS_FLAG_GAPS_IN_FRAME_NUM_VALUE_ALLOWED,
+                frame_mbs_only = c.V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY,
+                mb_adaptive_frame_field = c.V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD,
+                direct_8x8_inference = c.V4L2_H264_SPS_FLAG_DIRECT_8X8_INFERENCE,
+            };
+
+            pub const hasChromaFormat = c.V4L2_H264_SPS_HAS_CHROMA_FORMAT;
+
+            profile_idc: u8,
+            constraint_set_flags: u8,
+            level_idc: u8,
+            seq_parameter_set_id: u8,
+            chroma_format_idc: u8,
+            bit_depth_luma_minus8: u8,
+            bit_depth_chroma_minus8: u8,
+            log2_max_frame_num_minus4: u8,
+            pic_order_cnt_type: u8,
+            log2_max_pic_order_cnt_lsb_minus4: u8,
+            max_num_ref_frames: u8,
+            num_ref_frames_in_pic_order_cnt_cycle: u8,
+            offset_for_ref_frame: [255]i32,
+            offset_for_non_ref_pic: i32,
+            offset_for_top_to_bottom_field: i32,
+            pic_width_in_mbs_minus1: u16,
+            pic_height_in_map_units_minus1: u16,
+            flags: u32,
         };
-        pub const pps = struct {
+
+        pub const pps = extern struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_PPS;
+
+            pub const Flag = enum(i32) {
+                entropy_coding_mode = c.V4L2_H264_PPS_FLAG_ENTROPY_CODING_MODE,
+                bottom_field_pic_order_in_frame_present = c.V4L2_H264_PPS_FLAG_BOTTOM_FIELD_PIC_ORDER_IN_FRAME_PRESENT,
+                weighted_pred = c.V4L2_H264_PPS_FLAG_WEIGHTED_PRED,
+                deblocking_filter_control_present = c.V4L2_H264_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT,
+                constrained_intra_pred = c.V4L2_H264_PPS_FLAG_CONSTRAINED_INTRA_PRED,
+                redundant_pic_cnt_present = c.V4L2_H264_PPS_FLAG_REDUNDANT_PIC_CNT_PRESENT,
+                transform_8x8_mode = c.V4L2_H264_PPS_FLAG_TRANSFORM_8X8_MODE,
+                scaling_matrix_present = c.V4L2_H264_PPS_FLAG_SCALING_MATRIX_PRESENT,
+            };
+
+            pic_parameter_set_id: u8,
+            seq_parameter_set_id: u8,
+            num_slice_groups_minus1: u8,
+            num_ref_idx_l0_default_active_minus1: u8,
+            num_ref_idx_l1_default_active_minus1: u8,
+            weighted_bipred_idc: u8,
+            pic_init_qp_minus26: i8,
+            pic_init_qs_minus26: i8,
+            chroma_qp_index_offset: i8,
+            second_chroma_qp_index_offset: i8,
+            flags: u16,
         };
-        pub const scaling_matrix = struct {
+
+        pub const ScalingMatrix = extern struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_SCALING_MATRIX;
+
+            scaling_list_4x4: [6][16]u8,
+            scaling_list_8x8: [6][64]u8,
         };
-        pub const pred_weights = struct {
+
+        pub const WeightFactors = extern struct {
+            luma_weight: [32]i16,
+            luma_offset: [32]i16,
+            chroma_weight: [32][2]i16,
+            chroma_offset: [32][2]i16,
+        };
+
+        pub const pred_weights = extern struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_PRED_WEIGHTS;
+            pub const predWeightsRequired = c.V4L2_H264_CTRL_PRED_WEIGHTS_REQUIRED;
+
+            luma_log2_weight_denom: u16,
+            chroma_log2_weight_denom: u16,
+            weight_factors: [2]WeightFactors,
         };
-        pub const slice_params = struct {
+
+        pub const Slice = enum(i32) {
+            p = c.V4L2_H264_SLICE_TYPE_P,
+            b = c.V4L2_H264_SLICE_TYPE_B,
+            i = c.V4L2_H264_SLICE_TYPE_I,
+            sp = c.V4L2_H264_SLICE_TYPE_SP,
+            si = c.V4L2_H264_SLICE_TYPE_SI,
+
+            pub const Flag = enum(i32) {
+                direct_spatial_mv_pred = c.V4L2_H264_SLICE_FLAG_DIRECT_SPATIAL_MV_PRED,
+                sp_for_switch = c.V4L2_H264_SLICE_FLAG_SP_FOR_SWITCH,
+            };
+        };
+
+        pub const Reference = extern struct {
+            fields: u8,
+            index: u8,
+
+            pub const Field = enum(u8) {
+                top_field = c.V4L2_H264_TOP_FIELD_REF,
+                bottom_field = c.V4L2_H264_BOTTOM_FIELD_REF,
+                frame = c.V4L2_H264_FRAME_REF,
+            };
+        };
+
+        pub const slice_params = extern struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_SLICE_PARAMS;
+
+            header_bit_size: u32,
+            first_mb_in_slice: u32,
+            slice_type: u8,
+            colour_plane_id: u8,
+            redundant_pic_cnt: u8,
+            cabac_init_idc: u8,
+            slice_qp_delta: i8,
+            slice_qs_delta: i8,
+            disable_deblocking_filter_idc: u8,
+            slice_alpha_c0_offset_div2: i8,
+            slice_beta_offset_div2: i8,
+            num_ref_idx_l0_active_minus1: u8,
+            num_ref_idx_l1_active_minus1: u8,
+            reserved: u8,
+            ref_pic_list0: [c.V4L2_H264_REF_LIST_LEN]Reference,
+            ref_pic_list1: [c.V4L2_H264_REF_LIST_LEN]Reference,
+            flags: u32,
         };
-        pub const decode_params = struct {
+
+        pub const dpb = struct {
+            // @TODO ??
+            // #define V4L2_H264_NUM_DPB_ENTRIES 16
+            // #define V4L2_H264_REF_LIST_LEN (2 * V4L2_H264_NUM_DPB_ENTRIES)
+            pub const Entry = extern struct {
+                reference_ts: u64,
+                pic_num: u32,
+                frame_num: u16,
+                fields: u8,
+                reserved: [5]u8,
+                top_field_order_cnt: i32,
+                bottom_field_order_cnt: i32,
+                flags: u32,
+            };
+
+            pub const Flag = enum(i32) {
+                valid = c.V4L2_H264_DPB_ENTRY_FLAG_VALID,
+                active = c.V4L2_H264_DPB_ENTRY_FLAG_ACTIVE,
+                long_term = c.V4L2_H264_DPB_ENTRY_FLAG_LONG_TERM,
+                field = c.V4L2_H264_DPB_ENTRY_FLAG_FIELD,
+            };
+        };
+
+        pub const DecodeParams = extern struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_PARAMS;
+
+            pub const Flag = enum(i32) {
+                idr_pic = c.V4L2_H264_DECODE_PARAM_FLAG_IDR_PIC,
+                field_pic = c.V4L2_H264_DECODE_PARAM_FLAG_FIELD_PIC,
+                bottom_field = c.V4L2_H264_DECODE_PARAM_FLAG_BOTTOM_FIELD,
+                pframe = c.V4L2_H264_DECODE_PARAM_FLAG_PFRAME,
+                bframe = c.V4L2_H264_DECODE_PARAM_FLAG_BFRAME,
+            };
         };
     };
+
     pub const fwht_params = struct {
         pub const id: u32 = c.V4L2_CID_STATELESS_FWHT_PARAMS;
     };
+
     pub const vp8_frame = struct {
         pub const id: u32 = c.V4L2_CID_STATELESS_VP8_FRAME;
     };
+
     pub const mpeg2 = struct {
         pub const sequence = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_SEQUENCE;
@@ -2363,6 +2587,7 @@ pub const stateless = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_QUANTISATION;
         };
     };
+
     pub const hevc = struct {
         pub const sps = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SPS;
@@ -2389,6 +2614,7 @@ pub const stateless = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS;
         };
     };
+
     pub const vp9 = struct {
         pub const frame = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_VP9_FRAME;
@@ -2397,6 +2623,7 @@ pub const stateless = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_VP9_COMPRESSED_HDR;
         };
     };
+
     pub const av1 = struct {
         pub const sequence = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_AV1_SEQUENCE;
@@ -2525,4 +2752,125 @@ test "Control.MenuQuery ABI matches struct_v4l2_querymenu" {
     try std.testing.expectEqual(@offsetOf(C, "id"), @offsetOf(Z, "id"));
     try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
     try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "stateless.h264.sps ABI matches struct_v4l2_ctrl_h264_sps" {
+    const C = c.struct_v4l2_ctrl_h264_sps;
+    const Z = stateless.h264.sps;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "profile_idc"), @offsetOf(Z, "profile_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "constraint_set_flags"), @offsetOf(Z, "constraint_set_flags"));
+    try std.testing.expectEqual(@offsetOf(C, "level_idc"), @offsetOf(Z, "level_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "seq_parameter_set_id"), @offsetOf(Z, "seq_parameter_set_id"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_format_idc"), @offsetOf(Z, "chroma_format_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_depth_luma_minus8"), @offsetOf(Z, "bit_depth_luma_minus8"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_depth_chroma_minus8"), @offsetOf(Z, "bit_depth_chroma_minus8"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_max_frame_num_minus4"), @offsetOf(Z, "log2_max_frame_num_minus4"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_order_cnt_type"), @offsetOf(Z, "pic_order_cnt_type"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_max_pic_order_cnt_lsb_minus4"), @offsetOf(Z, "log2_max_pic_order_cnt_lsb_minus4"));
+    try std.testing.expectEqual(@offsetOf(C, "max_num_ref_frames"), @offsetOf(Z, "max_num_ref_frames"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_frames_in_pic_order_cnt_cycle"), @offsetOf(Z, "num_ref_frames_in_pic_order_cnt_cycle"));
+    try std.testing.expectEqual(@offsetOf(C, "offset_for_ref_frame"), @offsetOf(Z, "offset_for_ref_frame"));
+    try std.testing.expectEqual(@offsetOf(C, "offset_for_non_ref_pic"), @offsetOf(Z, "offset_for_non_ref_pic"));
+    try std.testing.expectEqual(@offsetOf(C, "offset_for_top_to_bottom_field"), @offsetOf(Z, "offset_for_top_to_bottom_field"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_width_in_mbs_minus1"), @offsetOf(Z, "pic_width_in_mbs_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_height_in_map_units_minus1"), @offsetOf(Z, "pic_height_in_map_units_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.h264.pps ABI matches struct_v4l2_ctrl_h264_pps" {
+    const C = c.struct_v4l2_ctrl_h264_pps;
+    const Z = stateless.h264.pps;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "pic_parameter_set_id"), @offsetOf(Z, "pic_parameter_set_id"));
+    try std.testing.expectEqual(@offsetOf(C, "seq_parameter_set_id"), @offsetOf(Z, "seq_parameter_set_id"));
+    try std.testing.expectEqual(@offsetOf(C, "num_slice_groups_minus1"), @offsetOf(Z, "num_slice_groups_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l0_default_active_minus1"), @offsetOf(Z, "num_ref_idx_l0_default_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l1_default_active_minus1"), @offsetOf(Z, "num_ref_idx_l1_default_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "weighted_bipred_idc"), @offsetOf(Z, "weighted_bipred_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_init_qp_minus26"), @offsetOf(Z, "pic_init_qp_minus26"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_init_qs_minus26"), @offsetOf(Z, "pic_init_qs_minus26"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_qp_index_offset"), @offsetOf(Z, "chroma_qp_index_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "second_chroma_qp_index_offset"), @offsetOf(Z, "second_chroma_qp_index_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.h264.ScalingMatrix ABI matches struct_v4l2_ctrl_h264_scaling_matrix" {
+    const C = c.struct_v4l2_ctrl_h264_scaling_matrix;
+    const Z = stateless.h264.ScalingMatrix;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_4x4"), @offsetOf(Z, "scaling_list_4x4"));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_8x8"), @offsetOf(Z, "scaling_list_8x8"));
+}
+
+test "stateless.h264.WeightFactors ABI matches struct_v4l2_h264_weight_factors" {
+    const C = c.struct_v4l2_h264_weight_factors;
+    const Z = stateless.h264.WeightFactors;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "luma_weight"), @offsetOf(Z, "luma_weight"));
+    try std.testing.expectEqual(@offsetOf(C, "luma_offset"), @offsetOf(Z, "luma_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_weight"), @offsetOf(Z, "chroma_weight"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_offset"), @offsetOf(Z, "chroma_offset"));
+}
+
+test "stateless.h264.pred_weights ABI matches struct_v4l2_ctrl_h264_pred_weights" {
+    const C = c.struct_v4l2_ctrl_h264_pred_weights;
+    const Z = stateless.h264.pred_weights;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "luma_log2_weight_denom"), @offsetOf(Z, "luma_log2_weight_denom"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_log2_weight_denom"), @offsetOf(Z, "chroma_log2_weight_denom"));
+    try std.testing.expectEqual(@offsetOf(C, "weight_factors"), @offsetOf(Z, "weight_factors"));
+}
+
+test "stateless.h264.Reference ABI matches struct_v4l2_h264_reference" {
+    const C = c.struct_v4l2_h264_reference;
+    const Z = stateless.h264.Reference;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "fields"), @offsetOf(Z, "fields"));
+    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
+}
+
+test "stateless.h264.slice_params ABI matches struct_v4l2_ctrl_h264_slice_params" {
+    const C = c.struct_v4l2_ctrl_h264_slice_params;
+    const Z = stateless.h264.slice_params;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "header_bit_size"), @offsetOf(Z, "header_bit_size"));
+    try std.testing.expectEqual(@offsetOf(C, "first_mb_in_slice"), @offsetOf(Z, "first_mb_in_slice"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_type"), @offsetOf(Z, "slice_type"));
+    try std.testing.expectEqual(@offsetOf(C, "colour_plane_id"), @offsetOf(Z, "colour_plane_id"));
+    try std.testing.expectEqual(@offsetOf(C, "redundant_pic_cnt"), @offsetOf(Z, "redundant_pic_cnt"));
+    try std.testing.expectEqual(@offsetOf(C, "cabac_init_idc"), @offsetOf(Z, "cabac_init_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_qp_delta"), @offsetOf(Z, "slice_qp_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_qs_delta"), @offsetOf(Z, "slice_qs_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "disable_deblocking_filter_idc"), @offsetOf(Z, "disable_deblocking_filter_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_alpha_c0_offset_div2"), @offsetOf(Z, "slice_alpha_c0_offset_div2"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_beta_offset_div2"), @offsetOf(Z, "slice_beta_offset_div2"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l0_active_minus1"), @offsetOf(Z, "num_ref_idx_l0_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l1_active_minus1"), @offsetOf(Z, "num_ref_idx_l1_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "ref_pic_list0"), @offsetOf(Z, "ref_pic_list0"));
+    try std.testing.expectEqual(@offsetOf(C, "ref_pic_list1"), @offsetOf(Z, "ref_pic_list1"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.h264.dpb.Entry ABI matches struct_v4l2_h264_dpb_entry" {
+    const C = c.struct_v4l2_h264_dpb_entry;
+    const Z = stateless.h264.dpb.Entry;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "reference_ts"), @offsetOf(Z, "reference_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_num"), @offsetOf(Z, "pic_num"));
+    try std.testing.expectEqual(@offsetOf(C, "frame_num"), @offsetOf(Z, "frame_num"));
+    try std.testing.expectEqual(@offsetOf(C, "fields"), @offsetOf(Z, "fields"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "top_field_order_cnt"), @offsetOf(Z, "top_field_order_cnt"));
+    try std.testing.expectEqual(@offsetOf(C, "bottom_field_order_cnt"), @offsetOf(Z, "bottom_field_order_cnt"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
 }
