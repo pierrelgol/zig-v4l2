@@ -4,24 +4,18 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const header_path = b.option([]const u8, "header-path", "path to v4l2 headers");
+    const header_path = b.option(
+        []const u8,
+        "header-path",
+        "Path to target-specific v4l2 headers, relative to /usr/include (default: linux triple)",
+    );
 
-    var final: []const u8 = undefined;
-    defer b.allocator.free(final);
-
-    if (header_path) |some| {
-        final = std.mem.concat(b.allocator, u8, &.{
-            "/usr/include/",
-            some,
-        }) catch unreachable;
-    } else {
-        const triple = target.result.linuxTriple(b.allocator) catch unreachable;
-        defer b.allocator.free(triple);
-        final = std.mem.concat(b.allocator, u8, &.{
-            "/usr/include/",
-            triple,
-        }) catch unreachable;
-    }
+    const include_path = if (header_path) |some|
+        std.mem.concat(b.allocator, u8, &.{ "/usr/include/", some }) catch @panic("OOM")
+    else blk: {
+        const triple = target.result.linuxTriple(b.allocator) catch @panic("OOM");
+        break :blk std.mem.concat(b.allocator, u8, &.{ "/usr/include/", triple }) catch @panic("OOM");
+    };
 
     const translate_c = b.addTranslateC(.{
         .root_source_file = b.path("src/v4l2/bindings.c"),
@@ -30,7 +24,7 @@ pub fn build(b: *std.Build) void {
         .link_libc = false,
     });
     translate_c.addIncludePath(.{ .cwd_relative = "/usr/include" });
-    translate_c.addIncludePath(.{ .cwd_relative = final });
+    translate_c.addIncludePath(.{ .cwd_relative = include_path });
 
     const module = b.addModule("z4l2", .{
         .target = target,
@@ -47,57 +41,42 @@ pub fn build(b: *std.Build) void {
     });
     b.installArtifact(library);
 
-    const exe = b.addExecutable(.{
+    // --- demo ---
+
+    const demo_mod = b.createModule(.{
+        .root_source_file = b.path("src/demo.zig"),
+        .target = target,
+        .optimize = optimize,
+        .imports = &.{
+            .{ .name = "z4l2", .module = module },
+        },
+    });
+
+    const demo = b.addExecutable(.{
         .name = "demo",
-        .root_module = b.createModule(.{
-            .root_source_file = b.path("src/demo.zig"),
-            .target = target,
-            .optimize = optimize,
-            .imports = &.{
-                .{ .name = "z4l2", .module = module },
-            },
-        }),
+        .root_module = demo_mod,
     });
-    b.installArtifact(exe);
+    b.installArtifact(demo);
 
-    const exe_run = b.addRunArtifact(exe);
-    exe_run.step.dependOn(b.getInstallStep());
+    const run_step = b.step("run", "Run the demo (pass a device path as argument, default: /dev/video0)");
+    const demo_run = b.addRunArtifact(demo);
+    demo_run.step.dependOn(b.getInstallStep());
+    if (b.args) |args| demo_run.addArgs(args);
+    run_step.dependOn(&demo_run.step);
 
-    if (b.args) |arguments| {
-        exe_run.addArgs(arguments);
-    }
+    // --- tests ---
 
-    const run_step = b.step("run", "Run the demo");
-    run_step.dependOn(&exe_run.step);
+    const test_step = b.step("test", "Run all tests");
 
-    const exe_test = b.addTest(.{
-        .root_module = exe.root_module,
-        .name = "demo",
-    });
+    const lib_test = b.addTest(.{ .root_module = module, .name = "z4l2" });
+    test_step.dependOn(&b.addRunArtifact(lib_test).step);
 
-    const library_test = b.addTest(.{
-        .root_module = module,
-        .name = "z4l2",
-    });
+    const demo_test = b.addTest(.{ .root_module = demo_mod, .name = "demo" });
+    test_step.dependOn(&b.addRunArtifact(demo_test).step);
 
-    const library_test_run = b.addRunArtifact(library_test);
-    const exe_test_run = b.addRunArtifact(exe_test);
+    // --- check (used by ZLS) ---
 
-    const test_step = b.step("test", "Test the code");
-    test_step.dependOn(&library_test_run.step);
-    test_step.dependOn(&exe_test_run.step);
-
-    const library_check = b.addLibrary(.{
-        .name = "z4l2",
-        .root_module = module,
-    });
-
-    const exe_check = b.addLibrary(.{
-        .name = "z4l2",
-        .root_module = module,
-    });
-
-    const check_step = b.step("check", "Check the code");
-    check_step.dependOn(&library_check.step);
-    check_step.dependOn(&exe_check.step);
+    const check_step = b.step("check", "Check compilation without linking");
+    const check_lib = b.addLibrary(.{ .name = "z4l2", .root_module = module });
+    check_step.dependOn(&check_lib.step);
 }

@@ -10,8 +10,6 @@ comptime {
     std.testing.refAllDecls(@This());
 }
 
-pub const Frame = @This();
-
 pub const Clip = extern struct {
     rectangle: Rectangle,
     next: ?*Clip,

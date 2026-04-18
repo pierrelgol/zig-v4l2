@@ -15,7 +15,7 @@ comptime {
 pub const Parameters = extern struct {
     pub const Capture = extern struct {
         capability: Capability,
-        outputmode: u32,
+        capturemode: u32,
         time_per_frame: Fraction,
         extended_mode: u32,
         read_buffers: u32,
@@ -137,7 +137,7 @@ test "Stream.Parameters.Capture ABI matches struct_v4l2_captureparm" {
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "capability"), @offsetOf(Z, "capability"));
-    try std.testing.expectEqual(@offsetOf(C, "capturemode"), @offsetOf(Z, "outputmode"));
+    try std.testing.expectEqual(@offsetOf(C, "capturemode"), @offsetOf(Z, "capturemode"));
     try std.testing.expectEqual(@offsetOf(C, "timeperframe"), @offsetOf(Z, "time_per_frame"));
     try std.testing.expectEqual(@offsetOf(C, "extendedmode"), @offsetOf(Z, "extended_mode"));
     try std.testing.expectEqual(@offsetOf(C, "readbuffers"), @offsetOf(Z, "read_buffers"));
@@ -249,7 +249,7 @@ test "Stream.Parameter ABI matches struct_v4l2_streamparm" {
 test "Stream.Parameters ABI groups match capture and output structs" {
     try abi.expectStruct(bindings.struct_v4l2_captureparm, Parameters.Capture, &.{
         .{ .c_name = "capability", .z_name = "capability" },
-        .{ .c_name = "capturemode", .z_name = "outputmode" },
+        .{ .c_name = "capturemode", .z_name = "capturemode" },
         .{ .c_name = "timeperframe", .z_name = "time_per_frame" },
         .{ .c_name = "extendedmode", .z_name = "extended_mode" },
         .{ .c_name = "readbuffers", .z_name = "read_buffers" },
