@@ -7,6 +7,23 @@ const Rectangle = geometry.Rectangle;
 comptime {
     std.testing.refAllDecls(@This());
 }
+const DONT_TOUCH = struct {
+    fn genmask(comptime T: type, hi: u6, lo: u6) T {
+        comptime {
+            if (!@typeInfo(T).Int.is_signed)
+                @compileError("T must be an unsigned integer type");
+            if (hi < lo)
+                @compileError("hi must be >= lo");
+            if (hi >= @bitSizeOf(T))
+                @compileError("hi out of range for type");
+        }
+
+        const all_ones: T = ~@as(T, 0);
+
+        return (all_ones >> (@bitSizeOf(T) - 1 - hi)) &
+            (all_ones << lo);
+    }
+};
 
 pub const Control = extern struct {
     id: u32,
@@ -2568,59 +2585,604 @@ pub const stateless = struct {
         };
     };
 
-    pub const fwht_params = struct {
-        pub const id: u32 = c.V4L2_CID_STATELESS_FWHT_PARAMS;
+    pub const fwht = struct {
+        pub const version: u32 = c.V4L2_FWHT_VERSION;
+
+        pub const params = extern struct {
+            // @TODO in v4l2-controls line 1765-1775
+            //         /**
+            //  * struct v4l2_ctrl_fwht_params - FWHT parameters
+            //  *
+            //  * @backward_ref_ts: timestamp of the V4L2 capture buffer to use as reference.
+            //  * The timestamp refers to the timestamp field in struct v4l2_buffer.
+            //  * Use v4l2_timeval_to_ns() to convert the struct timeval to a __u64.
+            //  * @version: must be V4L2_FWHT_VERSION.
+            //  * @width: width of frame.
+            //  * @height: height of frame.
+            //  * @flags: FWHT flags (see V4L2_FWHT_FL_*).
+            //  * @colorspace: the colorspace (enum v4l2_colorspace).
+            //  * @xfer_func: the transfer function (enum v4l2_xfer_func).
+            //  * @ycbcr_enc: the Y'CbCr encoding (enum v4l2_ycbcr_encoding).
+            //  * @quantization: the quantization (enum v4l2_quantization).
+            //  */
+            // struct v4l2_ctrl_fwht_params {
+            //  __u64 backward_ref_ts;
+            //  __u32 version;
+            //  __u32 width;
+            //  __u32 height;
+            //  __u32 flags;
+            //  __u32 colorspace;
+            //  __u32 xfer_func;
+            //  __u32 ycbcr_enc;
+            //  __u32 quantization;
+            // };
+
+            pub const id: u32 = c.V4L2_CID_STATELESS_FWHT_PARAMS;
+        };
+
+        pub const isInterlaced = c.V4L2_FWHT_FL_IS_INTERLACED;
+        pub const isBottomFirst = c.V4L2_FWHT_FL_IS_INTERLACED;
+        pub const isAlternate = c.V4L2_FWHT_FL_IS_ALTERNATE;
+        pub const isBottomField = c.V4L2_FWHT_FL_IS_BOTTOM_FIELD;
+        pub const isLumaUncompressed = c.V4L2_FWHT_FL_LUMA_IS_UNCOMPRESSED;
+        pub const isCbUncompressed = c.V4L2_FWHT_FL_CB_IS_UNCOMPRESSED;
+        pub const isCrUncompressed = c.V4L2_FWHT_FL_CR_IS_UNCOMPRESSED;
+        pub const isChromaFullHeight = c.V4L2_FWHT_FL_CHROMA_FULL_HEIGHT;
+        pub const isChromaFullWidth = c.V4L2_FWHT_FL_CHROMA_FULL_WIDTH;
+        pub const isAlphaUncompressed = c.V4L2_FWHT_FL_ALPHA_IS_UNCOMPRESSED;
+        pub const isIFrame = c.V4L2_FWHT_FL_I_FRAME;
+        pub const componentsNumberMask = DONT_TOUCH.genmask(c_long, 18, 16);
+        pub const componentsNumberOffset = c.V4L2_FWHT_FL_COMPONENTS_NUM_OFFSET;
+        pub const pixelEncodingMask = DONT_TOUCH.genmask(c_long, 20, 19);
+        pub const pixelEncodingOffset = c.V4L2_FWHT_FL_PIXENC_OFFSET;
+        pub const pixelEncodingYuv = c.V4L2_FWHT_FL_PIXENC_YUV;
+        pub const pixelEncodingRgb = c.V4L2_FWHT_FL_PIXENC_RGB;
+        pub const pixelEncodingHsv = c.V4L2_FWHT_FL_PIXENC_HSV;
     };
 
-    pub const vp8_frame = struct {
-        pub const id: u32 = c.V4L2_CID_STATELESS_VP8_FRAME;
+    pub const vp8 = struct {
+        pub const Segment = extern struct {
+            quant_update: [4]i8,
+            lf_update: [4]i8,
+            segment_probs: [3]u8,
+            padding: u8,
+            flags: u32,
+
+            pub const Flag = enum(u8) {
+                enabled = c.V4L2_VP8_SEGMENT_FLAG_ENABLED,
+                update_map = c.V4L2_VP8_SEGMENT_FLAG_UPDATE_MAP,
+                update_feature_data = c.V4L2_VP8_SEGMENT_FLAG_UPDATE_FEATURE_DATA,
+                delta_value_mode = c.V4L2_VP8_SEGMENT_FLAG_DELTA_VALUE_MODE,
+            };
+        };
+
+        pub const LoopFilter = extern struct {
+            ref_frm_delta: [4]i8,
+            mb_mode_delta: [4]i8,
+            sharpness_level: u8,
+            level: u8,
+            padding: u16,
+            flags: u32,
+
+            pub const Flag = enum(u8) {
+                V4L2_VP8_LF_ADJ_ENABLE = c.V4L2_VP8_LF_ADJ_ENABLE,
+                V4L2_VP8_LF_DELTA_UPDATE = c.V4L2_VP8_LF_DELTA_UPDATE,
+                V4L2_VP8_LF_FILTER_TYPE_SIMPLE = c.V4L2_VP8_LF_FILTER_TYPE_SIMPLE,
+            };
+        };
+
+        pub const Quantization = extern struct {
+            y_ac_qi: u8,
+            y_dc_delta: i8,
+            y2_dc_delta: i8,
+            y2_ac_delta: i8,
+            uv_dc_delta: i8,
+            uv_ac_delta: i8,
+            padding: u16,
+        };
+
+        pub const Entropy = extern struct {
+            coeff_probs: [4][8][3][11]u8,
+            y_mode_probs: [4]u8,
+            uv_mode_probs: [3]u8,
+            mv_probs: [2][19]u8,
+            padding: [3]u8,
+
+            pub const coeff_prob_cnt: u32 = c.V4L2_VP8_COEFF_PROB_CNT;
+            pub const mv_prob_cnt: u32 = c.V4L2_VP8_MV_PROB_CNT;
+        };
+
+        pub const EntropyCoderState = extern struct {
+            range: u8,
+            value: u8,
+            bit_count: u8,
+            padding: u8,
+        };
+
+        pub const Frame = extern struct {
+            segment: Segment,
+            lf: LoopFilter,
+            quant: Quantization,
+            entropy: Entropy,
+            coder_state: EntropyCoderState,
+            width: u16,
+            height: u16,
+            horizontal_scale: u8,
+            vertical_scale: u8,
+            version: u8,
+            prob_skip_false: u8,
+            prob_intra: u8,
+            prob_last: u8,
+            prob_gf: u8,
+            num_dct_parts: u8,
+            first_part_size: u32,
+            first_part_header_bits: u32,
+            dct_part_sizes: [8]u32,
+            last_frame_ts: u64,
+            golden_frame_ts: u64,
+            alt_frame_ts: u64,
+            flags: u64,
+
+            pub const Flag = enum(i32) {
+                key_frame = c.V4L2_VP8_FRAME_FLAG_KEY_FRAME,
+                experimental = c.V4L2_VP8_FRAME_FLAG_EXPERIMENTAL,
+                show_frame = c.V4L2_VP8_FRAME_FLAG_SHOW_FRAME,
+                mb_no_skip_coeff = c.V4L2_VP8_FRAME_FLAG_MB_NO_SKIP_COEFF,
+                sign_bias_golden = c.V4L2_VP8_FRAME_FLAG_SIGN_BIAS_GOLDEN,
+                sign_bias_alt = c.V4L2_VP8_FRAME_FLAG_SIGN_BIAS_ALT,
+            };
+
+            pub const isKeyFrame = &c.V4L2_VP8_FRAME_IS_KEY_FRAME;
+        };
     };
 
     pub const mpeg2 = struct {
         pub const sequence = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_SEQUENCE;
+
+            pub const Ctrl = extern struct {
+                horizontal_size: u16,
+                vertical_size: u16,
+                vbv_buffer_size: u32,
+                profile_and_level_indication: u16,
+                chroma_format: u8,
+                flags: u8,
+            };
         };
+
         pub const picture = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_PICTURE;
+
+            pub const CodingType = enum(i32) {
+                i = c.V4L2_MPEG2_PIC_CODING_TYPE_I,
+                p = c.V4L2_MPEG2_PIC_CODING_TYPE_P,
+                b = c.V4L2_MPEG2_PIC_CODING_TYPE_B,
+                d = c.V4L2_MPEG2_PIC_CODING_TYPE_D,
+            };
+
+            pub const Field = enum(i32) {
+                top = c.V4L2_MPEG2_PIC_TOP_FIELD,
+                bottom = c.V4L2_MPEG2_PIC_BOTTOM_FIELD,
+                frame = c.V4L2_MPEG2_PIC_FRAME,
+            };
+
+            pub const Flag = enum(i32) {
+                top_field_first = c.V4L2_MPEG2_PIC_FLAG_TOP_FIELD_FIRST,
+                frame_pred_dct = c.V4L2_MPEG2_PIC_FLAG_FRAME_PRED_DCT,
+                concealment_mv = c.V4L2_MPEG2_PIC_FLAG_CONCEALMENT_MV,
+                q_scale_type = c.V4L2_MPEG2_PIC_FLAG_Q_SCALE_TYPE,
+                intra_vlc = c.V4L2_MPEG2_PIC_FLAG_INTRA_VLC,
+                alt_scan = c.V4L2_MPEG2_PIC_FLAG_ALT_SCAN,
+                repeat_first = c.V4L2_MPEG2_PIC_FLAG_REPEAT_FIRST,
+                progressive = c.V4L2_MPEG2_PIC_FLAG_PROGRESSIVE,
+            };
+
+            pub const Ctrl = extern struct {
+                backward_ref_ts: u64,
+                forward_ref_ts: u64,
+                flags: u32,
+                f_code: [2][2]u8,
+                picture_coding_type: u8,
+                picture_structure: u8,
+                intra_dc_precision: u8,
+                reserved: [5]u8,
+            };
         };
+
         pub const quantisation = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_MPEG2_QUANTISATION;
+
+            pub const Ctrl = extern struct {
+                intra_quantiser_matrix: [64]u8,
+                non_intra_quantiser_matrix: [64]u8,
+                chroma_intra_quantiser_matrix: [64]u8,
+                chroma_non_intra_quantiser_matrix: [64]u8,
+            };
         };
     };
 
     pub const hevc = struct {
         pub const sps = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SPS;
+
+            pub const Flag = enum(c_long) {
+                separate_colour_plane = c.V4L2_HEVC_SPS_FLAG_SEPARATE_COLOUR_PLANE,
+                scaling_list_enabled = c.V4L2_HEVC_SPS_FLAG_SCALING_LIST_ENABLED,
+                amp_enabled = c.V4L2_HEVC_SPS_FLAG_AMP_ENABLED,
+                sample_adaptive_offset = c.V4L2_HEVC_SPS_FLAG_SAMPLE_ADAPTIVE_OFFSET,
+                pcm_enabled = c.V4L2_HEVC_SPS_FLAG_PCM_ENABLED,
+                pcm_loop_filter_disabled = c.V4L2_HEVC_SPS_FLAG_PCM_LOOP_FILTER_DISABLED,
+                long_term_ref_pics_present = c.V4L2_HEVC_SPS_FLAG_LONG_TERM_REF_PICS_PRESENT,
+                sps_temporal_mvp_enabled = c.V4L2_HEVC_SPS_FLAG_SPS_TEMPORAL_MVP_ENABLED,
+                strong_intra_smoothing_enabled = c.V4L2_HEVC_SPS_FLAG_STRONG_INTRA_SMOOTHING_ENABLED,
+            };
+
+            pub const Ctrl = extern struct {
+                video_parameter_set_id: u8,
+                seq_parameter_set_id: u8,
+                pic_width_in_luma_samples: u16,
+                pic_height_in_luma_samples: u16,
+                bit_depth_luma_minus8: u8,
+                bit_depth_chroma_minus8: u8,
+                log2_max_pic_order_cnt_lsb_minus4: u8,
+                sps_max_dec_pic_buffering_minus1: u8,
+                sps_max_num_reorder_pics: u8,
+                sps_max_latency_increase_plus1: u8,
+                log2_min_luma_coding_block_size_minus3: u8,
+                log2_diff_max_min_luma_coding_block_size: u8,
+                log2_min_luma_transform_block_size_minus2: u8,
+                log2_diff_max_min_luma_transform_block_size: u8,
+                max_transform_hierarchy_depth_inter: u8,
+                max_transform_hierarchy_depth_intra: u8,
+                pcm_sample_bit_depth_luma_minus1: u8,
+                pcm_sample_bit_depth_chroma_minus1: u8,
+                log2_min_pcm_luma_coding_block_size_minus3: u8,
+                log2_diff_max_min_pcm_luma_coding_block_size: u8,
+                num_short_term_ref_pic_sets: u8,
+                num_long_term_ref_pics_sps: u8,
+                chroma_format_idc: u8,
+                sps_max_sub_layers_minus1: u8,
+                reserved: [6]u8,
+                flags: u64,
+            };
         };
+
         pub const pps = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_PPS;
+
+            pub const Flag = enum(c_long) {
+                dependent_slice_segment_enabled = c.V4L2_HEVC_PPS_FLAG_DEPENDENT_SLICE_SEGMENT_ENABLED,
+                output_flag_present = c.V4L2_HEVC_PPS_FLAG_OUTPUT_FLAG_PRESENT,
+                sign_data_hiding_enabled = c.V4L2_HEVC_PPS_FLAG_SIGN_DATA_HIDING_ENABLED,
+                cabac_init_present = c.V4L2_HEVC_PPS_FLAG_CABAC_INIT_PRESENT,
+                constrained_intra_pred = c.V4L2_HEVC_PPS_FLAG_CONSTRAINED_INTRA_PRED,
+                transform_skip_enabled = c.V4L2_HEVC_PPS_FLAG_TRANSFORM_SKIP_ENABLED,
+                cu_qp_delta_enabled = c.V4L2_HEVC_PPS_FLAG_CU_QP_DELTA_ENABLED,
+                pps_slice_chroma_qp_offsets_present = c.V4L2_HEVC_PPS_FLAG_PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT,
+                weighted_pred = c.V4L2_HEVC_PPS_FLAG_WEIGHTED_PRED,
+                weighted_bipred = c.V4L2_HEVC_PPS_FLAG_WEIGHTED_BIPRED,
+                transquant_bypass_enabled = c.V4L2_HEVC_PPS_FLAG_TRANSQUANT_BYPASS_ENABLED,
+                tiles_enabled = c.V4L2_HEVC_PPS_FLAG_TILES_ENABLED,
+                entropy_coding_sync_enabled = c.V4L2_HEVC_PPS_FLAG_ENTROPY_CODING_SYNC_ENABLED,
+                loop_filter_across_tiles_enabled = c.V4L2_HEVC_PPS_FLAG_LOOP_FILTER_ACROSS_TILES_ENABLED,
+                pps_loop_filter_across_slices_enabled = c.V4L2_HEVC_PPS_FLAG_PPS_LOOP_FILTER_ACROSS_SLICES_ENABLED,
+                deblocking_filter_override_enabled = c.V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_OVERRIDE_ENABLED,
+                pps_disable_deblocking_filter = c.V4L2_HEVC_PPS_FLAG_PPS_DISABLE_DEBLOCKING_FILTER,
+                lists_modification_present = c.V4L2_HEVC_PPS_FLAG_LISTS_MODIFICATION_PRESENT,
+                slice_segment_header_extension_present = c.V4L2_HEVC_PPS_FLAG_SLICE_SEGMENT_HEADER_EXTENSION_PRESENT,
+                deblocking_filter_control_present = c.V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT,
+                uniform_spacing = c.V4L2_HEVC_PPS_FLAG_UNIFORM_SPACING,
+            };
+
+            pub const Ctrl = extern struct {
+                pic_parameter_set_id: u8,
+                num_extra_slice_header_bits: u8,
+                num_ref_idx_l0_default_active_minus1: u8,
+                num_ref_idx_l1_default_active_minus1: u8,
+                init_qp_minus26: i8,
+                diff_cu_qp_delta_depth: u8,
+                pps_cb_qp_offset: i8,
+                pps_cr_qp_offset: i8,
+                num_tile_columns_minus1: u8,
+                num_tile_rows_minus1: u8,
+                column_width_minus1: [20]u8,
+                row_height_minus1: [22]u8,
+                pps_beta_offset_div2: i8,
+                pps_tc_offset_div2: i8,
+                log2_parallel_merge_level_minus2: u8,
+                reserved: u8,
+                flags: u64,
+            };
         };
-        pub const slice_params = struct {
-            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SLICE_PARAMS;
+
+        pub const slice = struct {
+            pub const params = struct {
+                pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SLICE_PARAMS;
+
+                pub const Flag = enum(c_long) {
+                    slice_sao_luma = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_LUMA,
+                    slice_sao_chroma = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_CHROMA,
+                    slice_temporal_mvp_enabled = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_TEMPORAL_MVP_ENABLED,
+                    mvd_l1_zero = c.V4L2_HEVC_SLICE_PARAMS_FLAG_MVD_L1_ZERO,
+                    cabac_init = c.V4L2_HEVC_SLICE_PARAMS_FLAG_CABAC_INIT,
+                    collocated_from_l0 = c.V4L2_HEVC_SLICE_PARAMS_FLAG_COLLOCATED_FROM_L0,
+                    use_integer_mv = c.V4L2_HEVC_SLICE_PARAMS_FLAG_USE_INTEGER_MV,
+                    slice_deblocking_filter_disabled = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_DEBLOCKING_FILTER_DISABLED,
+                    slice_loop_filter_across_slices_enabled = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_LOOP_FILTER_ACROSS_SLICES_ENABLED,
+                    dependent_slice_segment = c.V4L2_HEVC_SLICE_PARAMS_FLAG_DEPENDENT_SLICE_SEGMENT,
+                };
+
+                pub const Ctrl = extern struct {
+                    bit_size: u32,
+                    data_byte_offset: u32,
+                    num_entry_point_offsets: u32,
+                    nal_unit_type: u8,
+                    nuh_temporal_id_plus1: u8,
+                    slice_type: u8,
+                    colour_plane_id: u8,
+                    slice_pic_order_cnt: i32,
+                    num_ref_idx_l0_active_minus1: u8,
+                    num_ref_idx_l1_active_minus1: u8,
+                    collocated_ref_idx: u8,
+                    five_minus_max_num_merge_cand: u8,
+                    slice_qp_delta: i8,
+                    slice_cb_qp_offset: i8,
+                    slice_cr_qp_offset: i8,
+                    slice_act_y_qp_offset: i8,
+                    slice_act_cb_qp_offset: i8,
+                    slice_act_cr_qp_offset: i8,
+                    slice_beta_offset_div2: i8,
+                    slice_tc_offset_div2: i8,
+                    pic_struct: u8,
+                    reserved0: [3]u8,
+                    slice_segment_addr: u32,
+                    ref_idx_l0: [16]u8,
+                    ref_idx_l1: [16]u8,
+                    short_term_ref_pic_set_size: u16,
+                    long_term_ref_pic_set_size: u16,
+                    pred_weight_table: PredWeightTable,
+                    reserved1: [2]u8,
+                    flags: u64,
+                };
+            };
+
+            pub const Type = enum(i32) {
+                b = c.V4L2_HEVC_SLICE_TYPE_B,
+                p = c.V4L2_HEVC_SLICE_TYPE_P,
+                i = c.V4L2_HEVC_SLICE_TYPE_I,
+            };
         };
+
         pub const scaling_matrix = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SCALING_MATRIX;
+
+            pub const Ctrl = extern struct {
+                scaling_list_4x4: [6][16]u8,
+                scaling_list_8x8: [6][64]u8,
+                scaling_list_16x16: [6][64]u8,
+                scaling_list_32x32: [2][64]u8,
+                scaling_list_dc_coef_16x16: [6]u8,
+                scaling_list_dc_coef_32x32: [2]u8,
+            };
         };
-        pub const decode_params = struct {
-            pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_PARAMS;
+
+        pub const decode = struct {
+            pub const params = struct {
+                pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_PARAMS;
+
+                pub const Flag = enum(i32) {
+                    irap_pic = c.V4L2_HEVC_DECODE_PARAM_FLAG_IRAP_PIC,
+                    idr_pic = c.V4L2_HEVC_DECODE_PARAM_FLAG_IDR_PIC,
+                    no_output_of_prior = c.V4L2_HEVC_DECODE_PARAM_FLAG_NO_OUTPUT_OF_PRIOR,
+                };
+
+                pub const Ctrl = extern struct {
+                    pic_order_cnt_val: i32,
+                    short_term_ref_pic_set_size: u16,
+                    long_term_ref_pic_set_size: u16,
+                    num_active_dpb_entries: u8,
+                    num_poc_st_curr_before: u8,
+                    num_poc_st_curr_after: u8,
+                    num_poc_lt_curr: u8,
+                    poc_st_curr_before: [16]u8,
+                    poc_st_curr_after: [16]u8,
+                    poc_lt_curr: [16]u8,
+                    num_delta_pocs_of_ref_rps_idx: u8,
+                    reserved: [3]u8,
+                    dpb: [16]dpb.Entry,
+                    flags: u64,
+                };
+            };
         };
-        pub const decode_mode = struct {
+
+        pub const decode_mode = enum(i32) {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_MODE;
+
+            slice_based = c.V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
+            frame_based = c.V4L2_STATELESS_HEVC_DECODE_MODE_FRAME_BASED,
         };
-        pub const start_code = struct {
+
+        pub const start_code = enum(i32) {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_START_CODE;
+
+            none = c.V4L2_STATELESS_HEVC_START_CODE_NONE,
+            annex_b = c.V4L2_STATELESS_HEVC_START_CODE_ANNEX_B,
         };
+
         pub const entry_point_offsets = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS;
+        };
+
+        pub const dpb = struct {
+            pub const Entry = extern struct {
+                timestamp: u64,
+                flags: u8,
+                field_pic: u8,
+                reserved: u16,
+                pic_order_cnt_val: i32,
+            };
+        };
+
+        pub const sei = struct {
+            // @TODO
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_FRAME    0
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_FIELD   1
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_FIELD   2
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_BOTTOM   3
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_TOP   4
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_BOTTOM_TOP   5
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_TOP_BOTTOM  6
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_FRAME_DOUBLING   7
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_FRAME_TRIPLING   8
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_PAIRED_PREVIOUS_BOTTOM 9
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_PAIRED_PREVIOUS_TOP 10
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_TOP_PAIRED_NEXT_BOTTOM  11
+            // #define V4L2_HEVC_SEI_PIC_STRUCT_BOTTOM_PAIRED_NEXT_TOP  12
+
+            // /**
+
+        };
+
+        pub const PredWeightTable = extern struct {
+            delta_luma_weight_l0: [16]i8,
+            luma_offset_l0: [16]i8,
+            delta_chroma_weight_l0: [16][2]i8,
+            chroma_offset_l0: [16][2]i8,
+            delta_luma_weight_l1: [16]i8,
+            luma_offset_l1: [16]i8,
+            delta_chroma_weight_l1: [16][2]i8,
+            chroma_offset_l1: [16][2]i8,
+            luma_log2_weight_denom: u8,
+            delta_chroma_log2_weight_denom: i8,
         };
     };
 
     pub const vp9 = struct {
+        pub const LoopFilter = extern struct {
+            ref_deltas: [4]i8,
+            mode_deltas: [2]i8,
+            level: u8,
+            sharpness: u8,
+            flags: u8,
+            reserved: [7]u8,
+
+            pub const Flag = enum(u32) {
+                enabled = c.V4L2_VP9_LOOP_FILTER_FLAG_DELTA_ENABLED,
+                update = c.V4L2_VP9_LOOP_FILTER_FLAG_DELTA_UPDATE,
+            };
+        };
+
+        pub const Quantization = extern struct {
+            base_q_idx: u8,
+            delta_q_y_dc: i8,
+            delta_q_uv_dc: i8,
+            delta_q_uv_ac: i8,
+            reserved: [4]u8,
+        };
+
+        pub const Segmentation = extern struct {
+            feature_data: [8][4]i16,
+            feature_enabled: [8]u8,
+            tree_probs: [7]u8,
+            pred_probs: [3]u8,
+            flags: u8,
+            reserved: [5]u8,
+
+            pub const Flag = enum(i32) {
+                enabled = c.V4L2_VP9_SEGMENTATION_FLAG_ENABLED,
+                update_map = c.V4L2_VP9_SEGMENTATION_FLAG_UPDATE_MAP,
+                temporal_update = c.V4L2_VP9_SEGMENTATION_FLAG_TEMPORAL_UPDATE,
+                update_data = c.V4L2_VP9_SEGMENTATION_FLAG_UPDATE_DATA,
+                abs_or_delta_update = c.V4L2_VP9_SEGMENTATION_FLAG_ABS_OR_DELTA_UPDATE,
+            };
+
+            pub const Level = enum(i32) {
+                V4L2_VP9_SEG_LVL_ALT_Q = c.V4L2_VP9_SEG_LVL_ALT_Q,
+                V4L2_VP9_SEG_LVL_ALT_L = c.V4L2_VP9_SEG_LVL_ALT_L,
+                V4L2_VP9_SEG_LVL_REF_FRAME = c.V4L2_VP9_SEG_LVL_REF_FRAME,
+                V4L2_VP9_SEG_LVL_SKIP = c.V4L2_VP9_SEG_LVL_SKIP,
+                V4L2_VP9_SEG_LVL_MAX = c.V4L2_VP9_SEG_LVL_MAX,
+            };
+
+            pub const isFeatureEnabled = &c.V4L2_AV1_SEGMENT_FEATURE_ENABLED;
+            pub const featureEnabledMask = c.V4L2_VP9_SEGMENT_FEATURE_ENABLED_MASK;
+        };
+
         pub const frame = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_VP9_FRAME;
+
+            pub const Flag = enum(i32) {
+                key_frame = c.V4L2_VP9_FRAME_FLAG_KEY_FRAME,
+                show_frame = c.V4L2_VP9_FRAME_FLAG_SHOW_FRAME,
+                error_resilient = c.V4L2_VP9_FRAME_FLAG_ERROR_RESILIENT,
+                intra_only = c.V4L2_VP9_FRAME_FLAG_INTRA_ONLY,
+                allow_high_prec_mv = c.V4L2_VP9_FRAME_FLAG_ALLOW_HIGH_PREC_MV,
+                refresh_frame_ctx = c.V4L2_VP9_FRAME_FLAG_REFRESH_FRAME_CTX,
+                parallel_dec_mode = c.V4L2_VP9_FRAME_FLAG_PARALLEL_DEC_MODE,
+                x_subsampling = c.V4L2_VP9_FRAME_FLAG_X_SUBSAMPLING,
+                y_subsampling = c.V4L2_VP9_FRAME_FLAG_Y_SUBSAMPLING,
+                color_range_full_swing = c.V4L2_VP9_FRAME_FLAG_COLOR_RANGE_FULL_SWING,
+            };
+
+            pub const Ctrl = extern struct {
+                lf: LoopFilter,
+                quant: Quantization,
+                seg: Segmentation,
+                flags: u32,
+                compressed_header_size: u16,
+                uncompressed_header_size: u16,
+                frame_width_minus_1: u16,
+                frame_height_minus_1: u16,
+                render_width_minus_1: u16,
+                render_height_minus_1: u16,
+                last_frame_ts: u64,
+                golden_frame_ts: u64,
+                alt_frame_ts: u64,
+                ref_frame_sign_bias: u8,
+                reset_frame_context: u8,
+                frame_context_idx: u8,
+                profile: u8,
+                bit_depth: u8,
+                interpolation_filter: u8,
+                tile_cols_log2: u8,
+                tile_rows_log2: u8,
+                reference_mode: u8,
+                reserved: [7]u8,
+            };
         };
         pub const compressed_hdr = struct {
             pub const id: u32 = c.V4L2_CID_STATELESS_VP9_COMPRESSED_HDR;
+
+            pub const MvProbs = extern struct {
+                joint: [3]u8,
+                sign: [2]u8,
+                classes: [2][10]u8,
+                class0_bit: [2]u8,
+                bits: [2][10]u8,
+                class0_fr: [2][2][3]u8,
+                fr: [2][3]u8,
+                class0_hp: [2]u8,
+                hp: [2]u8,
+            };
+
+            pub const Ctrl = extern struct {
+                tx_mode: u8,
+                tx8: [2][1]u8,
+                tx16: [2][2]u8,
+                tx32: [2][3]u8,
+                coef: [4][2][2][6][6][3]u8,
+                skip: [3]u8,
+                inter_mode: [7][3]u8,
+                interp_filter: [4][2]u8,
+                is_inter: [4]u8,
+                comp_mode: [5]u8,
+                single_ref: [5][2]u8,
+                comp_ref: [5]u8,
+                y_mode: [4][9]u8,
+                uv_mode: [10][9]u8,
+                partition: [16][3]u8,
+                mv: MvProbs,
+            };
         };
     };
 
@@ -2648,34 +3210,293 @@ pub const colorimetry = struct {
     };
     pub const hdr10_mastering_display = struct {
         pub const id: u32 = c.V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY;
-        // #define V4L2_HDR10_MASTERING_PRIMARIES_X_LOW  5
-        // #define V4L2_HDR10_MASTERING_PRIMARIES_X_HIGH 37000
-        // #define V4L2_HDR10_MASTERING_PRIMARIES_Y_LOW  5
-        // #define V4L2_HDR10_MASTERING_PRIMARIES_Y_HIGH 42000
-        // #define V4L2_HDR10_MASTERING_WHITE_POINT_X_LOW  5
-        // #define V4L2_HDR10_MASTERING_WHITE_POINT_X_HIGH 37000
-        // #define V4L2_HDR10_MASTERING_WHITE_POINT_Y_LOW  5
-        // #define V4L2_HDR10_MASTERING_WHITE_POINT_Y_HIGH 42000
-        // #define V4L2_HDR10_MASTERING_MAX_LUMA_LOW  50000
-        // #define V4L2_HDR10_MASTERING_MAX_LUMA_HIGH 100000000
-        // #define V4L2_HDR10_MASTERING_MIN_LUMA_LOW  1
-        // #define V4L2_HDR10_MASTERING_MIN_LUMA_HIGH 50000
+
+        pub const Primaries = enum(i32) {
+            x_low = c.V4L2_HDR10_MASTERING_PRIMARIES_X_LOW,
+            x_high = c.V4L2_HDR10_MASTERING_PRIMARIES_X_HIGH,
+            y_low = c.V4L2_HDR10_MASTERING_PRIMARIES_Y_LOW,
+            y_high = c.V4L2_HDR10_MASTERING_PRIMARIES_Y_HIGH,
+        };
+
+        pub const WhitePoint = enum(i32) {
+            x_low = c.V4L2_HDR10_MASTERING_WHITE_POINT_X_LOW,
+            x_high = c.V4L2_HDR10_MASTERING_WHITE_POINT_X_HIGH,
+            y_low = c.V4L2_HDR10_MASTERING_WHITE_POINT_Y_LOW,
+            y_high = c.V4L2_HDR10_MASTERING_WHITE_POINT_Y_HIGH,
+        };
+
+        pub const Luma = enum(i32) {
+            max_luma_low = c.V4L2_HDR10_MASTERING_MAX_LUMA_LOW,
+            max_luma_high = c.V4L2_HDR10_MASTERING_MAX_LUMA_HIGH,
+            min_luma_low = c.V4L2_HDR10_MASTERING_MIN_LUMA_LOW,
+            min_luma_high = c.V4L2_HDR10_MASTERING_MIN_LUMA_HIGH,
+        };
     };
 };
 
-// #define V4L2_CTRL_CLASS_MPEG (V4L2_CTRL_CLASS_CODEC)
-pub const V4L2_CID_MPEG_CLASS = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_CLASS;
-};
-pub const V4L2_CID_MPEG_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_BASE;
-};
-pub const V4L2_CID_MPEG_CX2341X_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_BASE;
-};
-pub const V4L2_CID_MPEG_MFC51_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_BASE;
-};
+test "stateless.hevc.sps.Ctrl ABI matches struct_v4l2_ctrl_hevc_sps" {
+    const C = c.struct_v4l2_ctrl_hevc_sps;
+    const Z = stateless.hevc.sps.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "video_parameter_set_id"), @offsetOf(Z, "video_parameter_set_id"));
+    try std.testing.expectEqual(@offsetOf(C, "seq_parameter_set_id"), @offsetOf(Z, "seq_parameter_set_id"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_width_in_luma_samples"), @offsetOf(Z, "pic_width_in_luma_samples"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_height_in_luma_samples"), @offsetOf(Z, "pic_height_in_luma_samples"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_depth_luma_minus8"), @offsetOf(Z, "bit_depth_luma_minus8"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_depth_chroma_minus8"), @offsetOf(Z, "bit_depth_chroma_minus8"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_max_pic_order_cnt_lsb_minus4"), @offsetOf(Z, "log2_max_pic_order_cnt_lsb_minus4"));
+    try std.testing.expectEqual(@offsetOf(C, "sps_max_dec_pic_buffering_minus1"), @offsetOf(Z, "sps_max_dec_pic_buffering_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "sps_max_num_reorder_pics"), @offsetOf(Z, "sps_max_num_reorder_pics"));
+    try std.testing.expectEqual(@offsetOf(C, "sps_max_latency_increase_plus1"), @offsetOf(Z, "sps_max_latency_increase_plus1"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_min_luma_coding_block_size_minus3"), @offsetOf(Z, "log2_min_luma_coding_block_size_minus3"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_diff_max_min_luma_coding_block_size"), @offsetOf(Z, "log2_diff_max_min_luma_coding_block_size"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_min_luma_transform_block_size_minus2"), @offsetOf(Z, "log2_min_luma_transform_block_size_minus2"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_diff_max_min_luma_transform_block_size"), @offsetOf(Z, "log2_diff_max_min_luma_transform_block_size"));
+    try std.testing.expectEqual(@offsetOf(C, "max_transform_hierarchy_depth_inter"), @offsetOf(Z, "max_transform_hierarchy_depth_inter"));
+    try std.testing.expectEqual(@offsetOf(C, "max_transform_hierarchy_depth_intra"), @offsetOf(Z, "max_transform_hierarchy_depth_intra"));
+    try std.testing.expectEqual(@offsetOf(C, "pcm_sample_bit_depth_luma_minus1"), @offsetOf(Z, "pcm_sample_bit_depth_luma_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "pcm_sample_bit_depth_chroma_minus1"), @offsetOf(Z, "pcm_sample_bit_depth_chroma_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_min_pcm_luma_coding_block_size_minus3"), @offsetOf(Z, "log2_min_pcm_luma_coding_block_size_minus3"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_diff_max_min_pcm_luma_coding_block_size"), @offsetOf(Z, "log2_diff_max_min_pcm_luma_coding_block_size"));
+    try std.testing.expectEqual(@offsetOf(C, "num_short_term_ref_pic_sets"), @offsetOf(Z, "num_short_term_ref_pic_sets"));
+    try std.testing.expectEqual(@offsetOf(C, "num_long_term_ref_pics_sps"), @offsetOf(Z, "num_long_term_ref_pics_sps"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_format_idc"), @offsetOf(Z, "chroma_format_idc"));
+    try std.testing.expectEqual(@offsetOf(C, "sps_max_sub_layers_minus1"), @offsetOf(Z, "sps_max_sub_layers_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.hevc.pps.Ctrl ABI matches struct_v4l2_ctrl_hevc_pps" {
+    const C = c.struct_v4l2_ctrl_hevc_pps;
+    const Z = stateless.hevc.pps.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "pic_parameter_set_id"), @offsetOf(Z, "pic_parameter_set_id"));
+    try std.testing.expectEqual(@offsetOf(C, "num_extra_slice_header_bits"), @offsetOf(Z, "num_extra_slice_header_bits"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l0_default_active_minus1"), @offsetOf(Z, "num_ref_idx_l0_default_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l1_default_active_minus1"), @offsetOf(Z, "num_ref_idx_l1_default_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "init_qp_minus26"), @offsetOf(Z, "init_qp_minus26"));
+    try std.testing.expectEqual(@offsetOf(C, "diff_cu_qp_delta_depth"), @offsetOf(Z, "diff_cu_qp_delta_depth"));
+    try std.testing.expectEqual(@offsetOf(C, "pps_cb_qp_offset"), @offsetOf(Z, "pps_cb_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "pps_cr_qp_offset"), @offsetOf(Z, "pps_cr_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "num_tile_columns_minus1"), @offsetOf(Z, "num_tile_columns_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "num_tile_rows_minus1"), @offsetOf(Z, "num_tile_rows_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "column_width_minus1"), @offsetOf(Z, "column_width_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "row_height_minus1"), @offsetOf(Z, "row_height_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "pps_beta_offset_div2"), @offsetOf(Z, "pps_beta_offset_div2"));
+    try std.testing.expectEqual(@offsetOf(C, "pps_tc_offset_div2"), @offsetOf(Z, "pps_tc_offset_div2"));
+    try std.testing.expectEqual(@offsetOf(C, "log2_parallel_merge_level_minus2"), @offsetOf(Z, "log2_parallel_merge_level_minus2"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.hevc.scaling_matrix.Ctrl ABI matches struct_v4l2_ctrl_hevc_scaling_matrix" {
+    const C = c.struct_v4l2_ctrl_hevc_scaling_matrix;
+    const Z = stateless.hevc.scaling_matrix.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_4x4"), @offsetOf(Z, "scaling_list_4x4"));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_8x8"), @offsetOf(Z, "scaling_list_8x8"));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_16x16"), @offsetOf(Z, "scaling_list_16x16"));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_32x32"), @offsetOf(Z, "scaling_list_32x32"));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_dc_coef_16x16"), @offsetOf(Z, "scaling_list_dc_coef_16x16"));
+    try std.testing.expectEqual(@offsetOf(C, "scaling_list_dc_coef_32x32"), @offsetOf(Z, "scaling_list_dc_coef_32x32"));
+}
+
+test "stateless.hevc.dpb.Entry ABI matches struct_v4l2_hevc_dpb_entry" {
+    const C = c.struct_v4l2_hevc_dpb_entry;
+    const Z = stateless.hevc.dpb.Entry;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "timestamp"), @offsetOf(Z, "timestamp"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "field_pic"), @offsetOf(Z, "field_pic"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_order_cnt_val"), @offsetOf(Z, "pic_order_cnt_val"));
+}
+
+test "stateless.hevc.PredWeightTable ABI matches struct_v4l2_hevc_pred_weight_table" {
+    const C = c.struct_v4l2_hevc_pred_weight_table;
+    const Z = stateless.hevc.PredWeightTable;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "delta_luma_weight_l0"), @offsetOf(Z, "delta_luma_weight_l0"));
+    try std.testing.expectEqual(@offsetOf(C, "luma_offset_l0"), @offsetOf(Z, "luma_offset_l0"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_chroma_weight_l0"), @offsetOf(Z, "delta_chroma_weight_l0"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_offset_l0"), @offsetOf(Z, "chroma_offset_l0"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_luma_weight_l1"), @offsetOf(Z, "delta_luma_weight_l1"));
+    try std.testing.expectEqual(@offsetOf(C, "luma_offset_l1"), @offsetOf(Z, "luma_offset_l1"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_chroma_weight_l1"), @offsetOf(Z, "delta_chroma_weight_l1"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_offset_l1"), @offsetOf(Z, "chroma_offset_l1"));
+    try std.testing.expectEqual(@offsetOf(C, "luma_log2_weight_denom"), @offsetOf(Z, "luma_log2_weight_denom"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_chroma_log2_weight_denom"), @offsetOf(Z, "delta_chroma_log2_weight_denom"));
+}
+
+test "stateless.hevc.slice.params.Ctrl ABI matches struct_v4l2_ctrl_hevc_slice_params" {
+    const C = c.struct_v4l2_ctrl_hevc_slice_params;
+    const Z = stateless.hevc.slice.params.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "bit_size"), @offsetOf(Z, "bit_size"));
+    try std.testing.expectEqual(@offsetOf(C, "data_byte_offset"), @offsetOf(Z, "data_byte_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "num_entry_point_offsets"), @offsetOf(Z, "num_entry_point_offsets"));
+    try std.testing.expectEqual(@offsetOf(C, "nal_unit_type"), @offsetOf(Z, "nal_unit_type"));
+    try std.testing.expectEqual(@offsetOf(C, "nuh_temporal_id_plus1"), @offsetOf(Z, "nuh_temporal_id_plus1"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_type"), @offsetOf(Z, "slice_type"));
+    try std.testing.expectEqual(@offsetOf(C, "colour_plane_id"), @offsetOf(Z, "colour_plane_id"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_pic_order_cnt"), @offsetOf(Z, "slice_pic_order_cnt"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l0_active_minus1"), @offsetOf(Z, "num_ref_idx_l0_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "num_ref_idx_l1_active_minus1"), @offsetOf(Z, "num_ref_idx_l1_active_minus1"));
+    try std.testing.expectEqual(@offsetOf(C, "collocated_ref_idx"), @offsetOf(Z, "collocated_ref_idx"));
+    try std.testing.expectEqual(@offsetOf(C, "five_minus_max_num_merge_cand"), @offsetOf(Z, "five_minus_max_num_merge_cand"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_qp_delta"), @offsetOf(Z, "slice_qp_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_cb_qp_offset"), @offsetOf(Z, "slice_cb_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_cr_qp_offset"), @offsetOf(Z, "slice_cr_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_act_y_qp_offset"), @offsetOf(Z, "slice_act_y_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_act_cb_qp_offset"), @offsetOf(Z, "slice_act_cb_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_act_cr_qp_offset"), @offsetOf(Z, "slice_act_cr_qp_offset"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_beta_offset_div2"), @offsetOf(Z, "slice_beta_offset_div2"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_tc_offset_div2"), @offsetOf(Z, "slice_tc_offset_div2"));
+    try std.testing.expectEqual(@offsetOf(C, "pic_struct"), @offsetOf(Z, "pic_struct"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved0"), @offsetOf(Z, "reserved0"));
+    try std.testing.expectEqual(@offsetOf(C, "slice_segment_addr"), @offsetOf(Z, "slice_segment_addr"));
+    try std.testing.expectEqual(@offsetOf(C, "ref_idx_l0"), @offsetOf(Z, "ref_idx_l0"));
+    try std.testing.expectEqual(@offsetOf(C, "ref_idx_l1"), @offsetOf(Z, "ref_idx_l1"));
+    try std.testing.expectEqual(@offsetOf(C, "short_term_ref_pic_set_size"), @offsetOf(Z, "short_term_ref_pic_set_size"));
+    try std.testing.expectEqual(@offsetOf(C, "long_term_ref_pic_set_size"), @offsetOf(Z, "long_term_ref_pic_set_size"));
+    try std.testing.expectEqual(@offsetOf(C, "pred_weight_table"), @offsetOf(Z, "pred_weight_table"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved1"), @offsetOf(Z, "reserved1"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.hevc.decode.params.Ctrl ABI matches struct_v4l2_ctrl_hevc_decode_params" {
+    const C = c.struct_v4l2_ctrl_hevc_decode_params;
+    const Z = stateless.hevc.decode.params.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "pic_order_cnt_val"), @offsetOf(Z, "pic_order_cnt_val"));
+    try std.testing.expectEqual(@offsetOf(C, "short_term_ref_pic_set_size"), @offsetOf(Z, "short_term_ref_pic_set_size"));
+    try std.testing.expectEqual(@offsetOf(C, "long_term_ref_pic_set_size"), @offsetOf(Z, "long_term_ref_pic_set_size"));
+    try std.testing.expectEqual(@offsetOf(C, "num_active_dpb_entries"), @offsetOf(Z, "num_active_dpb_entries"));
+    try std.testing.expectEqual(@offsetOf(C, "num_poc_st_curr_before"), @offsetOf(Z, "num_poc_st_curr_before"));
+    try std.testing.expectEqual(@offsetOf(C, "num_poc_st_curr_after"), @offsetOf(Z, "num_poc_st_curr_after"));
+    try std.testing.expectEqual(@offsetOf(C, "num_poc_lt_curr"), @offsetOf(Z, "num_poc_lt_curr"));
+    try std.testing.expectEqual(@offsetOf(C, "poc_st_curr_before"), @offsetOf(Z, "poc_st_curr_before"));
+    try std.testing.expectEqual(@offsetOf(C, "poc_st_curr_after"), @offsetOf(Z, "poc_st_curr_after"));
+    try std.testing.expectEqual(@offsetOf(C, "poc_lt_curr"), @offsetOf(Z, "poc_lt_curr"));
+    try std.testing.expectEqual(@offsetOf(C, "num_delta_pocs_of_ref_rps_idx"), @offsetOf(Z, "num_delta_pocs_of_ref_rps_idx"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try std.testing.expectEqual(@offsetOf(C, "dpb"), @offsetOf(Z, "dpb"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.vp9.LoopFilter ABI matches struct_v4l2_vp9_loop_filter" {
+    const C = c.struct_v4l2_vp9_loop_filter;
+    const Z = stateless.vp9.LoopFilter;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "ref_deltas"), @offsetOf(Z, "ref_deltas"));
+    try std.testing.expectEqual(@offsetOf(C, "mode_deltas"), @offsetOf(Z, "mode_deltas"));
+    try std.testing.expectEqual(@offsetOf(C, "level"), @offsetOf(Z, "level"));
+    try std.testing.expectEqual(@offsetOf(C, "sharpness"), @offsetOf(Z, "sharpness"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "stateless.vp9.Quantization ABI matches struct_v4l2_vp9_quantization" {
+    const C = c.struct_v4l2_vp9_quantization;
+    const Z = stateless.vp9.Quantization;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "base_q_idx"), @offsetOf(Z, "base_q_idx"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_q_y_dc"), @offsetOf(Z, "delta_q_y_dc"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_q_uv_dc"), @offsetOf(Z, "delta_q_uv_dc"));
+    try std.testing.expectEqual(@offsetOf(C, "delta_q_uv_ac"), @offsetOf(Z, "delta_q_uv_ac"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "stateless.vp9.Segmentation ABI matches struct_v4l2_vp9_segmentation" {
+    const C = c.struct_v4l2_vp9_segmentation;
+    const Z = stateless.vp9.Segmentation;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "feature_data"), @offsetOf(Z, "feature_data"));
+    try std.testing.expectEqual(@offsetOf(C, "feature_enabled"), @offsetOf(Z, "feature_enabled"));
+    try std.testing.expectEqual(@offsetOf(C, "tree_probs"), @offsetOf(Z, "tree_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "pred_probs"), @offsetOf(Z, "pred_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "stateless.vp9.frame.Ctrl ABI matches struct_v4l2_ctrl_vp9_frame" {
+    const C = c.struct_v4l2_ctrl_vp9_frame;
+    const Z = stateless.vp9.frame.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "lf"), @offsetOf(Z, "lf"));
+    try std.testing.expectEqual(@offsetOf(C, "quant"), @offsetOf(Z, "quant"));
+    try std.testing.expectEqual(@offsetOf(C, "seg"), @offsetOf(Z, "seg"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "compressed_header_size"), @offsetOf(Z, "compressed_header_size"));
+    try std.testing.expectEqual(@offsetOf(C, "uncompressed_header_size"), @offsetOf(Z, "uncompressed_header_size"));
+    try std.testing.expectEqual(@offsetOf(C, "frame_width_minus_1"), @offsetOf(Z, "frame_width_minus_1"));
+    try std.testing.expectEqual(@offsetOf(C, "frame_height_minus_1"), @offsetOf(Z, "frame_height_minus_1"));
+    try std.testing.expectEqual(@offsetOf(C, "render_width_minus_1"), @offsetOf(Z, "render_width_minus_1"));
+    try std.testing.expectEqual(@offsetOf(C, "render_height_minus_1"), @offsetOf(Z, "render_height_minus_1"));
+    try std.testing.expectEqual(@offsetOf(C, "last_frame_ts"), @offsetOf(Z, "last_frame_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "golden_frame_ts"), @offsetOf(Z, "golden_frame_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "alt_frame_ts"), @offsetOf(Z, "alt_frame_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "ref_frame_sign_bias"), @offsetOf(Z, "ref_frame_sign_bias"));
+    try std.testing.expectEqual(@offsetOf(C, "reset_frame_context"), @offsetOf(Z, "reset_frame_context"));
+    try std.testing.expectEqual(@offsetOf(C, "frame_context_idx"), @offsetOf(Z, "frame_context_idx"));
+    try std.testing.expectEqual(@offsetOf(C, "profile"), @offsetOf(Z, "profile"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_depth"), @offsetOf(Z, "bit_depth"));
+    try std.testing.expectEqual(@offsetOf(C, "interpolation_filter"), @offsetOf(Z, "interpolation_filter"));
+    try std.testing.expectEqual(@offsetOf(C, "tile_cols_log2"), @offsetOf(Z, "tile_cols_log2"));
+    try std.testing.expectEqual(@offsetOf(C, "tile_rows_log2"), @offsetOf(Z, "tile_rows_log2"));
+    try std.testing.expectEqual(@offsetOf(C, "reference_mode"), @offsetOf(Z, "reference_mode"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "stateless.vp9.compressed_hdr.MvProbs ABI matches struct_v4l2_vp9_mv_probs" {
+    const C = c.struct_v4l2_vp9_mv_probs;
+    const Z = stateless.vp9.compressed_hdr.MvProbs;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "joint"), @offsetOf(Z, "joint"));
+    try std.testing.expectEqual(@offsetOf(C, "sign"), @offsetOf(Z, "sign"));
+    try std.testing.expectEqual(@offsetOf(C, "classes"), @offsetOf(Z, "classes"));
+    try std.testing.expectEqual(@offsetOf(C, "class0_bit"), @offsetOf(Z, "class0_bit"));
+    try std.testing.expectEqual(@offsetOf(C, "bits"), @offsetOf(Z, "bits"));
+    try std.testing.expectEqual(@offsetOf(C, "class0_fr"), @offsetOf(Z, "class0_fr"));
+    try std.testing.expectEqual(@offsetOf(C, "fr"), @offsetOf(Z, "fr"));
+    try std.testing.expectEqual(@offsetOf(C, "class0_hp"), @offsetOf(Z, "class0_hp"));
+    try std.testing.expectEqual(@offsetOf(C, "hp"), @offsetOf(Z, "hp"));
+}
+
+test "stateless.vp9.compressed_hdr.Ctrl ABI matches struct_v4l2_ctrl_vp9_compressed_hdr" {
+    const C = c.struct_v4l2_ctrl_vp9_compressed_hdr;
+    const Z = stateless.vp9.compressed_hdr.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "tx_mode"), @offsetOf(Z, "tx_mode"));
+    try std.testing.expectEqual(@offsetOf(C, "tx8"), @offsetOf(Z, "tx8"));
+    try std.testing.expectEqual(@offsetOf(C, "tx16"), @offsetOf(Z, "tx16"));
+    try std.testing.expectEqual(@offsetOf(C, "tx32"), @offsetOf(Z, "tx32"));
+    try std.testing.expectEqual(@offsetOf(C, "coef"), @offsetOf(Z, "coef"));
+    try std.testing.expectEqual(@offsetOf(C, "skip"), @offsetOf(Z, "skip"));
+    try std.testing.expectEqual(@offsetOf(C, "inter_mode"), @offsetOf(Z, "inter_mode"));
+    try std.testing.expectEqual(@offsetOf(C, "interp_filter"), @offsetOf(Z, "interp_filter"));
+    try std.testing.expectEqual(@offsetOf(C, "is_inter"), @offsetOf(Z, "is_inter"));
+    try std.testing.expectEqual(@offsetOf(C, "comp_mode"), @offsetOf(Z, "comp_mode"));
+    try std.testing.expectEqual(@offsetOf(C, "single_ref"), @offsetOf(Z, "single_ref"));
+    try std.testing.expectEqual(@offsetOf(C, "comp_ref"), @offsetOf(Z, "comp_ref"));
+    try std.testing.expectEqual(@offsetOf(C, "y_mode"), @offsetOf(Z, "y_mode"));
+    try std.testing.expectEqual(@offsetOf(C, "uv_mode"), @offsetOf(Z, "uv_mode"));
+    try std.testing.expectEqual(@offsetOf(C, "partition"), @offsetOf(Z, "partition"));
+    try std.testing.expectEqual(@offsetOf(C, "mv"), @offsetOf(Z, "mv"));
+}
 
 test "Control ABI matches struct_v4l2_control" {
     const C = c.struct_v4l2_control;
@@ -2873,4 +3694,134 @@ test "stateless.h264.dpb.Entry ABI matches struct_v4l2_h264_dpb_entry" {
     try std.testing.expectEqual(@offsetOf(C, "top_field_order_cnt"), @offsetOf(Z, "top_field_order_cnt"));
     try std.testing.expectEqual(@offsetOf(C, "bottom_field_order_cnt"), @offsetOf(Z, "bottom_field_order_cnt"));
     try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.vp8.Segment ABI matches struct_v4l2_vp8_segment" {
+    const C = c.struct_v4l2_vp8_segment;
+    const Z = stateless.vp8.Segment;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "quant_update"), @offsetOf(Z, "quant_update"));
+    try std.testing.expectEqual(@offsetOf(C, "lf_update"), @offsetOf(Z, "lf_update"));
+    try std.testing.expectEqual(@offsetOf(C, "segment_probs"), @offsetOf(Z, "segment_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "padding"), @offsetOf(Z, "padding"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.vp8.LoopFilter ABI matches struct_v4l2_vp8_loop_filter" {
+    const C = c.struct_v4l2_vp8_loop_filter;
+    const Z = stateless.vp8.LoopFilter;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "ref_frm_delta"), @offsetOf(Z, "ref_frm_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "mb_mode_delta"), @offsetOf(Z, "mb_mode_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "sharpness_level"), @offsetOf(Z, "sharpness_level"));
+    try std.testing.expectEqual(@offsetOf(C, "level"), @offsetOf(Z, "level"));
+    try std.testing.expectEqual(@offsetOf(C, "padding"), @offsetOf(Z, "padding"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.vp8.Quantization ABI matches struct_v4l2_vp8_quantization" {
+    const C = c.struct_v4l2_vp8_quantization;
+    const Z = stateless.vp8.Quantization;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "y_ac_qi"), @offsetOf(Z, "y_ac_qi"));
+    try std.testing.expectEqual(@offsetOf(C, "y_dc_delta"), @offsetOf(Z, "y_dc_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "y2_dc_delta"), @offsetOf(Z, "y2_dc_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "y2_ac_delta"), @offsetOf(Z, "y2_ac_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "uv_dc_delta"), @offsetOf(Z, "uv_dc_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "uv_ac_delta"), @offsetOf(Z, "uv_ac_delta"));
+    try std.testing.expectEqual(@offsetOf(C, "padding"), @offsetOf(Z, "padding"));
+}
+
+test "stateless.vp8.Entropy ABI matches struct_v4l2_vp8_entropy" {
+    const C = c.struct_v4l2_vp8_entropy;
+    const Z = stateless.vp8.Entropy;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "coeff_probs"), @offsetOf(Z, "coeff_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "y_mode_probs"), @offsetOf(Z, "y_mode_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "uv_mode_probs"), @offsetOf(Z, "uv_mode_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "mv_probs"), @offsetOf(Z, "mv_probs"));
+    try std.testing.expectEqual(@offsetOf(C, "padding"), @offsetOf(Z, "padding"));
+}
+
+test "stateless.vp8.EntropyCoderState ABI matches struct_v4l2_vp8_entropy_coder_state" {
+    const C = c.struct_v4l2_vp8_entropy_coder_state;
+    const Z = stateless.vp8.EntropyCoderState;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "range"), @offsetOf(Z, "range"));
+    try std.testing.expectEqual(@offsetOf(C, "value"), @offsetOf(Z, "value"));
+    try std.testing.expectEqual(@offsetOf(C, "bit_count"), @offsetOf(Z, "bit_count"));
+    try std.testing.expectEqual(@offsetOf(C, "padding"), @offsetOf(Z, "padding"));
+}
+
+test "stateless.vp8.Frame ABI matches struct_v4l2_ctrl_vp8_frame" {
+    const C = c.struct_v4l2_ctrl_vp8_frame;
+    const Z = stateless.vp8.Frame;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "segment"), @offsetOf(Z, "segment"));
+    try std.testing.expectEqual(@offsetOf(C, "lf"), @offsetOf(Z, "lf"));
+    try std.testing.expectEqual(@offsetOf(C, "quant"), @offsetOf(Z, "quant"));
+    try std.testing.expectEqual(@offsetOf(C, "entropy"), @offsetOf(Z, "entropy"));
+    try std.testing.expectEqual(@offsetOf(C, "coder_state"), @offsetOf(Z, "coder_state"));
+    try std.testing.expectEqual(@offsetOf(C, "width"), @offsetOf(Z, "width"));
+    try std.testing.expectEqual(@offsetOf(C, "height"), @offsetOf(Z, "height"));
+    try std.testing.expectEqual(@offsetOf(C, "horizontal_scale"), @offsetOf(Z, "horizontal_scale"));
+    try std.testing.expectEqual(@offsetOf(C, "vertical_scale"), @offsetOf(Z, "vertical_scale"));
+    try std.testing.expectEqual(@offsetOf(C, "version"), @offsetOf(Z, "version"));
+    try std.testing.expectEqual(@offsetOf(C, "prob_skip_false"), @offsetOf(Z, "prob_skip_false"));
+    try std.testing.expectEqual(@offsetOf(C, "prob_intra"), @offsetOf(Z, "prob_intra"));
+    try std.testing.expectEqual(@offsetOf(C, "prob_last"), @offsetOf(Z, "prob_last"));
+    try std.testing.expectEqual(@offsetOf(C, "prob_gf"), @offsetOf(Z, "prob_gf"));
+    try std.testing.expectEqual(@offsetOf(C, "num_dct_parts"), @offsetOf(Z, "num_dct_parts"));
+    try std.testing.expectEqual(@offsetOf(C, "first_part_size"), @offsetOf(Z, "first_part_size"));
+    try std.testing.expectEqual(@offsetOf(C, "first_part_header_bits"), @offsetOf(Z, "first_part_header_bits"));
+    try std.testing.expectEqual(@offsetOf(C, "dct_part_sizes"), @offsetOf(Z, "dct_part_sizes"));
+    try std.testing.expectEqual(@offsetOf(C, "last_frame_ts"), @offsetOf(Z, "last_frame_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "golden_frame_ts"), @offsetOf(Z, "golden_frame_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "alt_frame_ts"), @offsetOf(Z, "alt_frame_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.mpeg2.sequence.Ctrl ABI matches struct_v4l2_ctrl_mpeg2_sequence" {
+    const C = c.struct_v4l2_ctrl_mpeg2_sequence;
+    const Z = stateless.mpeg2.sequence.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "horizontal_size"), @offsetOf(Z, "horizontal_size"));
+    try std.testing.expectEqual(@offsetOf(C, "vertical_size"), @offsetOf(Z, "vertical_size"));
+    try std.testing.expectEqual(@offsetOf(C, "vbv_buffer_size"), @offsetOf(Z, "vbv_buffer_size"));
+    try std.testing.expectEqual(@offsetOf(C, "profile_and_level_indication"), @offsetOf(Z, "profile_and_level_indication"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_format"), @offsetOf(Z, "chroma_format"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+}
+
+test "stateless.mpeg2.picture.Ctrl ABI matches struct_v4l2_ctrl_mpeg2_picture" {
+    const C = c.struct_v4l2_ctrl_mpeg2_picture;
+    const Z = stateless.mpeg2.picture.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "backward_ref_ts"), @offsetOf(Z, "backward_ref_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "forward_ref_ts"), @offsetOf(Z, "forward_ref_ts"));
+    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try std.testing.expectEqual(@offsetOf(C, "f_code"), @offsetOf(Z, "f_code"));
+    try std.testing.expectEqual(@offsetOf(C, "picture_coding_type"), @offsetOf(Z, "picture_coding_type"));
+    try std.testing.expectEqual(@offsetOf(C, "picture_structure"), @offsetOf(Z, "picture_structure"));
+    try std.testing.expectEqual(@offsetOf(C, "intra_dc_precision"), @offsetOf(Z, "intra_dc_precision"));
+    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+}
+
+test "stateless.mpeg2.quantisation.Ctrl ABI matches struct_v4l2_ctrl_mpeg2_quantisation" {
+    const C = c.struct_v4l2_ctrl_mpeg2_quantisation;
+    const Z = stateless.mpeg2.quantisation.Ctrl;
+    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
+    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
+    try std.testing.expectEqual(@offsetOf(C, "intra_quantiser_matrix"), @offsetOf(Z, "intra_quantiser_matrix"));
+    try std.testing.expectEqual(@offsetOf(C, "non_intra_quantiser_matrix"), @offsetOf(Z, "non_intra_quantiser_matrix"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_intra_quantiser_matrix"), @offsetOf(Z, "chroma_intra_quantiser_matrix"));
+    try std.testing.expectEqual(@offsetOf(C, "chroma_non_intra_quantiser_matrix"), @offsetOf(Z, "chroma_non_intra_quantiser_matrix"));
 }
