@@ -413,6 +413,10 @@ pub const codec = struct {
     pub const cx2341x_base = struct {
         pub const id: u32 = c.V4L2_CID_CODEC_CX2341X_BASE;
     };
+
+    pub const mfc51_base = struct {
+        pub const id: u32 = c.V4L2_CID_CODEC_MFC51_BASE;
+    };
 };
 
 pub const mpeg = struct {
@@ -1477,57 +1481,142 @@ pub const mpeg = struct {
             pub const Profile = enum(i32) {
                 pub const id: u32 = c.V4L2_CID_MPEG_VIDEO_AV1_PROFILE;
 
-                V4L2_MPEG_VIDEO_AV1_PROFILE_MAIN = c.V4L2_MPEG_VIDEO_AV1_PROFILE_MAIN,
-                V4L2_MPEG_VIDEO_AV1_PROFILE_HIGH = c.V4L2_MPEG_VIDEO_AV1_PROFILE_HIGH,
-                V4L2_MPEG_VIDEO_AV1_PROFILE_PROFESSIONAL = c.V4L2_MPEG_VIDEO_AV1_PROFILE_PROFESSIONAL,
+                main = c.V4L2_MPEG_VIDEO_AV1_PROFILE_MAIN,
+                high = c.V4L2_MPEG_VIDEO_AV1_PROFILE_HIGH,
+                professional = c.V4L2_MPEG_VIDEO_AV1_PROFILE_PROFESSIONAL,
             };
-            pub const V4L2_CID_MPEG_VIDEO_AV1_LEVEL = struct {
+
+            pub const Level = enum(i32) {
                 pub const id: u32 = c.V4L2_CID_MPEG_VIDEO_AV1_LEVEL;
+
+                lvl_2_0 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_2_0,
+                lvl_2_1 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_2_1,
+                lvl_2_2 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_2_2,
+                lvl_2_3 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_2_3,
+                lvl_3_0 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_3_0,
+                lvl_3_1 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_3_1,
+                lvl_3_2 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_3_2,
+                lvl_3_3 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_3_3,
+                lvl_4_0 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_4_0,
+                lvl_4_1 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_4_1,
+                lvl_4_2 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_4_2,
+                lvl_4_3 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_4_3,
+                lvl_5_0 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_5_0,
+                lvl_5_1 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_5_1,
+                lvl_5_2 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_5_2,
+                lvl_5_3 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_5_3,
+                lvl_6_0 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_6_0,
+                lvl_6_1 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_6_1,
+                lvl_6_2 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_6_2,
+                lvl_6_3 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_6_3,
+                lvl_7_0 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_7_0,
+                lvl_7_1 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_7_1,
+                lvl_7_2 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_7_2,
+                lvl_7_3 = c.V4L2_MPEG_VIDEO_AV1_LEVEL_7_3,
             };
-            pub const V4L2_CID_MPEG_VIDEO_AVERAGE_QP = struct {
+
+            pub const AverageQp = struct {
                 pub const id: u32 = c.V4L2_CID_MPEG_VIDEO_AVERAGE_QP;
             };
         };
+    }; // video
 
-        pub const cx2341x = struct {
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE;
+    pub const cx2341x = struct {
+        pub const codec = struct {
+            pub const base: u32 = c.V4L2_CID_CODEC_CX2341X_BASE;
+        };
+
+        pub const video = struct {
+            pub const filter = struct {
+                pub const spatial = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER;
+
+                    pub const Mode = enum(i32) {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE;
+
+                        manual = c.V4L2_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE_MANUAL,
+                        auto = c.V4L2_MPEG_CX2341X_VIDEO_SPATIAL_FILTER_MODE_AUTO,
+                    };
+
+                    pub const Luma = enum(i32) {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE;
+
+                        off = c.V4L2_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE_OFF,
+                        hor_1d = c.V4L2_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE_1D_HOR,
+                        vert_1d = c.V4L2_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE_1D_VERT,
+                        hv_separable_2d = c.V4L2_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE_2D_HV_SEPARABLE,
+                        sym_non_separable_2d = c.V4L2_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE_2D_SYM_NON_SEPARABLE,
+                    };
+
+                    pub const Chroma = enum(i32) {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_SPATIAL_FILTER_TYPE;
+
+                        OFF = c.V4L2_MPEG_CX2341X_VIDEO_CHROMA_SPATIAL_FILTER_TYPE_OFF,
+                        HOR_1D = c.V4L2_MPEG_CX2341X_VIDEO_CHROMA_SPATIAL_FILTER_TYPE_1D_HOR,
+                    };
+                };
+
+                pub const temporal = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER;
+
+                    pub const Mode = enum(i32) {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER_MODE;
+
+                        manual = c.V4L2_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER_MODE_MANUAL,
+                        auto = c.V4L2_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER_MODE_AUTO,
+                    };
+                };
+
+                pub const Median = enum(i32) {
+                    pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE;
+
+                    off = c.V4L2_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE_OFF,
+                    hor = c.V4L2_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE_HOR,
+                    vert = c.V4L2_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE_VERT,
+                    hor_vert = c.V4L2_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE_HOR_VERT,
+                    diag = c.V4L2_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE_DIAG,
+
+                    pub const luma_bottom = struct {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_MEDIAN_FILTER_BOTTOM;
+                    };
+
+                    pub const luma_top = struct {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_MEDIAN_FILTER_TOP;
+                    };
+
+                    pub const chroma_bottom = struct {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_MEDIAN_FILTER_BOTTOM;
+                    };
+
+                    pub const chroma_top = struct {
+                        pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_MEDIAN_FILTER_TOP;
+                    };
+                };
             };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_SPATIAL_FILTER;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_SPATIAL_FILTER_TYPE;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_SPATIAL_FILTER_TYPE = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_SPATIAL_FILTER_TYPE;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER_MODE = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER_MODE;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_TEMPORAL_FILTER;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_MEDIAN_FILTER_TYPE;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_MEDIAN_FILTER_BOTTOM = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_MEDIAN_FILTER_BOTTOM;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_MEDIAN_FILTER_TOP = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_LUMA_MEDIAN_FILTER_TOP;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_MEDIAN_FILTER_BOTTOM = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_MEDIAN_FILTER_BOTTOM;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_MEDIAN_FILTER_TOP = struct {
-                pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_VIDEO_CHROMA_MEDIAN_FILTER_TOP;
-            };
-            pub const V4L2_CID_MPEG_CX2341X_STREAM_INSERT_NAV_PACKETS = struct {
+        };
+
+        pub const stream = struct {
+            pub const insert_nav_packets = struct {
                 pub const id: u32 = c.V4L2_CID_MPEG_CX2341X_STREAM_INSERT_NAV_PACKETS;
             };
         };
-    }; // video
+    };
+
+    pub const mfc51 = struct {
+        pub const id: u32 = c.V4L2_CID_CODEC_MFC51_BASE;
+
+        pub const codec = struct {
+            pub const id: u32 = c.V4L2_CID_CODEC_MFC51_BASE;
+        };
+
+        pub const video = struct {
+            pub const decoder = struct {
+                pub const h264_display_delay = struct {
+                    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY;
+                };
+            };
+        };
+    };
 
     pub const fwht = struct {
         pub const i_frame_qp = struct {
@@ -1537,15 +1626,10 @@ pub const mpeg = struct {
         pub const p_frame_qp = struct {
             pub const id: u32 = c.V4L2_CID_FWHT_P_FRAME_QP;
         };
-    };
-}; // mpeg
+    }; // mpeg
+};
 
-pub const V4L2_CID_CODEC_MFC51_BASE = struct {
-    pub const id: u32 = c.V4L2_CID_CODEC_MFC51_BASE;
-};
-pub const V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY = struct {
-    pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY;
-};
+pub const V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY = struct {};
 pub const V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY_ENABLE = struct {
     pub const id: u32 = c.V4L2_CID_MPEG_MFC51_VIDEO_DECODER_H264_DISPLAY_DELAY_ENABLE;
 };
