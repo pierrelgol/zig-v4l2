@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi.zig");
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -52,32 +53,33 @@ pub const Audio = extern struct {
 test "Audio ABI matches struct_v4l2_audio" {
     const C = bindings.struct_v4l2_audio;
     const Z = Audio;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
-    try std.testing.expectEqual(@offsetOf(C, "name"), @offsetOf(Z, "name"));
-    try std.testing.expectEqual(@offsetOf(C, "capability"), @offsetOf(Z, "capability"));
-    try std.testing.expectEqual(@offsetOf(C, "mode"), @offsetOf(Z, "mode"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "name", .z_name = "name" },
+        .{ .c_name = "capability", .z_name = "capability" },
+        .{ .c_name = "mode", .z_name = "mode" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
 
 test "Audio.Output ABI matches struct_v4l2_audioout" {
     const C = bindings.struct_v4l2_audioout;
     const Z = Audio.Output;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
-    try std.testing.expectEqual(@offsetOf(C, "name"), @offsetOf(Z, "name"));
-    try std.testing.expectEqual(@offsetOf(C, "capability"), @offsetOf(Z, "capability"));
-    try std.testing.expectEqual(@offsetOf(C, "mode"), @offsetOf(Z, "mode"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "name", .z_name = "name" },
+        .{ .c_name = "capability", .z_name = "capability" },
+        .{ .c_name = "mode", .z_name = "mode" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
 
 test "Audio.Rds ABI matches struct_v4l2_rds_data" {
     const C = bindings.struct_v4l2_rds_data;
     const Z = Audio.Rds;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "lsb"), @offsetOf(Z, "lsb"));
-    try std.testing.expectEqual(@offsetOf(C, "msb"), @offsetOf(Z, "msb"));
-    try std.testing.expectEqual(@offsetOf(C, "block"), @offsetOf(Z, "block"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "lsb", .z_name = "lsb" },
+        .{ .c_name = "msb", .z_name = "msb" },
+        .{ .c_name = "block", .z_name = "block" },
+    });
 }

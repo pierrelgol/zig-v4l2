@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi.zig");
 const ControlType = @import("control.zig").Control.Type;
 
 comptime {
@@ -96,72 +97,95 @@ pub const Event = extern struct {
 test "Event ABI matches struct_v4l2_event" {
     const C = bindings.struct_v4l2_event;
     const Z = Event;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "u"), @offsetOf(Z, "u"));
-    try std.testing.expectEqual(@offsetOf(C, "pending"), @offsetOf(Z, "pending"));
-    try std.testing.expectEqual(@offsetOf(C, "sequence"), @offsetOf(Z, "sequence"));
-    try std.testing.expectEqual(@offsetOf(C, "timestamp"), @offsetOf(Z, "timestamp"));
-    try std.testing.expectEqual(@offsetOf(C, "id"), @offsetOf(Z, "id"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "u", .z_name = "u" },
+        .{ .c_name = "pending", .z_name = "pending" },
+        .{ .c_name = "sequence", .z_name = "sequence" },
+        .{ .c_name = "timestamp", .z_name = "timestamp" },
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+}
+
+test "Event.u ABI matches unnamed union in struct_v4l2_event" {
+    const C = @FieldType(bindings.struct_v4l2_event, "u");
+    const Z = @FieldType(Event, "u");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "vsync", .z_name = "vsync" },
+        .{ .c_name = "ctrl", .z_name = "ctrl" },
+        .{ .c_name = "frame_sync", .z_name = "frame_sync" },
+        .{ .c_name = "src_change", .z_name = "source_change" },
+        .{ .c_name = "motion_det", .z_name = "motion_detection" },
+        .{ .c_name = "data", .z_name = "data" },
+    });
 }
 
 test "Event.Vsync ABI matches struct_v4l2_event_vsync" {
     const C = bindings.struct_v4l2_event_vsync;
     const Z = Event.Vsync;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "field"), @offsetOf(Z, "field"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "field", .z_name = "field" },
+    });
 }
 
 test "Event.Ctrl ABI matches struct_v4l2_event_ctrl" {
     const C = bindings.struct_v4l2_event_ctrl;
     const Z = Event.Ctrl;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "changes"), @offsetOf(Z, "changes"));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "minimum"), @offsetOf(Z, "minimum"));
-    try std.testing.expectEqual(@offsetOf(C, "maximum"), @offsetOf(Z, "maximum"));
-    try std.testing.expectEqual(@offsetOf(C, "step"), @offsetOf(Z, "step"));
-    try std.testing.expectEqual(@offsetOf(C, "default_value"), @offsetOf(Z, "default_value"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "changes", .z_name = "changes" },
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "unnamed_0", .z_name = "value" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "minimum", .z_name = "minimum" },
+        .{ .c_name = "maximum", .z_name = "maximum" },
+        .{ .c_name = "step", .z_name = "step" },
+        .{ .c_name = "default_value", .z_name = "default_value" },
+    });
+}
+
+test "Event.Ctrl.value ABI matches unnamed union in struct_v4l2_event_ctrl" {
+    const C = @FieldType(bindings.struct_v4l2_event_ctrl, "unnamed_0");
+    const Z = @FieldType(Event.Ctrl, "value");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "value", .z_name = "s32" },
+        .{ .c_name = "value64", .z_name = "s64" },
+    });
 }
 
 test "Event.FrameSync ABI matches struct_v4l2_event_frame_sync" {
     const C = bindings.struct_v4l2_event_frame_sync;
     const Z = Event.FrameSync;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "frame_sequence"), @offsetOf(Z, "frame_sequence"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "frame_sequence", .z_name = "frame_sequence" },
+    });
 }
 
 test "Event.SourceChange ABI matches struct_v4l2_event_src_change" {
     const C = bindings.struct_v4l2_event_src_change;
     const Z = Event.SourceChange;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "changes"), @offsetOf(Z, "changes"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "changes", .z_name = "changes" },
+    });
 }
 
 test "Event.MotionDetection ABI matches struct_v4l2_event_motion_det" {
     const C = bindings.struct_v4l2_event_motion_det;
     const Z = Event.MotionDetection;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "frame_sequence"), @offsetOf(Z, "frame_sequence"));
-    try std.testing.expectEqual(@offsetOf(C, "region_mask"), @offsetOf(Z, "region_mask"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "frame_sequence", .z_name = "frame_sequence" },
+        .{ .c_name = "region_mask", .z_name = "region_mask" },
+    });
 }
 
 test "Event.Subscription ABI matches struct_v4l2_event_subscription" {
     const C = bindings.struct_v4l2_event_subscription;
     const Z = Event.Subscription;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "id"), @offsetOf(Z, "id"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "id", .z_name = "id" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }

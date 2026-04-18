@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi.zig");
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -47,10 +48,11 @@ pub const Encoder = extern struct {
 test "Encoder ABI matches struct_v4l2_encoder_cmd" {
     const C = bindings.struct_v4l2_encoder_cmd;
     const Z = Encoder;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "cmd"), @offsetOf(Z, "cmd"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "cmd", .z_name = "cmd" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "unnamed_0", .z_name = "raw" },
+    });
 }
 
 test "Encoder.Index ABI matches struct_v4l2_enc_idx" {

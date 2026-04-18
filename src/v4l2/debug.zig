@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi.zig");
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -43,29 +44,39 @@ pub const ChipInfo = extern struct {
 test "Debug.Match ABI matches struct_v4l2_dbg_match" {
     const C = bindings.struct_v4l2_dbg_match;
     const Z = Match;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "unnamed_0", .z_name = "addr_or_name" },
+    });
+}
+
+test "Debug.Match.addr_or_name ABI matches unnamed union in struct_v4l2_dbg_match" {
+    const C = @FieldType(bindings.struct_v4l2_dbg_match, "unnamed_0");
+    const Z = @FieldType(Match, "addr_or_name");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "addr", .z_name = "addr" },
+        .{ .c_name = "name", .z_name = "name" },
+    });
 }
 
 test "Debug.Register ABI matches struct_v4l2_dbg_register" {
     const C = bindings.struct_v4l2_dbg_register;
     const Z = Register;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "match"), @offsetOf(Z, "match"));
-    try std.testing.expectEqual(@offsetOf(C, "size"), @offsetOf(Z, "size"));
-    try std.testing.expectEqual(@offsetOf(C, "reg"), @offsetOf(Z, "reg"));
-    try std.testing.expectEqual(@offsetOf(C, "val"), @offsetOf(Z, "val"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "match", .z_name = "match" },
+        .{ .c_name = "size", .z_name = "size" },
+        .{ .c_name = "reg", .z_name = "reg" },
+        .{ .c_name = "val", .z_name = "val" },
+    });
 }
 
 test "Debug.ChipInfo ABI matches struct_v4l2_dbg_chip_info" {
     const C = bindings.struct_v4l2_dbg_chip_info;
     const Z = ChipInfo;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "match"), @offsetOf(Z, "match"));
-    try std.testing.expectEqual(@offsetOf(C, "name"), @offsetOf(Z, "name"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "match", .z_name = "match" },
+        .{ .c_name = "name", .z_name = "name" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }

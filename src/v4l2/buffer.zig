@@ -1,5 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
+const abi = @import("abi.zig");
 const Pixel = @import("pixel.zig").Pixel;
 const stream = @import("stream.zig");
 
@@ -211,96 +212,127 @@ pub const Buffer = extern struct {
 test "Buffer ABI matches struct_v4l2_buffer" {
     const C = bindings.struct_v4l2_buffer;
     const Z = Buffer;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "bytesused"), @offsetOf(Z, "bytes_used"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "field"), @offsetOf(Z, "field"));
-    try std.testing.expectEqual(@offsetOf(C, "timestamp"), @offsetOf(Z, "timestamp"));
-    try std.testing.expectEqual(@offsetOf(C, "timecode"), @offsetOf(Z, "timecode"));
-    try std.testing.expectEqual(@offsetOf(C, "sequence"), @offsetOf(Z, "sequence"));
-    try std.testing.expectEqual(@offsetOf(C, "memory"), @offsetOf(Z, "memory"));
-    try std.testing.expectEqual(@offsetOf(C, "m"), @offsetOf(Z, "m"));
-    try std.testing.expectEqual(@offsetOf(C, "length"), @offsetOf(Z, "length"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved2"), @offsetOf(Z, "reserved2"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "bytesused", .z_name = "bytes_used" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "field", .z_name = "field" },
+        .{ .c_name = "timestamp", .z_name = "timestamp" },
+        .{ .c_name = "timecode", .z_name = "timecode" },
+        .{ .c_name = "sequence", .z_name = "sequence" },
+        .{ .c_name = "memory", .z_name = "memory" },
+        .{ .c_name = "m", .z_name = "m" },
+        .{ .c_name = "length", .z_name = "length" },
+        .{ .c_name = "reserved2", .z_name = "reserved2" },
+        .{ .c_name = "unnamed_0", .z_name = "r" },
+    });
+}
+
+test "Buffer.m ABI matches unnamed union in struct_v4l2_buffer" {
+    const C = @FieldType(bindings.struct_v4l2_buffer, "m");
+    const Z = @FieldType(Buffer, "m");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "offset", .z_name = "offset" },
+        .{ .c_name = "userptr", .z_name = "user_ptr" },
+        .{ .c_name = "planes", .z_name = "planes" },
+        .{ .c_name = "fd", .z_name = "fd" },
+    });
+}
+
+test "Buffer.r ABI matches unnamed union in struct_v4l2_buffer" {
+    const C = @FieldType(bindings.struct_v4l2_buffer, "unnamed_0");
+    const Z = @FieldType(Buffer, "r");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "request_fd", .z_name = "request_fd" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
 
 test "Buffer.Timecode ABI matches struct_v4l2_timecode" {
     const C = bindings.struct_v4l2_timecode;
     const Z = Buffer.Timecode;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "frames"), @offsetOf(Z, "frames"));
-    try std.testing.expectEqual(@offsetOf(C, "seconds"), @offsetOf(Z, "seconds"));
-    try std.testing.expectEqual(@offsetOf(C, "minutes"), @offsetOf(Z, "minutes"));
-    try std.testing.expectEqual(@offsetOf(C, "hours"), @offsetOf(Z, "hours"));
-    try std.testing.expectEqual(@offsetOf(C, "userbits"), @offsetOf(Z, "userbits"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "frames", .z_name = "frames" },
+        .{ .c_name = "seconds", .z_name = "seconds" },
+        .{ .c_name = "minutes", .z_name = "minutes" },
+        .{ .c_name = "hours", .z_name = "hours" },
+        .{ .c_name = "userbits", .z_name = "userbits" },
+    });
 }
 
 test "Buffer.Plane ABI matches struct_v4l2_plane" {
     const C = bindings.struct_v4l2_plane;
     const Z = Buffer.Plane;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "bytesused"), @offsetOf(Z, "bytes_used"));
-    try std.testing.expectEqual(@offsetOf(C, "length"), @offsetOf(Z, "length"));
-    try std.testing.expectEqual(@offsetOf(C, "m"), @offsetOf(Z, "m"));
-    try std.testing.expectEqual(@offsetOf(C, "data_offset"), @offsetOf(Z, "data_offset"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "bytesused", .z_name = "bytes_used" },
+        .{ .c_name = "length", .z_name = "length" },
+        .{ .c_name = "m", .z_name = "m" },
+        .{ .c_name = "data_offset", .z_name = "data_offset" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
+}
+
+test "Buffer.Plane.m ABI matches unnamed union in struct_v4l2_plane" {
+    const C = @FieldType(bindings.struct_v4l2_plane, "m");
+    const Z = @FieldType(Buffer.Plane, "m");
+    try abi.expectUnion(C, Z, &.{
+        .{ .c_name = "mem_offset", .z_name = "mem_offset" },
+        .{ .c_name = "userptr", .z_name = "userptr" },
+        .{ .c_name = "fd", .z_name = "fd" },
+    });
 }
 
 test "Buffer.Request ABI matches struct_v4l2_requestbuffers" {
     const C = bindings.struct_v4l2_requestbuffers;
     const Z = Buffer.Request;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "count"), @offsetOf(Z, "count"));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "memory"), @offsetOf(Z, "memory"));
-    try std.testing.expectEqual(@offsetOf(C, "capabilities"), @offsetOf(Z, "capabilities"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "count", .z_name = "count" },
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "memory", .z_name = "memory" },
+        .{ .c_name = "capabilities", .z_name = "capabilities" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
 
 test "Buffer.Export ABI matches struct_v4l2_exportbuffer" {
     const C = bindings.struct_v4l2_exportbuffer;
     const Z = Buffer.Export;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
-    try std.testing.expectEqual(@offsetOf(C, "plane"), @offsetOf(Z, "plane"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "fd"), @offsetOf(Z, "fd"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "plane", .z_name = "plane" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "fd", .z_name = "fd" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
 
 test "Buffer.Create ABI matches struct_v4l2_create_buffers" {
     const C = bindings.struct_v4l2_create_buffers;
     const Z = Buffer.Create;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
-    try std.testing.expectEqual(@offsetOf(C, "count"), @offsetOf(Z, "count"));
-    try std.testing.expectEqual(@offsetOf(C, "memory"), @offsetOf(Z, "memory"));
-    try std.testing.expectEqual(@offsetOf(C, "format"), @offsetOf(Z, "format"));
-    try std.testing.expectEqual(@offsetOf(C, "capabilities"), @offsetOf(Z, "capabilities"));
-    try std.testing.expectEqual(@offsetOf(C, "flags"), @offsetOf(Z, "flags"));
-    try std.testing.expectEqual(@offsetOf(C, "max_num_buffers"), @offsetOf(Z, "max_num_buffers"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "count", .z_name = "count" },
+        .{ .c_name = "memory", .z_name = "memory" },
+        .{ .c_name = "format", .z_name = "format" },
+        .{ .c_name = "capabilities", .z_name = "capabilities" },
+        .{ .c_name = "flags", .z_name = "flags" },
+        .{ .c_name = "max_num_buffers", .z_name = "max_num_buffers" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
 
 test "Buffer.Remove ABI matches struct_v4l2_remove_buffers" {
     const C = bindings.struct_v4l2_remove_buffers;
     const Z = Buffer.Remove;
-    try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
-    try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
-    try std.testing.expectEqual(@offsetOf(C, "index"), @offsetOf(Z, "index"));
-    try std.testing.expectEqual(@offsetOf(C, "count"), @offsetOf(Z, "count"));
-    try std.testing.expectEqual(@offsetOf(C, "type"), @offsetOf(Z, "type"));
-    try std.testing.expectEqual(@offsetOf(C, "reserved"), @offsetOf(Z, "reserved"));
+    try abi.expectStruct(C, Z, &.{
+        .{ .c_name = "index", .z_name = "index" },
+        .{ .c_name = "count", .z_name = "count" },
+        .{ .c_name = "type", .z_name = "type" },
+        .{ .c_name = "reserved", .z_name = "reserved" },
+    });
 }
