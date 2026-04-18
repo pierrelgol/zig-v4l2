@@ -66,6 +66,8 @@ pub const iow = ioctl.iow;
 pub const iowr = ioctl.iowr;
 pub const Ioctl = ioctl.Ioctl;
 
+const v4l2_control = @import("v4l2/v4l2-controls.zig");
+
 comptime {
     std.testing.refAllDecls(@This());
 }
