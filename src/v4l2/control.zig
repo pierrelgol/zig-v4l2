@@ -217,95 +217,95 @@ pub const user_base: u32 = bindings.V4L2_CID_USER_BASE;
 pub const user_class: u32 = bindings.V4L2_CID_USER_CLASS;
 pub const lastp1: u32 = bindings.V4L2_CID_LASTP1;
 
-pub const Brightness = struct {
+pub const brightness = struct {
     pub const id: u32 = bindings.V4L2_CID_BRIGHTNESS;
 };
 
-pub const Contrast = struct {
+pub const contrast = struct {
     pub const id: u32 = bindings.V4L2_CID_CONTRAST;
 };
 
-pub const Saturation = struct {
+pub const saturation = struct {
     pub const id: u32 = bindings.V4L2_CID_SATURATION;
 };
 
-pub const Hue = struct {
+pub const hue = struct {
     pub const id: u32 = bindings.V4L2_CID_HUE;
 };
 
-pub const AudioVolume = struct {
+pub const audio_volume = struct {
     pub const id: u32 = bindings.V4L2_CID_AUDIO_VOLUME;
 };
 
-pub const AudioBalance = struct {
+pub const audio_balance = struct {
     pub const id: u32 = bindings.V4L2_CID_AUDIO_BALANCE;
 };
 
-pub const AudioBass = struct {
+pub const audio_bass = struct {
     pub const id: u32 = bindings.V4L2_CID_AUDIO_BASS;
 };
 
-pub const AudioTreble = struct {
+pub const audio_treble = struct {
     pub const id: u32 = bindings.V4L2_CID_AUDIO_TREBLE;
 };
 
-pub const AudioMute = struct {
+pub const audio_mute = struct {
     pub const id: u32 = bindings.V4L2_CID_AUDIO_MUTE;
 };
 
-pub const AudioLoudness = struct {
+pub const audio_loudness = struct {
     pub const id: u32 = bindings.V4L2_CID_AUDIO_LOUDNESS;
 };
 
-pub const BlackLevel = struct {
+pub const black_level = struct {
     pub const id: u32 = bindings.V4L2_CID_BLACK_LEVEL;
 };
 
-pub const AutoWhiteBalance = struct {
+pub const auto_white_balance = struct {
     pub const id: u32 = bindings.V4L2_CID_AUTO_WHITE_BALANCE;
 };
 
-pub const DoWhiteBalance = struct {
+pub const do_white_balance = struct {
     pub const id: u32 = bindings.V4L2_CID_DO_WHITE_BALANCE;
 };
 
-pub const RedBalance = struct {
+pub const red_balance = struct {
     pub const id: u32 = bindings.V4L2_CID_RED_BALANCE;
 };
 
-pub const BlueBalance = struct {
+pub const blue_balance = struct {
     pub const id: u32 = bindings.V4L2_CID_BLUE_BALANCE;
 };
 
-pub const Gamma = struct {
+pub const gamma = struct {
     pub const id: u32 = bindings.V4L2_CID_GAMMA;
 };
 
-pub const Whiteness = struct {
+pub const whiteness = struct {
     pub const id: u32 = bindings.V4L2_CID_WHITENESS;
 };
 
-pub const Exposure = struct {
+pub const exposure = struct {
     pub const id: u32 = bindings.V4L2_CID_EXPOSURE;
 };
 
-pub const Autogain = struct {
+pub const autogain = struct {
     pub const id: u32 = bindings.V4L2_CID_AUTOGAIN;
 };
 
-pub const Gain = struct {
+pub const gain = struct {
     pub const id: u32 = bindings.V4L2_CID_GAIN;
 };
 
-pub const HFlip = struct {
+pub const h_flip = struct {
     pub const id: u32 = bindings.V4L2_CID_HFLIP;
 };
 
-pub const VFlip = struct {
+pub const v_flip = struct {
     pub const id: u32 = bindings.V4L2_CID_VFLIP;
 };
 
-pub const PowerLineFrequency = struct {
+pub const power_line_frequency = struct {
     pub const id: u32 = bindings.V4L2_CID_POWER_LINE_FREQUENCY;
 
     pub const Enum = enum(i32) {
@@ -316,47 +316,47 @@ pub const PowerLineFrequency = struct {
     };
 };
 
-pub const Autobrightness = struct {
+pub const auto_brightness = struct {
     pub const id: u32 = bindings.V4L2_CID_AUTOBRIGHTNESS;
 };
 
-pub const BandStopFilter = struct {
+pub const band_stop_filter = struct {
     pub const id: u32 = bindings.V4L2_CID_BAND_STOP_FILTER;
 };
 
-pub const Rotate = struct {
+pub const rotate = struct {
     pub const id: u32 = bindings.V4L2_CID_ROTATE;
 };
 
-pub const BgColor = struct {
+pub const bg_color = struct {
     pub const id: u32 = bindings.V4L2_CID_BG_COLOR;
 };
 
-pub const ChromaGain = struct {
+pub const chroma_gain = struct {
     pub const id: u32 = bindings.V4L2_CID_CHROMA_GAIN;
 };
 
-pub const Illuminators1 = struct {
+pub const illuminators1 = struct {
     pub const id: u32 = bindings.V4L2_CID_ILLUMINATORS_1;
 };
 
-pub const Illuminators2 = struct {
+pub const illuminators2 = struct {
     pub const id: u32 = bindings.V4L2_CID_ILLUMINATORS_2;
 };
 
-pub const MinBuffersForCapture = struct {
+pub const min_buffers_for_capture = struct {
     pub const id: u32 = bindings.V4L2_CID_MIN_BUFFERS_FOR_CAPTURE;
 };
 
-pub const MinBuffersForOutput = struct {
+pub const min_buffers_for_output = struct {
     pub const id: u32 = bindings.V4L2_CID_MIN_BUFFERS_FOR_OUTPUT;
 };
 
-pub const AlphaComponent = struct {
+pub const alpha_component = struct {
     pub const id: u32 = bindings.V4L2_CID_ALPHA_COMPONENT;
 };
 
-pub const ColorFx = struct {
+pub const color_fx = struct {
     pub const id: u32 = bindings.V4L2_CID_COLORFX;
     pub const cbcr_id: u32 = bindings.V4L2_CID_COLORFX_CBCR;
     pub const rgb_id: u32 = bindings.V4L2_CID_COLORFX_RGB;
@@ -382,7 +382,7 @@ pub const ColorFx = struct {
     };
 };
 
-pub const User = struct {
+pub const user = struct {
     pub const meye_base: u32 = bindings.V4L2_CID_USER_MEYE_BASE;
     pub const bttv_base: u32 = bindings.V4L2_CID_USER_BTTV_BASE;
     pub const s2255_base: u32 = bindings.V4L2_CID_USER_S2255_BASE;
@@ -406,14 +406,14 @@ pub const User = struct {
     pub const rkisp1_base: u32 = bindings.V4L2_CID_USER_RKISP1_BASE;
 };
 
-pub const Codec = struct {
+pub const codec = struct {
     pub const base: u32 = bindings.V4L2_CID_CODEC_BASE;
     pub const class: u32 = bindings.V4L2_CID_CODEC_CLASS;
 };
 
-pub const Mpeg = struct {
-    pub const Stream = struct {
-        pub const Type = struct {
+pub const mpeg = struct {
+    pub const stream = struct {
+        pub const kind = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_TYPE;
 
             pub const Enum = enum(i32) {
@@ -426,26 +426,26 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const PidPmt = struct {
+        pub const pid_pmt = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_PID_PMT;
         };
-        pub const PidAudio = struct {
+        pub const pid_audio = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_PID_AUDIO;
         };
-        pub const PidVideo = struct {
+        pub const pid_video = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_PID_VIDEO;
         };
-        pub const PidPcr = struct {
+        pub const pid_pcr = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_PID_PCR;
         };
-        pub const PesIdAudio = struct {
+        pub const pes_id_audio = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_PES_ID_AUDIO;
         };
-        pub const PesIdVideo = struct {
+        pub const pes_id_video = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_PES_ID_VIDEO;
         };
 
-        pub const VbiFmt = struct {
+        pub const vbi_fmt = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_STREAM_VBI_FMT;
 
             pub const Enum = enum(i32) {
@@ -455,8 +455,8 @@ pub const Mpeg = struct {
         };
     };
 
-    pub const Audio = struct {
-        pub const SamplingFreq = struct {
+    pub const audio = struct {
+        pub const sampling_freq = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_SAMPLING_FREQ;
 
             pub const Enum = enum(i32) {
@@ -466,7 +466,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Encoding = struct {
+        pub const encoding = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_ENCODING;
 
             pub const Enum = enum(i32) {
@@ -478,7 +478,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const L1 = struct {
+        pub const l1 = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_L1_BITRATE;
 
             pub const Enum = enum(i32) {
@@ -499,7 +499,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const L2 = struct {
+        pub const l2 = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_L2_BITRATE;
 
             pub const Enum = enum(i32) {
@@ -520,7 +520,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const L3 = struct {
+        pub const l3 = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_L3_BITRATE;
 
             pub const Enum = enum(i32) {
@@ -541,7 +541,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Mode = struct {
+        pub const mode = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_MODE;
 
             pub const Enum = enum(i32) {
@@ -550,20 +550,20 @@ pub const Mpeg = struct {
                 dual = bindings.V4L2_MPEG_AUDIO_MODE_DUAL,
                 mono = bindings.V4L2_MPEG_AUDIO_MODE_MONO,
             };
-        };
 
-        pub const ModeExtension = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_MODE_EXTENSION;
+            pub const extension = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_MODE_EXTENSION;
 
-            pub const Enum = enum(i32) {
-                bound_4 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_4,
-                bound_8 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_8,
-                bound_12 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_12,
-                bound_16 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_16,
+                pub const Enum = enum(i32) {
+                    bound_4 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_4,
+                    bound_8 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_8,
+                    bound_12 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_12,
+                    bound_16 = bindings.V4L2_MPEG_AUDIO_MODE_EXTENSION_BOUND_16,
+                };
             };
         };
 
-        pub const Emphasis = struct {
+        pub const emphasis = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_EMPHASIS;
 
             pub const Enum = enum(i32) {
@@ -573,7 +573,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Crc = struct {
+        pub const cRC = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_CRC;
 
             pub const Enum = enum(i32) {
@@ -582,15 +582,15 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Mute = struct {
+        pub const mute = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_MUTE;
         };
 
-        pub const AAC = struct {
+        pub const aac = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_AAC_BITRATE;
         };
 
-        pub const AC3 = struct {
+        pub const ac3 = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_AC3_BITRATE;
 
             pub const Enum = enum(i32) {
@@ -616,7 +616,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Dec = struct {
+        pub const dec = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_DEC_PLAYBACK;
 
             pub const Enum = enum(i32) {
@@ -627,15 +627,15 @@ pub const Mpeg = struct {
                 playback_mono = bindings.V4L2_MPEG_AUDIO_DEC_PLAYBACK_MONO,
                 playback_swapped_stereo = bindings.V4L2_MPEG_AUDIO_DEC_PLAYBACK_SWAPPED_STEREO,
             };
-        };
 
-        pub const MultilingualDec = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_DEC_MULTILINGUAL_PLAYBACK;
+            pub const multilingual = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_AUDIO_DEC_MULTILINGUAL_PLAYBACK;
+            };
         };
     };
 
-    pub const Video = struct {
-        pub const Encoding = struct {
+    pub const video = struct {
+        pub const encoding = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_ENCODING;
 
             pub const Enum = enum(i32) {
@@ -645,7 +645,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Aspect = struct {
+        pub const aspect = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_ASPECT;
 
             pub const Enum = enum(i32) {
@@ -656,69 +656,71 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const BFrames = struct {
+        pub const b_frames = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_B_FRAMES;
         };
 
-        pub const GopSize = struct {
+        pub const gop_size = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_GOP_SIZE;
         };
 
-        pub const GopClosure = struct {
+        pub const gop_closure = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_GOP_CLOSURE;
         };
 
-        pub const PullDown = struct {
+        pub const pull_down = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_PULLDOWN;
         };
 
-        pub const BitrateMode = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BITRATE_MODE;
+        pub const bitrate = struct {
+            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BITRATE;
 
-            pub const Enum = enum(i32) {
-                vbr = bindings.V4L2_MPEG_VIDEO_BITRATE_MODE_VBR,
-                cbr = bindings.V4L2_MPEG_VIDEO_BITRATE_MODE_CBR,
-                cq = bindings.V4L2_MPEG_VIDEO_BITRATE_MODE_CQ,
+            pub const mode = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BITRATE_MODE;
+
+                pub const Enum = enum(i32) {
+                    vbr = bindings.V4L2_MPEG_VIDEO_BITRATE_MODE_VBR,
+                    cbr = bindings.V4L2_MPEG_VIDEO_BITRATE_MODE_CBR,
+                    cq = bindings.V4L2_MPEG_VIDEO_BITRATE_MODE_CQ,
+                };
+            };
+
+            pub const peak = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BITRATE_PEAK;
             };
         };
 
-        pub const Bitrate = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BITRATE;
-        };
-
-        pub const BitratePeak = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BITRATE_PEAK;
-        };
-
-        pub const TemporalDecimation = struct {
+        pub const temporal_decimation = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_TEMPORAL_DECIMATION;
         };
 
-        pub const Mute = struct {
+        pub const mute = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MUTE;
+
+            pub const yuv = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MUTE_YUV;
+            };
         };
 
-        pub const MuteYuv = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MUTE_YUV;
+        pub const decoder = struct {
+            pub const slice_interface = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DECODER_SLICE_INTERFACE;
+            };
+
+            pub const mpeg4_deblock_filter = struct {
+                pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DECODER_MPEG4_DEBLOCK_FILTER;
+            };
         };
 
-        pub const DecoderSliceInterface = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DECODER_SLICE_INTERFACE;
-        };
-
-        pub const DecoderMpeg4DeblockFilter = struct {
-            pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DECODER_MPEG4_DEBLOCK_FILTER;
-        };
-
-        pub const CyclicIntraRefreshMb = struct {
+        pub const cyclic_intra_refresh_mb = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_CYCLIC_INTRA_REFRESH_MB;
         };
 
-        pub const FrameRcEnable = struct {
+        pub const frame_rc_enable = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_FRAME_RC_ENABLE;
         };
 
-        pub const HeaderMode = struct {
+        pub const header_mode = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_HEADER_MODE;
 
             pub const Enum = enum(i32) {
@@ -727,23 +729,23 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const MaxRefPic = struct {
+        pub const max_ref_pic = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MAX_REF_PIC;
         };
 
-        pub const MbRcEnable = struct {
+        pub const mb_rc_enable = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MB_RC_ENABLE;
         };
 
-        pub const MultiSliceMaxBytes = struct {
+        pub const multi_slice_max_bytes = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MULTI_SLICE_MAX_BYTES;
         };
 
-        pub const MultiSliceMaxMb = struct {
+        pub const multi_slice_max_mb = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MULTI_SLICE_MAX_MB;
         };
 
-        pub const MultiSliceMode = struct {
+        pub const multi_slice_mode = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MULTI_SLICE_MODE;
 
             pub const Enum = enum(i32) {
@@ -753,67 +755,67 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const VbvSize = struct {
+        pub const vbv_size = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_VBV_SIZE;
         };
 
-        pub const DecPts = struct {
+        pub const dec_pts = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DEC_PTS;
         };
 
-        pub const DecFrame = struct {
+        pub const dec_frame = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DEC_FRAME;
         };
 
-        pub const VbvDelay = struct {
+        pub const vbv_delay = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_VBV_DELAY;
         };
 
-        pub const RepeatSeqHeader = struct {
+        pub const repeat_seq_header = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_REPEAT_SEQ_HEADER;
         };
 
-        pub const MvHSearchRange = struct {
+        pub const mv_h_search_range = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MV_H_SEARCH_RANGE;
         };
 
-        pub const MvVSearchRange = struct {
+        pub const mv_v_search_range = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MV_V_SEARCH_RANGE;
         };
 
-        pub const ForceKeyFrame = struct {
+        pub const force_key_frame = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_FORCE_KEY_FRAME;
         };
 
-        pub const BaseLayerPriority = struct {
+        pub const base_layer_priority = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_BASELAYER_PRIORITY_ID;
         };
 
-        pub const AuDelimiter = struct {
+        pub const au_delimiter = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_AU_DELIMITER;
         };
 
-        pub const LtrCount = struct {
+        pub const ltr_count = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_LTR_COUNT;
         };
 
-        pub const LtrIndex = struct {
+        pub const ltr_index = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_FRAME_LTR_INDEX;
         };
 
-        pub const LtrFrames = struct {
+        pub const ltr_frames = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_USE_LTR_FRAMES;
         };
 
-        pub const ConcealColor = struct {
+        pub const conceal_color = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_DEC_CONCEAL_COLOR;
         };
 
-        pub const IntraRefreshPeriod = struct {
+        pub const intra_refresh_period = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_INTRA_REFRESH_PERIOD;
         };
 
-        pub const IntraRefreshPeriodType = struct {
+        pub const intra_refresh_period_type = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_INTRA_REFRESH_PERIOD_TYPE;
 
             pub const Enum = enum(i32) {
@@ -822,7 +824,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Mpeg2Level = struct {
+        pub const mpeg2_level = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MPEG2_LEVEL;
 
             pub const Enum = enum(i32) {
@@ -833,7 +835,7 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const Mpeg2Profile = struct {
+        pub const mpeg2_profile = struct {
             pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_MPEG2_PROFILE;
 
             pub const Enum = enum(i32) {
@@ -846,58 +848,58 @@ pub const Mpeg = struct {
             };
         };
 
-        pub const H263 = struct {
-            pub const IFrameQp = struct {
+        pub const h263 = struct {
+            pub const i_frame_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H263_I_FRAME_QP;
             };
 
-            pub const PFrameQp = struct {
+            pub const p_frame_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H263_P_FRAME_QP;
             };
 
-            pub const BFrameQp = struct {
+            pub const b_frame_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H263_B_FRAME_QP;
             };
 
-            pub const MinQp = struct {
+            pub const min_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H263_MIN_QP;
             };
 
-            pub const MaxQp = struct {
+            pub const max_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H263_MAX_QP;
             };
         };
 
-        pub const H264 = struct {
-            pub const IFrameQp = struct {
+        pub const h264 = struct {
+            pub const i_frame_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_I_FRAME_QP;
             };
 
-            pub const PFrameQp = struct {
+            pub const p_frame_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_P_FRAME_QP;
             };
 
-            pub const BFrameQp = struct {
+            pub const b_frame_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_B_FRAME_QP;
             };
 
-            pub const MinQp = struct {
+            pub const min_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_MIN_QP;
             };
 
-            pub const MaxQp = struct {
+            pub const max_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_MAX_QP;
             };
 
-            pub const Transform8x8 = struct {
+            pub const transform_8_x_8 = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_8X8_TRANSFORM;
             };
 
-            pub const CpbSize = struct {
+            pub const cpb_size = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_CPB_SIZE;
             };
 
-            pub const EntropyMode = struct {
+            pub const entropy_mode = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_ENTROPY_MODE;
 
                 pub const Enum = enum(i32) {
@@ -906,11 +908,11 @@ pub const Mpeg = struct {
                 };
             };
 
-            pub const IPeriod = struct {
+            pub const i_period = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_I_PERIOD;
             };
 
-            pub const Level = struct {
+            pub const level = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_LEVEL;
 
                 pub const Enum = enum(u32) {
@@ -937,16 +939,16 @@ pub const Mpeg = struct {
                 };
             };
 
-            pub const LoopFilter = struct {
-                pub const Alpha = struct {
+            pub const loop_filter = struct {
+                pub const alpha = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_LOOP_FILTER_ALPHA;
                 };
 
-                pub const Beta = struct {
+                pub const beta = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_LOOP_FILTER_BETA;
                 };
 
-                pub const Mode = struct {
+                pub const mode = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_LOOP_FILTER_MODE;
 
                     pub const Enum = enum(i32) {
@@ -957,7 +959,7 @@ pub const Mpeg = struct {
                 };
             };
 
-            pub const Profile = struct {
+            pub const profile = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_PROFILE;
 
                 pub const Enum = enum(i32) {
@@ -982,20 +984,20 @@ pub const Mpeg = struct {
                 };
             };
 
-            pub const VuiSar = struct {
-                pub const Height = struct {
+            pub const vui_sar = struct {
+                pub const height = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_VUI_EXT_SAR_HEIGHT;
                 };
 
-                pub const Width = struct {
+                pub const width = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_VUI_EXT_SAR_WIDTH;
                 };
 
-                pub const Enable = struct {
+                pub const enable = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_VUI_SAR_ENABLE;
                 };
 
-                pub const Idc = struct {
+                pub const idc = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_VUI_SAR_IDC;
 
                     pub const Enum = enum(i32) {
@@ -1021,16 +1023,16 @@ pub const Mpeg = struct {
                 };
             };
 
-            pub const Sei = struct {
-                pub const FramePacking = struct {
+            pub const sei = struct {
+                pub const frame_packing = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_SEI_FRAME_PACKING;
                 };
 
-                pub const FpCurrentFrame = struct {
+                pub const fp_current_frame = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_SEI_FP_CURRENT_FRAME_0;
                 };
 
-                pub const FpArrangementType = struct {
+                pub const fp_arrangement_type = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_SEI_FP_ARRANGEMENT_TYPE;
 
                     pub const Enum = enum(i32) {
@@ -1044,10 +1046,10 @@ pub const Mpeg = struct {
                 };
             };
 
-            pub const Fmo = struct {
+            pub const fmo = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_FMO;
 
-                pub const Type = struct {
+                pub const kind = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_FMO_MAP_TYPE;
 
                     pub const Enum = enum(i32) {
@@ -1061,11 +1063,11 @@ pub const Mpeg = struct {
                     };
                 };
 
-                pub const SliceGroup = struct {
+                pub const slice_group = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_FMO_SLICE_GROUP;
                 };
 
-                pub const ChangeDirection = struct {
+                pub const change_direction = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_FMO_CHANGE_DIRECTION;
 
                     pub const Enum = enum(i32) {
@@ -1074,26 +1076,27 @@ pub const Mpeg = struct {
                     };
                 };
 
-                pub const ChangeRate = struct {
+                pub const change_rate = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_FMO_CHANGE_RATE;
                 };
 
-                pub const RunLength = struct {
+                pub const run_length = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_FMO_RUN_LENGTH;
                 };
             };
 
-            pub const Aso = struct {
+            pub const aso = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_ASO;
-                pub const SliceOrder = struct {
+
+                pub const slice_order = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_ASO_SLICE_ORDER;
                 };
             };
 
-            pub const HierarchicalCoding = struct {
+            pub const hierarchical_coding = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIERARCHICAL_CODING;
 
-                pub const Type = struct {
+                pub const kind = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIERARCHICAL_CODING_TYPE;
 
                     pub const Enum = enum(i32) {
@@ -1102,47 +1105,47 @@ pub const Mpeg = struct {
                     };
                 };
 
-                pub const Layer = struct {
+                pub const layer = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIERARCHICAL_CODING_LAYER;
                 };
-                pub const LayerQp = struct {
+                pub const layer_qp = struct {
                     pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIERARCHICAL_CODING_LAYER_QP;
                 };
             };
 
-            pub const ConstrainedIntraPrediction = struct {
+            pub const constrained_intra_prediction = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_CONSTRAINED_INTRA_PREDICTION;
             };
 
-            pub const ChromaQpIndexOffset = struct {
+            pub const chroma_qp_index_offset = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_CHROMA_QP_INDEX_OFFSET;
             };
 
-            pub const IFrameMinQp = struct {
+            pub const i_frame_min_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_I_FRAME_MIN_QP;
             };
 
-            pub const IFrameMaxQp = struct {
+            pub const i_frame_max_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_I_FRAME_MAX_QP;
             };
 
-            pub const PFrameMinQp = struct {
+            pub const p_frame_min_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_P_FRAME_MIN_QP;
             };
 
-            pub const PFrameMaxQp = struct {
+            pub const p_frame_max_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_P_FRAME_MAX_QP;
             };
 
-            pub const BFrameMinQp = struct {
+            pub const b_frame_min_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_B_FRAME_MIN_QP;
             };
 
-            pub const BFrameMaxQp = struct {
+            pub const b_frame_max_qp = struct {
                 pub const id: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_B_FRAME_MAX_QP;
             };
 
-            pub const HierCoding = struct {
+            pub const hier_coding = struct {
                 pub const l0_br: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIER_CODING_L0_BR;
                 pub const l1_br: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIER_CODING_L1_BR;
                 pub const l2_br: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIER_CODING_L2_BR;
@@ -1152,14 +1155,16 @@ pub const Mpeg = struct {
                 pub const l6_br: u32 = bindings.V4L2_CID_MPEG_VIDEO_H264_HIER_CODING_L6_BR;
             };
         };
+
+        pub const mpeg4 = struct {};
     };
 
-    pub const Fwht = struct {
-        pub const IFrameQP = struct {
+    pub const fwht = struct {
+        pub const i_frame_qp = struct {
             pub const id: u32 = bindings.V4L2_CID_FWHT_I_FRAME_QP;
         };
 
-        pub const PFrameQP = struct {
+        pub const p_frame_qp = struct {
             pub const id: u32 = bindings.V4L2_CID_FWHT_P_FRAME_QP;
         };
     };
