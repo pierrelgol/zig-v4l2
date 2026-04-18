@@ -17,16 +17,16 @@ fn printVersion(writer: anytype, version: u32) !void {
 }
 
 fn printCapabilityFlags(writer: anytype, bits: u32) !void {
-    inline for (std.meta.fields(z4l2.Capability.Flag)) |field| {
-        const value = @intFromEnum(@field(z4l2.Capability.Flag, field.name));
+    inline for (std.meta.fields(z4l2.capability.Capability.Flag)) |field| {
+        const value = @intFromEnum(@field(z4l2.capability.Capability.Flag, field.name));
         if (value != 0 and (bits & value) == value) {
             try writer.print("    {s}\n", .{field.name});
         }
     }
 }
 
-fn queryCapability(io: Io, file: Io.File) !z4l2.Capability {
-    var capability: z4l2.Capability = undefined;
+fn queryCapability(io: Io, file: Io.File) !z4l2.capability.Capability {
+    var capability: z4l2.capability.Capability = undefined;
     const rc = (try io.operate(.{ .device_io_control = .{
         .file = file,
         .code = z4l2.Ioctl.querycap,

@@ -27,23 +27,25 @@ comptime {
     std.testing.refAllDecls(@This());
 }
 
-pub const params = extern struct {
+pub const params = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_FWHT_PARAMS;
 
-    backward_ref_ts: u64,
-    version: u32,
-    width: u32,
-    height: u32,
-    flags: u32,
-    colorspace: u32,
-    xfer_func: u32,
-    ycbcr_enc: u32,
-    quantization: u32,
+    pub const Ctrl = extern struct {
+        backward_ref_ts: u64,
+        version: u32,
+        width: u32,
+        height: u32,
+        flags: u32,
+        colorspace: u32,
+        xfer_func: u32,
+        ycbcr_enc: u32,
+        quantization: u32,
+    };
 };
 
 test "stateless.fwht.params ABI matches struct_v4l2_ctrl_fwht_params" {
     const C = c.struct_v4l2_ctrl_fwht_params;
-    const Z = params;
+    const Z = params.Ctrl;
     try abi.expectStruct(C, Z, &.{
         .{ .c_name = "backward_ref_ts", .z_name = "backward_ref_ts" },
         .{ .c_name = "version", .z_name = "version" },

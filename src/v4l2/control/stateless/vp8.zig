@@ -66,30 +66,7 @@ pub const EntropyCoderState = extern struct {
     padding: u8,
 };
 
-pub const Frame = extern struct {
-    segment: Segment,
-    lf: LoopFilter,
-    quant: Quantization,
-    entropy: Entropy,
-    coder_state: EntropyCoderState,
-    width: u16,
-    height: u16,
-    horizontal_scale: u8,
-    vertical_scale: u8,
-    version: u8,
-    prob_skip_false: u8,
-    prob_intra: u8,
-    prob_last: u8,
-    prob_gf: u8,
-    num_dct_parts: u8,
-    first_part_size: u32,
-    first_part_header_bits: u32,
-    dct_part_sizes: [8]u32,
-    last_frame_ts: u64,
-    golden_frame_ts: u64,
-    alt_frame_ts: u64,
-    flags: u64,
-
+pub const frame = struct {
     pub const Flag = enum(i32) {
         key_frame = c.V4L2_VP8_FRAME_FLAG_KEY_FRAME,
         experimental = c.V4L2_VP8_FRAME_FLAG_EXPERIMENTAL,
@@ -100,6 +77,31 @@ pub const Frame = extern struct {
     };
 
     pub const isKeyFrame = &c.V4L2_VP8_FRAME_IS_KEY_FRAME;
+
+    pub const Ctrl = extern struct {
+        segment: Segment,
+        lf: LoopFilter,
+        quant: Quantization,
+        entropy: Entropy,
+        coder_state: EntropyCoderState,
+        width: u16,
+        height: u16,
+        horizontal_scale: u8,
+        vertical_scale: u8,
+        version: u8,
+        prob_skip_false: u8,
+        prob_intra: u8,
+        prob_last: u8,
+        prob_gf: u8,
+        num_dct_parts: u8,
+        first_part_size: u32,
+        first_part_header_bits: u32,
+        dct_part_sizes: [8]u32,
+        last_frame_ts: u64,
+        golden_frame_ts: u64,
+        alt_frame_ts: u64,
+        flags: u64,
+    };
 };
 
 test "stateless.vp8.Segment ABI matches struct_v4l2_vp8_segment" {
@@ -166,7 +168,7 @@ test "stateless.vp8.EntropyCoderState ABI matches struct_v4l2_vp8_entropy_coder_
 
 test "stateless.vp8.Frame ABI matches struct_v4l2_ctrl_vp8_frame" {
     const C = c.struct_v4l2_ctrl_vp8_frame;
-    const Z = vp8.Frame;
+    const Z = vp8.frame.Ctrl;
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "segment"), @offsetOf(Z, "segment"));

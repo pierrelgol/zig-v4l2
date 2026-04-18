@@ -7,6 +7,12 @@ const geometry = @import("../geometry.zig");
 const Area = geometry.Area;
 const Rectangle = geometry.Rectangle;
 const colorimetry = @import("colorimetry.zig").colorimetry;
+const fwht = @import("stateless/fwht.zig").fwht;
+const h264 = @import("stateless/h264.zig").h264;
+const hevc = @import("stateless/hevc.zig").hevc;
+const mpeg2 = @import("stateless/mpeg2.zig").mpeg2;
+const vp8 = @import("stateless/vp8.zig").vp8;
+const vp9 = @import("stateless/vp9.zig").vp9;
 const av1 = @import("stateless/av1.zig").av1;
 
 comptime {
@@ -17,28 +23,28 @@ pub const Control = extern struct {
     id: u32,
     value: i32,
 
-    pub const H264Sps = opaque {};
-    pub const H264Pps = opaque {};
-    pub const H264ScalingMatrix = opaque {};
-    pub const H264PredWeights = opaque {};
-    pub const H264SliceParams = opaque {};
-    pub const H264DecodeParams = opaque {};
-    pub const FwhtParams = opaque {};
-    pub const Vp8Frame = opaque {};
-    pub const Mpeg2Sequence = opaque {};
-    pub const Mpeg2Picture = opaque {};
-    pub const Mpeg2Quantisation = opaque {};
-    pub const Vp9CompressedHdr = opaque {};
-    pub const Vp9Frame = opaque {};
-    pub const HevcSps = opaque {};
-    pub const HevcPps = opaque {};
-    pub const HevcSliceParams = opaque {};
-    pub const HevcScalingMatrix = opaque {};
-    pub const HevcDecodeParams = opaque {};
+    pub const H264Sps = h264.sps.Ctrl;
+    pub const H264Pps = h264.pps.Ctrl;
+    pub const H264ScalingMatrix = h264.scaling_matrix.Ctrl;
+    pub const H264PredWeights = h264.pred_weights.Ctrl;
+    pub const H264SliceParams = h264.slice.params.Ctrl;
+    pub const H264DecodeParams = h264.decode.params.Ctrl;
+    pub const FwhtParams = fwht.params.Ctrl;
+    pub const Vp8Frame = vp8.frame.Ctrl;
+    pub const Mpeg2Sequence = mpeg2.sequence.Ctrl;
+    pub const Mpeg2Picture = mpeg2.picture.Ctrl;
+    pub const Mpeg2Quantisation = mpeg2.quantisation.Ctrl;
+    pub const Vp9CompressedHdr = vp9.compressed_hdr.Ctrl;
+    pub const Vp9Frame = vp9.frame.Ctrl;
+    pub const HevcSps = hevc.sps.Ctrl;
+    pub const HevcPps = hevc.pps.Ctrl;
+    pub const HevcSliceParams = hevc.slice.params.Ctrl;
+    pub const HevcScalingMatrix = hevc.scaling_matrix.Ctrl;
+    pub const HevcDecodeParams = hevc.decode.params.Ctrl;
     pub const Av1Sequence = av1.sequence.Ctrl;
-    pub const Av1TileGroupEntry = opaque {};
-    pub const Av1Frame = opaque {};
-    pub const Av1FilmGrain = opaque {};
+    pub const Av1TileGroupEntry = av1.tile_group_entry.Ctrl;
+    pub const Av1Frame = av1.frame.Ctrl;
+    pub const Av1FilmGrain = av1.film_grain.Ctrl;
     pub const Hdr10CllInfo = colorimetry.hdr10_cll_info.Ctrl;
     pub const Hdr10MasteringDisplay = colorimetry.hdr10_mastering_display.Ctrl;
 

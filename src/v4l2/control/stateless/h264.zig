@@ -22,7 +22,7 @@ pub const StartCode = enum(i32) {
     annex_b = c.V4L2_STATELESS_H264_START_CODE_ANNEX_B,
 };
 
-pub const sps = extern struct {
+pub const sps = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_H264_SPS;
 
     pub const Contraint = enum(i32) {
@@ -46,27 +46,29 @@ pub const sps = extern struct {
 
     pub const hasChromaFormat = c.V4L2_H264_SPS_HAS_CHROMA_FORMAT;
 
-    profile_idc: u8,
-    constraint_set_flags: u8,
-    level_idc: u8,
-    seq_parameter_set_id: u8,
-    chroma_format_idc: u8,
-    bit_depth_luma_minus8: u8,
-    bit_depth_chroma_minus8: u8,
-    log2_max_frame_num_minus4: u8,
-    pic_order_cnt_type: u8,
-    log2_max_pic_order_cnt_lsb_minus4: u8,
-    max_num_ref_frames: u8,
-    num_ref_frames_in_pic_order_cnt_cycle: u8,
-    offset_for_ref_frame: [255]i32,
-    offset_for_non_ref_pic: i32,
-    offset_for_top_to_bottom_field: i32,
-    pic_width_in_mbs_minus1: u16,
-    pic_height_in_map_units_minus1: u16,
-    flags: u32,
+    pub const Ctrl = extern struct {
+        profile_idc: u8,
+        constraint_set_flags: u8,
+        level_idc: u8,
+        seq_parameter_set_id: u8,
+        chroma_format_idc: u8,
+        bit_depth_luma_minus8: u8,
+        bit_depth_chroma_minus8: u8,
+        log2_max_frame_num_minus4: u8,
+        pic_order_cnt_type: u8,
+        log2_max_pic_order_cnt_lsb_minus4: u8,
+        max_num_ref_frames: u8,
+        num_ref_frames_in_pic_order_cnt_cycle: u8,
+        offset_for_ref_frame: [255]i32,
+        offset_for_non_ref_pic: i32,
+        offset_for_top_to_bottom_field: i32,
+        pic_width_in_mbs_minus1: u16,
+        pic_height_in_map_units_minus1: u16,
+        flags: u32,
+    };
 };
 
-pub const pps = extern struct {
+pub const pps = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_H264_PPS;
 
     pub const Flag = enum(i32) {
@@ -80,24 +82,28 @@ pub const pps = extern struct {
         scaling_matrix_present = c.V4L2_H264_PPS_FLAG_SCALING_MATRIX_PRESENT,
     };
 
-    pic_parameter_set_id: u8,
-    seq_parameter_set_id: u8,
-    num_slice_groups_minus1: u8,
-    num_ref_idx_l0_default_active_minus1: u8,
-    num_ref_idx_l1_default_active_minus1: u8,
-    weighted_bipred_idc: u8,
-    pic_init_qp_minus26: i8,
-    pic_init_qs_minus26: i8,
-    chroma_qp_index_offset: i8,
-    second_chroma_qp_index_offset: i8,
-    flags: u16,
+    pub const Ctrl = extern struct {
+        pic_parameter_set_id: u8,
+        seq_parameter_set_id: u8,
+        num_slice_groups_minus1: u8,
+        num_ref_idx_l0_default_active_minus1: u8,
+        num_ref_idx_l1_default_active_minus1: u8,
+        weighted_bipred_idc: u8,
+        pic_init_qp_minus26: i8,
+        pic_init_qs_minus26: i8,
+        chroma_qp_index_offset: i8,
+        second_chroma_qp_index_offset: i8,
+        flags: u16,
+    };
 };
 
-pub const ScalingMatrix = extern struct {
+pub const scaling_matrix = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_H264_SCALING_MATRIX;
 
-    scaling_list_4x4: [6][16]u8,
-    scaling_list_8x8: [6][64]u8,
+    pub const Ctrl = extern struct {
+        scaling_list_4x4: [6][16]u8,
+        scaling_list_8x8: [6][64]u8,
+    };
 };
 
 pub const WeightFactors = extern struct {
@@ -107,13 +113,15 @@ pub const WeightFactors = extern struct {
     chroma_offset: [32][2]i16,
 };
 
-pub const pred_weights = extern struct {
+pub const pred_weights = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_H264_PRED_WEIGHTS;
     pub const predWeightsRequired = c.V4L2_H264_CTRL_PRED_WEIGHTS_REQUIRED;
 
-    luma_log2_weight_denom: u16,
-    chroma_log2_weight_denom: u16,
-    weight_factors: [2]WeightFactors,
+    pub const Ctrl = extern struct {
+        luma_log2_weight_denom: u16,
+        chroma_log2_weight_denom: u16,
+        weight_factors: [2]WeightFactors,
+    };
 };
 
 pub const Slice = enum(i32) {
@@ -140,26 +148,30 @@ pub const Reference = extern struct {
     };
 };
 
-pub const slice_params = extern struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_SLICE_PARAMS;
+pub const slice = struct {
+    pub const params = struct {
+        pub const id: u32 = c.V4L2_CID_STATELESS_H264_SLICE_PARAMS;
 
-    header_bit_size: u32,
-    first_mb_in_slice: u32,
-    slice_type: u8,
-    colour_plane_id: u8,
-    redundant_pic_cnt: u8,
-    cabac_init_idc: u8,
-    slice_qp_delta: i8,
-    slice_qs_delta: i8,
-    disable_deblocking_filter_idc: u8,
-    slice_alpha_c0_offset_div2: i8,
-    slice_beta_offset_div2: i8,
-    num_ref_idx_l0_active_minus1: u8,
-    num_ref_idx_l1_active_minus1: u8,
-    reserved: u8,
-    ref_pic_list0: [c.V4L2_H264_REF_LIST_LEN]Reference,
-    ref_pic_list1: [c.V4L2_H264_REF_LIST_LEN]Reference,
-    flags: u32,
+        pub const Ctrl = extern struct {
+            header_bit_size: u32,
+            first_mb_in_slice: u32,
+            slice_type: u8,
+            colour_plane_id: u8,
+            redundant_pic_cnt: u8,
+            cabac_init_idc: u8,
+            slice_qp_delta: i8,
+            slice_qs_delta: i8,
+            disable_deblocking_filter_idc: u8,
+            slice_alpha_c0_offset_div2: i8,
+            slice_beta_offset_div2: i8,
+            num_ref_idx_l0_active_minus1: u8,
+            num_ref_idx_l1_active_minus1: u8,
+            reserved: u8,
+            ref_pic_list0: [c.V4L2_H264_REF_LIST_LEN]Reference,
+            ref_pic_list1: [c.V4L2_H264_REF_LIST_LEN]Reference,
+            flags: u32,
+        };
+    };
 };
 
 pub const dpb = struct {
@@ -182,37 +194,41 @@ pub const dpb = struct {
     };
 };
 
-pub const DecodeParams = extern struct {
-    pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_PARAMS;
+pub const decode = struct {
+    pub const params = struct {
+        pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_PARAMS;
 
-    pub const Flag = enum(i32) {
-        idr_pic = c.V4L2_H264_DECODE_PARAM_FLAG_IDR_PIC,
-        field_pic = c.V4L2_H264_DECODE_PARAM_FLAG_FIELD_PIC,
-        bottom_field = c.V4L2_H264_DECODE_PARAM_FLAG_BOTTOM_FIELD,
-        pframe = c.V4L2_H264_DECODE_PARAM_FLAG_PFRAME,
-        bframe = c.V4L2_H264_DECODE_PARAM_FLAG_BFRAME,
+        pub const Flag = enum(i32) {
+            idr_pic = c.V4L2_H264_DECODE_PARAM_FLAG_IDR_PIC,
+            field_pic = c.V4L2_H264_DECODE_PARAM_FLAG_FIELD_PIC,
+            bottom_field = c.V4L2_H264_DECODE_PARAM_FLAG_BOTTOM_FIELD,
+            pframe = c.V4L2_H264_DECODE_PARAM_FLAG_PFRAME,
+            bframe = c.V4L2_H264_DECODE_PARAM_FLAG_BFRAME,
+        };
+
+        pub const Ctrl = extern struct {
+            dpb: [16]dpb.Entry,
+            nal_ref_idc: u16,
+            frame_num: u16,
+            top_field_order_cnt: i32,
+            bottom_field_order_cnt: i32,
+            idr_pic_id: u16,
+            pic_order_cnt_lsb: u16,
+            delta_pic_order_cnt_bottom: i32,
+            delta_pic_order_cnt0: i32,
+            delta_pic_order_cnt1: i32,
+            dec_ref_pic_marking_bit_size: u32,
+            pic_order_cnt_bit_size: u32,
+            slice_group_change_cycle: u32,
+            reserved: u32,
+            flags: u32,
+        };
     };
-
-    dpb: [16]dpb.Entry,
-    nal_ref_idc: u16,
-    frame_num: u16,
-    top_field_order_cnt: i32,
-    bottom_field_order_cnt: i32,
-    idr_pic_id: u16,
-    pic_order_cnt_lsb: u16,
-    delta_pic_order_cnt_bottom: i32,
-    delta_pic_order_cnt0: i32,
-    delta_pic_order_cnt1: i32,
-    dec_ref_pic_marking_bit_size: u32,
-    pic_order_cnt_bit_size: u32,
-    slice_group_change_cycle: u32,
-    reserved: u32,
-    flags: u32,
 };
 
 test "stateless.h264.sps ABI matches struct_v4l2_ctrl_h264_sps" {
     const C = c.struct_v4l2_ctrl_h264_sps;
-    const Z = h264.sps;
+    const Z = h264.sps.Ctrl;
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "profile_idc"), @offsetOf(Z, "profile_idc"));
@@ -237,7 +253,7 @@ test "stateless.h264.sps ABI matches struct_v4l2_ctrl_h264_sps" {
 
 test "stateless.h264.pps ABI matches struct_v4l2_ctrl_h264_pps" {
     const C = c.struct_v4l2_ctrl_h264_pps;
-    const Z = h264.pps;
+    const Z = h264.pps.Ctrl;
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "pic_parameter_set_id"), @offsetOf(Z, "pic_parameter_set_id"));
@@ -255,7 +271,7 @@ test "stateless.h264.pps ABI matches struct_v4l2_ctrl_h264_pps" {
 
 test "stateless.h264.ScalingMatrix ABI matches struct_v4l2_ctrl_h264_scaling_matrix" {
     const C = c.struct_v4l2_ctrl_h264_scaling_matrix;
-    const Z = h264.ScalingMatrix;
+    const Z = h264.scaling_matrix.Ctrl;
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "scaling_list_4x4"), @offsetOf(Z, "scaling_list_4x4"));
@@ -275,7 +291,7 @@ test "stateless.h264.WeightFactors ABI matches struct_v4l2_h264_weight_factors" 
 
 test "stateless.h264.pred_weights ABI matches struct_v4l2_ctrl_h264_pred_weights" {
     const C = c.struct_v4l2_ctrl_h264_pred_weights;
-    const Z = h264.pred_weights;
+    const Z = h264.pred_weights.Ctrl;
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "luma_log2_weight_denom"), @offsetOf(Z, "luma_log2_weight_denom"));
@@ -294,7 +310,7 @@ test "stateless.h264.Reference ABI matches struct_v4l2_h264_reference" {
 
 test "stateless.h264.slice_params ABI matches struct_v4l2_ctrl_h264_slice_params" {
     const C = c.struct_v4l2_ctrl_h264_slice_params;
-    const Z = h264.slice_params;
+    const Z = h264.slice.params.Ctrl;
     try std.testing.expectEqual(@sizeOf(C), @sizeOf(Z));
     try std.testing.expectEqual(@alignOf(C), @alignOf(Z));
     try std.testing.expectEqual(@offsetOf(C, "header_bit_size"), @offsetOf(Z, "header_bit_size"));
@@ -333,7 +349,7 @@ test "stateless.h264.dpb.Entry ABI matches struct_v4l2_h264_dpb_entry" {
 
 test "stateless.h264.DecodeParams ABI matches struct_v4l2_ctrl_h264_decode_params" {
     const C = c.struct_v4l2_ctrl_h264_decode_params;
-    const Z = h264.DecodeParams;
+    const Z = h264.decode.params.Ctrl;
     try abi.expectStruct(C, Z, &.{
         .{ .c_name = "dpb", .z_name = "dpb" },
         .{ .c_name = "nal_ref_idc", .z_name = "nal_ref_idc" },
