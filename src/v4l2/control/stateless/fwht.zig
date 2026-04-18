@@ -1,7 +1,7 @@
 const std = @import("std");
 
 const c = @import("bindings");
-const abi = @import("../../abi_test.zig");
+const abi = @import("../../abi.zig");
 pub const version: u32 = c.V4L2_FWHT_VERSION;
 // @TODO  WIP
 // pub const isInterlaced = c.V4L2_FWHT_FL_IS_INTERLACED;

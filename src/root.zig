@@ -55,6 +55,7 @@ pub const Encoder = @import("v4l2/encoder.zig").Encoder;
 pub const Decoder = @import("v4l2/decoder.zig").Decoder;
 pub const Vbi = @import("v4l2/vbi.zig");
 pub const Event = @import("v4l2/event.zig").Event;
+pub const Media = @import("v4l2/media.zig");
 
 pub const Debug = @import("v4l2/debug.zig");
 

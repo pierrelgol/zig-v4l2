@@ -1,7 +1,7 @@
 const std = @import("std");
 
 const c = @import("bindings");
-const abi = @import("../../abi_test.zig");
+const abi = @import("../../abi.zig");
 
 pub const h264 = @This();
 comptime {

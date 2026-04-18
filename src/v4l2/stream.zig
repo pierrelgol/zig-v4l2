@@ -1,6 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
-const abi = @import("abi_test.zig");
+const abi = @import("abi.zig");
 const Buffer = @import("buffer.zig").Buffer;
 const Fraction = @import("geometry.zig").Fraction;
 const Rectangle = @import("geometry.zig").Rectangle;

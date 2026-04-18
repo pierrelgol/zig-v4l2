@@ -1,7 +1,7 @@
 const bindings = @import("bindings");
 const std = @import("std");
 const builtin = @import("builtin");
-const abi = @import("abi_test.zig");
+const abi = @import("abi.zig");
 
 comptime {
     std.testing.refAllDecls(@This());

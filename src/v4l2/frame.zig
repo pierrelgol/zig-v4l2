@@ -1,6 +1,6 @@
 const bindings = @import("bindings");
 const std = @import("std");
-const abi = @import("abi_test.zig");
+const abi = @import("abi.zig");
 const Pixel = @import("pixel.zig").Pixel;
 const geometry = @import("geometry.zig");
 const Rectangle = geometry.Rectangle;

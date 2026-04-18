@@ -1,5 +1,5 @@
 const std = @import("std");
-const abi = @import("../abi_test.zig");
+const abi = @import("../abi.zig");
 
 const c = @import("bindings");
 

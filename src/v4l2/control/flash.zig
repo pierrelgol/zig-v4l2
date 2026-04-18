@@ -1,6 +1,6 @@
 const c = @import("bindings");
 const std = @import("std");
-const abi = @import("../abi_test.zig");
+const abi = @import("../abi.zig");
 pub const flash = @This();
 
 comptime {
