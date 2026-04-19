@@ -26,30 +26,30 @@ pub const Window = extern struct {
 };
 
 pub const Buffer = extern struct {
-    capability: Capability,
-    flags: Flag,
+    capability: u32,
+    flags: u32,
     base: ?*anyopaque,
     format: Format,
 
-    pub const Capability = enum(u32) {
-        externoverlay = @intCast(bindings.V4L2_FBUF_CAP_EXTERNOVERLAY),
-        chromakey = @intCast(bindings.V4L2_FBUF_CAP_CHROMAKEY),
-        list_clipping = @intCast(bindings.V4L2_FBUF_CAP_LIST_CLIPPING),
-        bitmap_clipping = @intCast(bindings.V4L2_FBUF_CAP_BITMAP_CLIPPING),
-        local_alpha = @intCast(bindings.V4L2_FBUF_CAP_LOCAL_ALPHA),
-        global_alpha = @intCast(bindings.V4L2_FBUF_CAP_GLOBAL_ALPHA),
-        local_inv_alpha = @intCast(bindings.V4L2_FBUF_CAP_LOCAL_INV_ALPHA),
-        src_chromakey = @intCast(bindings.V4L2_FBUF_CAP_SRC_CHROMAKEY),
+    pub const Capability = struct {
+        pub const externoverlay: u32 = @intCast(bindings.V4L2_FBUF_CAP_EXTERNOVERLAY);
+        pub const chromakey: u32 = @intCast(bindings.V4L2_FBUF_CAP_CHROMAKEY);
+        pub const list_clipping: u32 = @intCast(bindings.V4L2_FBUF_CAP_LIST_CLIPPING);
+        pub const bitmap_clipping: u32 = @intCast(bindings.V4L2_FBUF_CAP_BITMAP_CLIPPING);
+        pub const local_alpha: u32 = @intCast(bindings.V4L2_FBUF_CAP_LOCAL_ALPHA);
+        pub const global_alpha: u32 = @intCast(bindings.V4L2_FBUF_CAP_GLOBAL_ALPHA);
+        pub const local_inv_alpha: u32 = @intCast(bindings.V4L2_FBUF_CAP_LOCAL_INV_ALPHA);
+        pub const src_chromakey: u32 = @intCast(bindings.V4L2_FBUF_CAP_SRC_CHROMAKEY);
     };
 
-    pub const Flag = enum(u32) {
-        primary = @intCast(bindings.V4L2_FBUF_FLAG_PRIMARY),
-        overlay = @intCast(bindings.V4L2_FBUF_FLAG_OVERLAY),
-        chromakey = @intCast(bindings.V4L2_FBUF_FLAG_CHROMAKEY),
-        local_alpha = @intCast(bindings.V4L2_FBUF_FLAG_LOCAL_ALPHA),
-        global_alpha = @intCast(bindings.V4L2_FBUF_FLAG_GLOBAL_ALPHA),
-        local_inv_alpha = @intCast(bindings.V4L2_FBUF_FLAG_LOCAL_INV_ALPHA),
-        src_chromakey = @intCast(bindings.V4L2_FBUF_FLAG_SRC_CHROMAKEY),
+    pub const Flag = struct {
+        pub const primary: u32 = @intCast(bindings.V4L2_FBUF_FLAG_PRIMARY);
+        pub const overlay: u32 = @intCast(bindings.V4L2_FBUF_FLAG_OVERLAY);
+        pub const chromakey: u32 = @intCast(bindings.V4L2_FBUF_FLAG_CHROMAKEY);
+        pub const local_alpha: u32 = @intCast(bindings.V4L2_FBUF_FLAG_LOCAL_ALPHA);
+        pub const global_alpha: u32 = @intCast(bindings.V4L2_FBUF_FLAG_GLOBAL_ALPHA);
+        pub const local_inv_alpha: u32 = @intCast(bindings.V4L2_FBUF_FLAG_LOCAL_INV_ALPHA);
+        pub const src_chromakey: u32 = @intCast(bindings.V4L2_FBUF_FLAG_SRC_CHROMAKEY);
     };
 
     pub const Format = extern struct {
