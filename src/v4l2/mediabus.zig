@@ -22,8 +22,8 @@ pub const FrameFormat = extern struct {
     flags: u16,
     reserved: [10]u16,
 
-    pub const Flag = enum(u16) {
-        set_csc = @intCast(c.V4L2_MBUS_FRAMEFMT_SET_CSC),
+    pub const Flag = struct {
+        pub const set_csc: u16 = @intCast(c.V4L2_MBUS_FRAMEFMT_SET_CSC);
     };
 };
 
@@ -133,7 +133,7 @@ test "Mediabus.FrameFormat.encoding ABI matches unnamed union in struct_v4l2_mbu
 }
 
 test "Mediabus constants match linux/v4l2-mediabus.h" {
-    try std.testing.expectEqual(@as(u16, @intCast(c.V4L2_MBUS_FRAMEFMT_SET_CSC)), @intFromEnum(FrameFormat.Flag.set_csc));
+    try std.testing.expectEqual(@as(u16, @intCast(c.V4L2_MBUS_FRAMEFMT_SET_CSC)), FrameFormat.Flag.set_csc);
     try std.testing.expectEqual(c.V4L2_MBUS_FMT_FIXED, @intFromEnum(PixelCode.fixed));
     try std.testing.expectEqual(c.V4L2_MBUS_FMT_RGB888_1X24, @intFromEnum(PixelCode.rgb888_1x24));
     try std.testing.expectEqual(c.V4L2_MBUS_FMT_YUYV8_2X8, @intFromEnum(PixelCode.yuyv8_2x8));
