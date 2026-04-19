@@ -33,37 +33,37 @@ pub const Blanking = extern struct {
         interlaced = @intCast(bindings.V4L2_DV_INTERLACED),
     };
 
-    pub const Polarity = enum(u32) {
-        vsync_pos = @intCast(bindings.V4L2_DV_VSYNC_POS_POL),
-        hsync_pos = @intCast(bindings.V4L2_DV_HSYNC_POS_POL),
+    pub const Polarity = struct {
+        pub const vsync_pos: u32 = @intCast(bindings.V4L2_DV_VSYNC_POS_POL);
+        pub const hsync_pos: u32 = @intCast(bindings.V4L2_DV_HSYNC_POS_POL);
     };
 
-    pub const Standard = enum(u32) {
-        cea861 = @intCast(bindings.V4L2_DV_BT_STD_CEA861),
-        dmt = @intCast(bindings.V4L2_DV_BT_STD_DMT),
-        cvt = @intCast(bindings.V4L2_DV_BT_STD_CVT),
-        gtf = @intCast(bindings.V4L2_DV_BT_STD_GTF),
-        sdi = @intCast(bindings.V4L2_DV_BT_STD_SDI),
+    pub const Standard = struct {
+        pub const cea861: u32 = @intCast(bindings.V4L2_DV_BT_STD_CEA861);
+        pub const dmt: u32 = @intCast(bindings.V4L2_DV_BT_STD_DMT);
+        pub const cvt: u32 = @intCast(bindings.V4L2_DV_BT_STD_CVT);
+        pub const gtf: u32 = @intCast(bindings.V4L2_DV_BT_STD_GTF);
+        pub const sdi: u32 = @intCast(bindings.V4L2_DV_BT_STD_SDI);
     };
 
-    pub const Flag = enum(u32) {
-        reduced_blanking = @intCast(bindings.V4L2_DV_FL_REDUCED_BLANKING),
-        can_reduce_fps = @intCast(bindings.V4L2_DV_FL_CAN_REDUCE_FPS),
-        reduced_fps = @intCast(bindings.V4L2_DV_FL_REDUCED_FPS),
-        half_line = @intCast(bindings.V4L2_DV_FL_HALF_LINE),
-        is_ce_video = @intCast(bindings.V4L2_DV_FL_IS_CE_VIDEO),
-        first_field_extra_line = @intCast(bindings.V4L2_DV_FL_FIRST_FIELD_EXTRA_LINE),
-        has_picture_aspect = @intCast(bindings.V4L2_DV_FL_HAS_PICTURE_ASPECT),
-        has_cea861_vic = @intCast(bindings.V4L2_DV_FL_HAS_CEA861_VIC),
-        has_hdmi_vic = @intCast(bindings.V4L2_DV_FL_HAS_HDMI_VIC),
-        can_detect_reduced_fps = @intCast(bindings.V4L2_DV_FL_CAN_DETECT_REDUCED_FPS),
+    pub const Flag = struct {
+        pub const reduced_blanking: u32 = @intCast(bindings.V4L2_DV_FL_REDUCED_BLANKING);
+        pub const can_reduce_fps: u32 = @intCast(bindings.V4L2_DV_FL_CAN_REDUCE_FPS);
+        pub const reduced_fps: u32 = @intCast(bindings.V4L2_DV_FL_REDUCED_FPS);
+        pub const half_line: u32 = @intCast(bindings.V4L2_DV_FL_HALF_LINE);
+        pub const is_ce_video: u32 = @intCast(bindings.V4L2_DV_FL_IS_CE_VIDEO);
+        pub const first_field_extra_line: u32 = @intCast(bindings.V4L2_DV_FL_FIRST_FIELD_EXTRA_LINE);
+        pub const has_picture_aspect: u32 = @intCast(bindings.V4L2_DV_FL_HAS_PICTURE_ASPECT);
+        pub const has_cea861_vic: u32 = @intCast(bindings.V4L2_DV_FL_HAS_CEA861_VIC);
+        pub const has_hdmi_vic: u32 = @intCast(bindings.V4L2_DV_FL_HAS_HDMI_VIC);
+        pub const can_detect_reduced_fps: u32 = @intCast(bindings.V4L2_DV_FL_CAN_DETECT_REDUCED_FPS);
     };
 
-    pub const Capability = enum(u32) {
-        interlaced = @intCast(bindings.V4L2_DV_BT_CAP_INTERLACED),
-        progressive = @intCast(bindings.V4L2_DV_BT_CAP_PROGRESSIVE),
-        reduced_blanking = @intCast(bindings.V4L2_DV_BT_CAP_REDUCED_BLANKING),
-        custom = @intCast(bindings.V4L2_DV_BT_CAP_CUSTOM),
+    pub const Capability = struct {
+        pub const interlaced: u32 = @intCast(bindings.V4L2_DV_BT_CAP_INTERLACED);
+        pub const progressive: u32 = @intCast(bindings.V4L2_DV_BT_CAP_PROGRESSIVE);
+        pub const reduced_blanking: u32 = @intCast(bindings.V4L2_DV_BT_CAP_REDUCED_BLANKING);
+        pub const custom: u32 = @intCast(bindings.V4L2_DV_BT_CAP_CUSTOM);
     };
 };
 
