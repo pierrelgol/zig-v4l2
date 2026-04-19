@@ -9,16 +9,16 @@ comptime {
 pub const sps = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SPS;
 
-    pub const Flag = enum(c_long) {
-        separate_colour_plane = c.V4L2_HEVC_SPS_FLAG_SEPARATE_COLOUR_PLANE,
-        scaling_list_enabled = c.V4L2_HEVC_SPS_FLAG_SCALING_LIST_ENABLED,
-        amp_enabled = c.V4L2_HEVC_SPS_FLAG_AMP_ENABLED,
-        sample_adaptive_offset = c.V4L2_HEVC_SPS_FLAG_SAMPLE_ADAPTIVE_OFFSET,
-        pcm_enabled = c.V4L2_HEVC_SPS_FLAG_PCM_ENABLED,
-        pcm_loop_filter_disabled = c.V4L2_HEVC_SPS_FLAG_PCM_LOOP_FILTER_DISABLED,
-        long_term_ref_pics_present = c.V4L2_HEVC_SPS_FLAG_LONG_TERM_REF_PICS_PRESENT,
-        sps_temporal_mvp_enabled = c.V4L2_HEVC_SPS_FLAG_SPS_TEMPORAL_MVP_ENABLED,
-        strong_intra_smoothing_enabled = c.V4L2_HEVC_SPS_FLAG_STRONG_INTRA_SMOOTHING_ENABLED,
+    pub const Flag = struct {
+        pub const separate_colour_plane: c_long = c.V4L2_HEVC_SPS_FLAG_SEPARATE_COLOUR_PLANE;
+        pub const scaling_list_enabled: c_long = c.V4L2_HEVC_SPS_FLAG_SCALING_LIST_ENABLED;
+        pub const amp_enabled: c_long = c.V4L2_HEVC_SPS_FLAG_AMP_ENABLED;
+        pub const sample_adaptive_offset: c_long = c.V4L2_HEVC_SPS_FLAG_SAMPLE_ADAPTIVE_OFFSET;
+        pub const pcm_enabled: c_long = c.V4L2_HEVC_SPS_FLAG_PCM_ENABLED;
+        pub const pcm_loop_filter_disabled: c_long = c.V4L2_HEVC_SPS_FLAG_PCM_LOOP_FILTER_DISABLED;
+        pub const long_term_ref_pics_present: c_long = c.V4L2_HEVC_SPS_FLAG_LONG_TERM_REF_PICS_PRESENT;
+        pub const sps_temporal_mvp_enabled: c_long = c.V4L2_HEVC_SPS_FLAG_SPS_TEMPORAL_MVP_ENABLED;
+        pub const strong_intra_smoothing_enabled: c_long = c.V4L2_HEVC_SPS_FLAG_STRONG_INTRA_SMOOTHING_ENABLED;
     };
 
     pub const Ctrl = extern struct {
@@ -54,28 +54,28 @@ pub const sps = struct {
 pub const pps = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_PPS;
 
-    pub const Flag = enum(c_long) {
-        dependent_slice_segment_enabled = c.V4L2_HEVC_PPS_FLAG_DEPENDENT_SLICE_SEGMENT_ENABLED,
-        output_flag_present = c.V4L2_HEVC_PPS_FLAG_OUTPUT_FLAG_PRESENT,
-        sign_data_hiding_enabled = c.V4L2_HEVC_PPS_FLAG_SIGN_DATA_HIDING_ENABLED,
-        cabac_init_present = c.V4L2_HEVC_PPS_FLAG_CABAC_INIT_PRESENT,
-        constrained_intra_pred = c.V4L2_HEVC_PPS_FLAG_CONSTRAINED_INTRA_PRED,
-        transform_skip_enabled = c.V4L2_HEVC_PPS_FLAG_TRANSFORM_SKIP_ENABLED,
-        cu_qp_delta_enabled = c.V4L2_HEVC_PPS_FLAG_CU_QP_DELTA_ENABLED,
-        pps_slice_chroma_qp_offsets_present = c.V4L2_HEVC_PPS_FLAG_PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT,
-        weighted_pred = c.V4L2_HEVC_PPS_FLAG_WEIGHTED_PRED,
-        weighted_bipred = c.V4L2_HEVC_PPS_FLAG_WEIGHTED_BIPRED,
-        transquant_bypass_enabled = c.V4L2_HEVC_PPS_FLAG_TRANSQUANT_BYPASS_ENABLED,
-        tiles_enabled = c.V4L2_HEVC_PPS_FLAG_TILES_ENABLED,
-        entropy_coding_sync_enabled = c.V4L2_HEVC_PPS_FLAG_ENTROPY_CODING_SYNC_ENABLED,
-        loop_filter_across_tiles_enabled = c.V4L2_HEVC_PPS_FLAG_LOOP_FILTER_ACROSS_TILES_ENABLED,
-        pps_loop_filter_across_slices_enabled = c.V4L2_HEVC_PPS_FLAG_PPS_LOOP_FILTER_ACROSS_SLICES_ENABLED,
-        deblocking_filter_override_enabled = c.V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_OVERRIDE_ENABLED,
-        pps_disable_deblocking_filter = c.V4L2_HEVC_PPS_FLAG_PPS_DISABLE_DEBLOCKING_FILTER,
-        lists_modification_present = c.V4L2_HEVC_PPS_FLAG_LISTS_MODIFICATION_PRESENT,
-        slice_segment_header_extension_present = c.V4L2_HEVC_PPS_FLAG_SLICE_SEGMENT_HEADER_EXTENSION_PRESENT,
-        deblocking_filter_control_present = c.V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT,
-        uniform_spacing = c.V4L2_HEVC_PPS_FLAG_UNIFORM_SPACING,
+    pub const Flag = struct {
+        pub const dependent_slice_segment_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_DEPENDENT_SLICE_SEGMENT_ENABLED;
+        pub const output_flag_present: c_long = c.V4L2_HEVC_PPS_FLAG_OUTPUT_FLAG_PRESENT;
+        pub const sign_data_hiding_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_SIGN_DATA_HIDING_ENABLED;
+        pub const cabac_init_present: c_long = c.V4L2_HEVC_PPS_FLAG_CABAC_INIT_PRESENT;
+        pub const constrained_intra_pred: c_long = c.V4L2_HEVC_PPS_FLAG_CONSTRAINED_INTRA_PRED;
+        pub const transform_skip_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_TRANSFORM_SKIP_ENABLED;
+        pub const cu_qp_delta_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_CU_QP_DELTA_ENABLED;
+        pub const pps_slice_chroma_qp_offsets_present: c_long = c.V4L2_HEVC_PPS_FLAG_PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT;
+        pub const weighted_pred: c_long = c.V4L2_HEVC_PPS_FLAG_WEIGHTED_PRED;
+        pub const weighted_bipred: c_long = c.V4L2_HEVC_PPS_FLAG_WEIGHTED_BIPRED;
+        pub const transquant_bypass_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_TRANSQUANT_BYPASS_ENABLED;
+        pub const tiles_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_TILES_ENABLED;
+        pub const entropy_coding_sync_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_ENTROPY_CODING_SYNC_ENABLED;
+        pub const loop_filter_across_tiles_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_LOOP_FILTER_ACROSS_TILES_ENABLED;
+        pub const pps_loop_filter_across_slices_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_PPS_LOOP_FILTER_ACROSS_SLICES_ENABLED;
+        pub const deblocking_filter_override_enabled: c_long = c.V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_OVERRIDE_ENABLED;
+        pub const pps_disable_deblocking_filter: c_long = c.V4L2_HEVC_PPS_FLAG_PPS_DISABLE_DEBLOCKING_FILTER;
+        pub const lists_modification_present: c_long = c.V4L2_HEVC_PPS_FLAG_LISTS_MODIFICATION_PRESENT;
+        pub const slice_segment_header_extension_present: c_long = c.V4L2_HEVC_PPS_FLAG_SLICE_SEGMENT_HEADER_EXTENSION_PRESENT;
+        pub const deblocking_filter_control_present: c_long = c.V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT;
+        pub const uniform_spacing: c_long = c.V4L2_HEVC_PPS_FLAG_UNIFORM_SPACING;
     };
 
     pub const Ctrl = extern struct {
@@ -103,17 +103,17 @@ pub const slice = struct {
     pub const params = struct {
         pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_SLICE_PARAMS;
 
-        pub const Flag = enum(c_long) {
-            slice_sao_luma = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_LUMA,
-            slice_sao_chroma = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_CHROMA,
-            slice_temporal_mvp_enabled = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_TEMPORAL_MVP_ENABLED,
-            mvd_l1_zero = c.V4L2_HEVC_SLICE_PARAMS_FLAG_MVD_L1_ZERO,
-            cabac_init = c.V4L2_HEVC_SLICE_PARAMS_FLAG_CABAC_INIT,
-            collocated_from_l0 = c.V4L2_HEVC_SLICE_PARAMS_FLAG_COLLOCATED_FROM_L0,
-            use_integer_mv = c.V4L2_HEVC_SLICE_PARAMS_FLAG_USE_INTEGER_MV,
-            slice_deblocking_filter_disabled = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_DEBLOCKING_FILTER_DISABLED,
-            slice_loop_filter_across_slices_enabled = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_LOOP_FILTER_ACROSS_SLICES_ENABLED,
-            dependent_slice_segment = c.V4L2_HEVC_SLICE_PARAMS_FLAG_DEPENDENT_SLICE_SEGMENT,
+        pub const Flag = struct {
+            pub const slice_sao_luma: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_LUMA;
+            pub const slice_sao_chroma: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_CHROMA;
+            pub const slice_temporal_mvp_enabled: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_TEMPORAL_MVP_ENABLED;
+            pub const mvd_l1_zero: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_MVD_L1_ZERO;
+            pub const cabac_init: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_CABAC_INIT;
+            pub const collocated_from_l0: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_COLLOCATED_FROM_L0;
+            pub const use_integer_mv: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_USE_INTEGER_MV;
+            pub const slice_deblocking_filter_disabled: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_DEBLOCKING_FILTER_DISABLED;
+            pub const slice_loop_filter_across_slices_enabled: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_LOOP_FILTER_ACROSS_SLICES_ENABLED;
+            pub const dependent_slice_segment: c_long = c.V4L2_HEVC_SLICE_PARAMS_FLAG_DEPENDENT_SLICE_SEGMENT;
         };
 
         pub const Ctrl = extern struct {
@@ -174,10 +174,10 @@ pub const decode = struct {
     pub const params = struct {
         pub const id: u32 = c.V4L2_CID_STATELESS_HEVC_DECODE_PARAMS;
 
-        pub const Flag = enum(i32) {
-            irap_pic = c.V4L2_HEVC_DECODE_PARAM_FLAG_IRAP_PIC,
-            idr_pic = c.V4L2_HEVC_DECODE_PARAM_FLAG_IDR_PIC,
-            no_output_of_prior = c.V4L2_HEVC_DECODE_PARAM_FLAG_NO_OUTPUT_OF_PRIOR,
+        pub const Flag = struct {
+            pub const irap_pic: i32 = c.V4L2_HEVC_DECODE_PARAM_FLAG_IRAP_PIC;
+            pub const idr_pic: i32 = c.V4L2_HEVC_DECODE_PARAM_FLAG_IDR_PIC;
+            pub const no_output_of_prior: i32 = c.V4L2_HEVC_DECODE_PARAM_FLAG_NO_OUTPUT_OF_PRIOR;
         };
 
         pub const Ctrl = extern struct {
