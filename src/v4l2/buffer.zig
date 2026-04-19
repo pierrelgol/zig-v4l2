@@ -150,10 +150,11 @@ pub const Buffer = extern struct {
         timestamp_monotonic = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC),
         timestamp_copy = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_COPY),
         tstamp_src_mask = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_MASK),
-        tstamp_src_eof = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_EOF),
         tstamp_src_soe = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_SOE),
         last = @intCast(bindings.V4L2_BUF_FLAG_LAST),
         request_fd = @intCast(bindings.V4L2_BUF_FLAG_REQUEST_FD),
+
+        pub const tstamp_src_eof: Flag = .timestamp_unknown;
     };
 
     pub const Request = extern struct {
@@ -227,6 +228,11 @@ test "Buffer ABI matches struct_v4l2_buffer" {
         .{ .c_name = "reserved2", .z_name = "reserved2" },
         .{ .c_name = "unnamed_0", .z_name = "r" },
     });
+}
+
+test "Buffer.Flag aliases match linux/videodev2.h" {
+    try std.testing.expectEqual(@intFromEnum(Buffer.Flag.timestamp_unknown), @intFromEnum(Buffer.Flag.tstamp_src_eof));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_EOF)), @intFromEnum(Buffer.Flag.tstamp_src_eof));
 }
 
 test "Buffer.m ABI matches unnamed union in struct_v4l2_buffer" {
