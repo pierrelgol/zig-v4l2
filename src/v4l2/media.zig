@@ -297,14 +297,17 @@ pub const Link = extern struct {
     flags: u32,
     reserved: [2]u32,
 
-    pub const Flag = enum(u32) {
-        enabled = @intCast(c.MEDIA_LNK_FL_ENABLED),
-        immutable = @intCast(c.MEDIA_LNK_FL_IMMUTABLE),
-        dynamic = @intCast(c.MEDIA_LNK_FL_DYNAMIC),
-        link_type = @intCast(c.MEDIA_LNK_FL_LINK_TYPE),
-        data = @intCast(c.MEDIA_LNK_FL_DATA_LINK),
-        interface = @intCast(c.MEDIA_LNK_FL_INTERFACE_LINK),
-        ancillary = @intCast(c.MEDIA_LNK_FL_ANCILLARY_LINK),
+    // Media link flags come from C macros where high-bit masks may be
+    // translated as signed integers causes an overflow when used as an enum, so
+    // bitcast preserve the raw 32-bit pattern
+    pub const Flag = struct {
+        pub const enabled: u32 = @bitCast(c.MEDIA_LNK_FL_ENABLED);
+        pub const immutable: u32 = @bitCast(c.MEDIA_LNK_FL_IMMUTABLE);
+        pub const dynamic: u32 = @bitCast(c.MEDIA_LNK_FL_DYNAMIC);
+        pub const link_type: u32 = @bitCast(c.MEDIA_LNK_FL_LINK_TYPE);
+        pub const data: u32 = @bitCast(c.MEDIA_LNK_FL_DATA_LINK);
+        pub const interface: u32 = @bitCast(c.MEDIA_LNK_FL_INTERFACE_LINK);
+        pub const ancillary: u32 = @bitCast(c.MEDIA_LNK_FL_ANCILLARY_LINK);
     };
 };
 
@@ -623,4 +626,14 @@ test "Media interface constants match linux/media.h" {
     try std.testing.expectEqual(@as(u32, @intCast(c.MEDIA_INTF_T_ALSA_HWDEP)), @intFromEnum(Interface.Type.alsa_hwdep));
     try std.testing.expectEqual(@as(u32, @intCast(c.MEDIA_INTF_T_ALSA_SEQUENCER)), @intFromEnum(Interface.Type.alsa_sequencer));
     try std.testing.expectEqual(@as(u32, @intCast(c.MEDIA_INTF_T_ALSA_TIMER)), @intFromEnum(Interface.Type.alsa_timer));
+}
+
+test "Media.Link.Flag constants are usable as u32 masks" {
+    try std.testing.expectEqual(@as(u32, c.MEDIA_LNK_FL_ENABLED), Link.Flag.enabled);
+    try std.testing.expectEqual(@as(u32, c.MEDIA_LNK_FL_IMMUTABLE), Link.Flag.immutable);
+    try std.testing.expectEqual(@as(u32, c.MEDIA_LNK_FL_DYNAMIC), Link.Flag.dynamic);
+    try std.testing.expectEqual(@as(u32, @bitCast(@as(i32, c.MEDIA_LNK_FL_LINK_TYPE))), Link.Flag.link_type);
+    try std.testing.expectEqual(@as(u32, c.MEDIA_LNK_FL_DATA_LINK), Link.Flag.data);
+    try std.testing.expectEqual(@as(u32, c.MEDIA_LNK_FL_INTERFACE_LINK), Link.Flag.interface);
+    try std.testing.expectEqual(@as(u32, c.MEDIA_LNK_FL_ANCILLARY_LINK), Link.Flag.ancillary);
 }
