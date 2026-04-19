@@ -15,11 +15,11 @@ pub const Segment = extern struct {
     padding: u8,
     flags: u32,
 
-    pub const Flag = enum(u8) {
-        enabled = c.V4L2_VP8_SEGMENT_FLAG_ENABLED,
-        update_map = c.V4L2_VP8_SEGMENT_FLAG_UPDATE_MAP,
-        update_feature_data = c.V4L2_VP8_SEGMENT_FLAG_UPDATE_FEATURE_DATA,
-        delta_value_mode = c.V4L2_VP8_SEGMENT_FLAG_DELTA_VALUE_MODE,
+    pub const Flag = struct {
+        pub const enabled: u8 = c.V4L2_VP8_SEGMENT_FLAG_ENABLED;
+        pub const update_map: u8 = c.V4L2_VP8_SEGMENT_FLAG_UPDATE_MAP;
+        pub const update_feature_data: u8 = c.V4L2_VP8_SEGMENT_FLAG_UPDATE_FEATURE_DATA;
+        pub const delta_value_mode: u8 = c.V4L2_VP8_SEGMENT_FLAG_DELTA_VALUE_MODE;
     };
 };
 
@@ -31,10 +31,10 @@ pub const LoopFilter = extern struct {
     padding: u16,
     flags: u32,
 
-    pub const Flag = enum(u8) {
-        V4L2_VP8_LF_ADJ_ENABLE = c.V4L2_VP8_LF_ADJ_ENABLE,
-        V4L2_VP8_LF_DELTA_UPDATE = c.V4L2_VP8_LF_DELTA_UPDATE,
-        V4L2_VP8_LF_FILTER_TYPE_SIMPLE = c.V4L2_VP8_LF_FILTER_TYPE_SIMPLE,
+    pub const Flag = struct {
+        pub const V4L2_VP8_LF_ADJ_ENABLE: u8 = c.V4L2_VP8_LF_ADJ_ENABLE;
+        pub const V4L2_VP8_LF_DELTA_UPDATE: u8 = c.V4L2_VP8_LF_DELTA_UPDATE;
+        pub const V4L2_VP8_LF_FILTER_TYPE_SIMPLE: u8 = c.V4L2_VP8_LF_FILTER_TYPE_SIMPLE;
     };
 };
 
@@ -67,13 +67,13 @@ pub const EntropyCoderState = extern struct {
 };
 
 pub const frame = struct {
-    pub const Flag = enum(i32) {
-        key_frame = c.V4L2_VP8_FRAME_FLAG_KEY_FRAME,
-        experimental = c.V4L2_VP8_FRAME_FLAG_EXPERIMENTAL,
-        show_frame = c.V4L2_VP8_FRAME_FLAG_SHOW_FRAME,
-        mb_no_skip_coeff = c.V4L2_VP8_FRAME_FLAG_MB_NO_SKIP_COEFF,
-        sign_bias_golden = c.V4L2_VP8_FRAME_FLAG_SIGN_BIAS_GOLDEN,
-        sign_bias_alt = c.V4L2_VP8_FRAME_FLAG_SIGN_BIAS_ALT,
+    pub const Flag = struct {
+        pub const key_frame: i32 = c.V4L2_VP8_FRAME_FLAG_KEY_FRAME;
+        pub const experimental: i32 = c.V4L2_VP8_FRAME_FLAG_EXPERIMENTAL;
+        pub const show_frame: i32 = c.V4L2_VP8_FRAME_FLAG_SHOW_FRAME;
+        pub const mb_no_skip_coeff: i32 = c.V4L2_VP8_FRAME_FLAG_MB_NO_SKIP_COEFF;
+        pub const sign_bias_golden: i32 = c.V4L2_VP8_FRAME_FLAG_SIGN_BIAS_GOLDEN;
+        pub const sign_bias_alt: i32 = c.V4L2_VP8_FRAME_FLAG_SIGN_BIAS_ALT;
     };
 
     pub const isKeyFrame = &c.V4L2_VP8_FRAME_IS_KEY_FRAME;
