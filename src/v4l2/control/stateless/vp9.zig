@@ -16,9 +16,9 @@ pub const LoopFilter = extern struct {
     flags: u8,
     reserved: [7]u8,
 
-    pub const Flag = enum(u32) {
-        enabled = c.V4L2_VP9_LOOP_FILTER_FLAG_DELTA_ENABLED,
-        update = c.V4L2_VP9_LOOP_FILTER_FLAG_DELTA_UPDATE,
+    pub const Flag = struct {
+        pub const enabled: u32 = c.V4L2_VP9_LOOP_FILTER_FLAG_DELTA_ENABLED;
+        pub const update: u32 = c.V4L2_VP9_LOOP_FILTER_FLAG_DELTA_UPDATE;
     };
 };
 
@@ -38,12 +38,12 @@ pub const Segmentation = extern struct {
     flags: u8,
     reserved: [5]u8,
 
-    pub const Flag = enum(i32) {
-        enabled = c.V4L2_VP9_SEGMENTATION_FLAG_ENABLED,
-        update_map = c.V4L2_VP9_SEGMENTATION_FLAG_UPDATE_MAP,
-        temporal_update = c.V4L2_VP9_SEGMENTATION_FLAG_TEMPORAL_UPDATE,
-        update_data = c.V4L2_VP9_SEGMENTATION_FLAG_UPDATE_DATA,
-        abs_or_delta_update = c.V4L2_VP9_SEGMENTATION_FLAG_ABS_OR_DELTA_UPDATE,
+    pub const Flag = struct {
+        pub const enabled: i32 = c.V4L2_VP9_SEGMENTATION_FLAG_ENABLED;
+        pub const update_map: i32 = c.V4L2_VP9_SEGMENTATION_FLAG_UPDATE_MAP;
+        pub const temporal_update: i32 = c.V4L2_VP9_SEGMENTATION_FLAG_TEMPORAL_UPDATE;
+        pub const update_data: i32 = c.V4L2_VP9_SEGMENTATION_FLAG_UPDATE_DATA;
+        pub const abs_or_delta_update: i32 = c.V4L2_VP9_SEGMENTATION_FLAG_ABS_OR_DELTA_UPDATE;
     };
 
     pub const Level = enum(i32) {
@@ -61,17 +61,17 @@ pub const Segmentation = extern struct {
 pub const frame = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_VP9_FRAME;
 
-    pub const Flag = enum(i32) {
-        key_frame = c.V4L2_VP9_FRAME_FLAG_KEY_FRAME,
-        show_frame = c.V4L2_VP9_FRAME_FLAG_SHOW_FRAME,
-        error_resilient = c.V4L2_VP9_FRAME_FLAG_ERROR_RESILIENT,
-        intra_only = c.V4L2_VP9_FRAME_FLAG_INTRA_ONLY,
-        allow_high_prec_mv = c.V4L2_VP9_FRAME_FLAG_ALLOW_HIGH_PREC_MV,
-        refresh_frame_ctx = c.V4L2_VP9_FRAME_FLAG_REFRESH_FRAME_CTX,
-        parallel_dec_mode = c.V4L2_VP9_FRAME_FLAG_PARALLEL_DEC_MODE,
-        x_subsampling = c.V4L2_VP9_FRAME_FLAG_X_SUBSAMPLING,
-        y_subsampling = c.V4L2_VP9_FRAME_FLAG_Y_SUBSAMPLING,
-        color_range_full_swing = c.V4L2_VP9_FRAME_FLAG_COLOR_RANGE_FULL_SWING,
+    pub const Flag = struct {
+        pub const key_frame: i32 = c.V4L2_VP9_FRAME_FLAG_KEY_FRAME;
+        pub const show_frame: i32 = c.V4L2_VP9_FRAME_FLAG_SHOW_FRAME;
+        pub const error_resilient: i32 = c.V4L2_VP9_FRAME_FLAG_ERROR_RESILIENT;
+        pub const intra_only: i32 = c.V4L2_VP9_FRAME_FLAG_INTRA_ONLY;
+        pub const allow_high_prec_mv: i32 = c.V4L2_VP9_FRAME_FLAG_ALLOW_HIGH_PREC_MV;
+        pub const refresh_frame_ctx: i32 = c.V4L2_VP9_FRAME_FLAG_REFRESH_FRAME_CTX;
+        pub const parallel_dec_mode: i32 = c.V4L2_VP9_FRAME_FLAG_PARALLEL_DEC_MODE;
+        pub const x_subsampling: i32 = c.V4L2_VP9_FRAME_FLAG_X_SUBSAMPLING;
+        pub const y_subsampling: i32 = c.V4L2_VP9_FRAME_FLAG_Y_SUBSAMPLING;
+        pub const color_range_full_swing: i32 = c.V4L2_VP9_FRAME_FLAG_COLOR_RANGE_FULL_SWING;
     };
 
     pub const Ctrl = extern struct {
