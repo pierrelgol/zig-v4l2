@@ -25,23 +25,23 @@ pub const StartCode = enum(i32) {
 pub const sps = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_H264_SPS;
 
-    pub const Contraint = enum(i32) {
-        set0_flag = c.V4L2_H264_SPS_CONSTRAINT_SET0_FLAG,
-        set1_flag = c.V4L2_H264_SPS_CONSTRAINT_SET1_FLAG,
-        set2_flag = c.V4L2_H264_SPS_CONSTRAINT_SET2_FLAG,
-        set3_flag = c.V4L2_H264_SPS_CONSTRAINT_SET3_FLAG,
-        set4_flag = c.V4L2_H264_SPS_CONSTRAINT_SET4_FLAG,
-        set5_flag = c.V4L2_H264_SPS_CONSTRAINT_SET5_FLAG,
+    pub const Contraint = struct {
+        pub const set0_flag: i32 = c.V4L2_H264_SPS_CONSTRAINT_SET0_FLAG;
+        pub const set1_flag: i32 = c.V4L2_H264_SPS_CONSTRAINT_SET1_FLAG;
+        pub const set2_flag: i32 = c.V4L2_H264_SPS_CONSTRAINT_SET2_FLAG;
+        pub const set3_flag: i32 = c.V4L2_H264_SPS_CONSTRAINT_SET3_FLAG;
+        pub const set4_flag: i32 = c.V4L2_H264_SPS_CONSTRAINT_SET4_FLAG;
+        pub const set5_flag: i32 = c.V4L2_H264_SPS_CONSTRAINT_SET5_FLAG;
     };
 
-    pub const Flag = enum(i32) {
-        separate_colour_plane = c.V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE,
-        qpprime_y_zero_transform_bypass = c.V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS,
-        delta_pic_order_always_zero = c.V4L2_H264_SPS_FLAG_DELTA_PIC_ORDER_ALWAYS_ZERO,
-        gaps_in_frame_num_value_allowed = c.V4L2_H264_SPS_FLAG_GAPS_IN_FRAME_NUM_VALUE_ALLOWED,
-        frame_mbs_only = c.V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY,
-        mb_adaptive_frame_field = c.V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD,
-        direct_8x8_inference = c.V4L2_H264_SPS_FLAG_DIRECT_8X8_INFERENCE,
+    pub const Flag = struct {
+        pub const separate_colour_plane: i32 = c.V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
+        pub const qpprime_y_zero_transform_bypass: i32 = c.V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
+        pub const delta_pic_order_always_zero: i32 = c.V4L2_H264_SPS_FLAG_DELTA_PIC_ORDER_ALWAYS_ZERO;
+        pub const gaps_in_frame_num_value_allowed: i32 = c.V4L2_H264_SPS_FLAG_GAPS_IN_FRAME_NUM_VALUE_ALLOWED;
+        pub const frame_mbs_only: i32 = c.V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY;
+        pub const mb_adaptive_frame_field: i32 = c.V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
+        pub const direct_8x8_inference: i32 = c.V4L2_H264_SPS_FLAG_DIRECT_8X8_INFERENCE;
     };
 
     pub const hasChromaFormat = c.V4L2_H264_SPS_HAS_CHROMA_FORMAT;
@@ -71,15 +71,15 @@ pub const sps = struct {
 pub const pps = struct {
     pub const id: u32 = c.V4L2_CID_STATELESS_H264_PPS;
 
-    pub const Flag = enum(i32) {
-        entropy_coding_mode = c.V4L2_H264_PPS_FLAG_ENTROPY_CODING_MODE,
-        bottom_field_pic_order_in_frame_present = c.V4L2_H264_PPS_FLAG_BOTTOM_FIELD_PIC_ORDER_IN_FRAME_PRESENT,
-        weighted_pred = c.V4L2_H264_PPS_FLAG_WEIGHTED_PRED,
-        deblocking_filter_control_present = c.V4L2_H264_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT,
-        constrained_intra_pred = c.V4L2_H264_PPS_FLAG_CONSTRAINED_INTRA_PRED,
-        redundant_pic_cnt_present = c.V4L2_H264_PPS_FLAG_REDUNDANT_PIC_CNT_PRESENT,
-        transform_8x8_mode = c.V4L2_H264_PPS_FLAG_TRANSFORM_8X8_MODE,
-        scaling_matrix_present = c.V4L2_H264_PPS_FLAG_SCALING_MATRIX_PRESENT,
+    pub const Flag = struct {
+        pub const entropy_coding_mode: i32 = c.V4L2_H264_PPS_FLAG_ENTROPY_CODING_MODE;
+        pub const bottom_field_pic_order_in_frame_present: i32 = c.V4L2_H264_PPS_FLAG_BOTTOM_FIELD_PIC_ORDER_IN_FRAME_PRESENT;
+        pub const weighted_pred: i32 = c.V4L2_H264_PPS_FLAG_WEIGHTED_PRED;
+        pub const deblocking_filter_control_present: i32 = c.V4L2_H264_PPS_FLAG_DEBLOCKING_FILTER_CONTROL_PRESENT;
+        pub const constrained_intra_pred: i32 = c.V4L2_H264_PPS_FLAG_CONSTRAINED_INTRA_PRED;
+        pub const redundant_pic_cnt_present: i32 = c.V4L2_H264_PPS_FLAG_REDUNDANT_PIC_CNT_PRESENT;
+        pub const transform_8x8_mode: i32 = c.V4L2_H264_PPS_FLAG_TRANSFORM_8X8_MODE;
+        pub const scaling_matrix_present: i32 = c.V4L2_H264_PPS_FLAG_SCALING_MATRIX_PRESENT;
     };
 
     pub const Ctrl = extern struct {
@@ -131,9 +131,9 @@ pub const Slice = enum(i32) {
     sp = c.V4L2_H264_SLICE_TYPE_SP,
     si = c.V4L2_H264_SLICE_TYPE_SI,
 
-    pub const Flag = enum(i32) {
-        direct_spatial_mv_pred = c.V4L2_H264_SLICE_FLAG_DIRECT_SPATIAL_MV_PRED,
-        sp_for_switch = c.V4L2_H264_SLICE_FLAG_SP_FOR_SWITCH,
+    pub const Flag = struct {
+        pub const direct_spatial_mv_pred: i32 = c.V4L2_H264_SLICE_FLAG_DIRECT_SPATIAL_MV_PRED;
+        pub const sp_for_switch: i32 = c.V4L2_H264_SLICE_FLAG_SP_FOR_SWITCH;
     };
 };
 
@@ -186,11 +186,11 @@ pub const dpb = struct {
         flags: u32,
     };
 
-    pub const Flag = enum(i32) {
-        valid = c.V4L2_H264_DPB_ENTRY_FLAG_VALID,
-        active = c.V4L2_H264_DPB_ENTRY_FLAG_ACTIVE,
-        long_term = c.V4L2_H264_DPB_ENTRY_FLAG_LONG_TERM,
-        field = c.V4L2_H264_DPB_ENTRY_FLAG_FIELD,
+    pub const Flag = struct {
+        pub const valid: i32 = c.V4L2_H264_DPB_ENTRY_FLAG_VALID;
+        pub const active: i32 = c.V4L2_H264_DPB_ENTRY_FLAG_ACTIVE;
+        pub const long_term: i32 = c.V4L2_H264_DPB_ENTRY_FLAG_LONG_TERM;
+        pub const field: i32 = c.V4L2_H264_DPB_ENTRY_FLAG_FIELD;
     };
 };
 
@@ -198,12 +198,12 @@ pub const decode = struct {
     pub const params = struct {
         pub const id: u32 = c.V4L2_CID_STATELESS_H264_DECODE_PARAMS;
 
-        pub const Flag = enum(i32) {
-            idr_pic = c.V4L2_H264_DECODE_PARAM_FLAG_IDR_PIC,
-            field_pic = c.V4L2_H264_DECODE_PARAM_FLAG_FIELD_PIC,
-            bottom_field = c.V4L2_H264_DECODE_PARAM_FLAG_BOTTOM_FIELD,
-            pframe = c.V4L2_H264_DECODE_PARAM_FLAG_PFRAME,
-            bframe = c.V4L2_H264_DECODE_PARAM_FLAG_BFRAME,
+        pub const Flag = struct {
+            pub const idr_pic: i32 = c.V4L2_H264_DECODE_PARAM_FLAG_IDR_PIC;
+            pub const field_pic: i32 = c.V4L2_H264_DECODE_PARAM_FLAG_FIELD_PIC;
+            pub const bottom_field: i32 = c.V4L2_H264_DECODE_PARAM_FLAG_BOTTOM_FIELD;
+            pub const pframe: i32 = c.V4L2_H264_DECODE_PARAM_FLAG_PFRAME;
+            pub const bframe: i32 = c.V4L2_H264_DECODE_PARAM_FLAG_BFRAME;
         };
 
         pub const Ctrl = extern struct {
