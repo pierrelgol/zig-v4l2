@@ -55,8 +55,8 @@ pub const Event = extern struct {
     pub const SourceChange = extern struct {
         changes: u32,
 
-        pub const Change = enum(u32) {
-            resolution = @intCast(bindings.V4L2_EVENT_SRC_CH_RESOLUTION),
+        pub const Change = struct {
+            pub const resolution: u32 = @intCast(bindings.V4L2_EVENT_SRC_CH_RESOLUTION);
         };
     };
 
@@ -65,8 +65,8 @@ pub const Event = extern struct {
         frame_sequence: u32,
         region_mask: u32,
 
-        pub const Flag = enum(u32) {
-            have_frame_seq = @intCast(bindings.V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ),
+        pub const Flag = struct {
+            pub const have_frame_seq: u32 = @intCast(bindings.V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ);
         };
     };
 
@@ -87,9 +87,9 @@ pub const Event = extern struct {
         flags: u32,
         reserved: [5]u32,
 
-        pub const Flag = enum(u32) {
-            send_initial = @intCast(bindings.V4L2_EVENT_SUB_FL_SEND_INITIAL),
-            allow_feedback = @intCast(bindings.V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK),
+        pub const Flag = struct {
+            pub const send_initial: u32 = @intCast(bindings.V4L2_EVENT_SUB_FL_SEND_INITIAL);
+            pub const allow_feedback: u32 = @intCast(bindings.V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK);
         };
     };
 };
