@@ -58,13 +58,12 @@ pub const Buffer = extern struct {
             _,
         };
 
-        pub const Flag = enum(u32) {
-            dropframe = @intCast(bindings.V4L2_TC_FLAG_DROPFRAME),
-            colorframe = @intCast(bindings.V4L2_TC_FLAG_COLORFRAME),
-            userbits_field = @intCast(bindings.V4L2_TC_USERBITS_field),
-            userbits_defined = @intCast(bindings.V4L2_TC_USERBITS_USERDEFINED),
-            userbits_8bitchars = @intCast(bindings.V4L2_TC_USERBITS_8BITCHARS),
-            _,
+        pub const Flag = struct {
+            pub const dropframe: u32 = @intCast(bindings.V4L2_TC_FLAG_DROPFRAME);
+            pub const colorframe: u32 = @intCast(bindings.V4L2_TC_FLAG_COLORFRAME);
+            pub const userbits_field: u32 = @intCast(bindings.V4L2_TC_USERBITS_field);
+            pub const userbits_defined: u32 = @intCast(bindings.V4L2_TC_USERBITS_USERDEFINED);
+            pub const userbits_8bitchars: u32 = @intCast(bindings.V4L2_TC_USERBITS_8BITCHARS);
         };
     };
 
@@ -131,30 +130,30 @@ pub const Buffer = extern struct {
         reserved: [11]u32,
     };
 
-    pub const Flag = enum(u32) {
-        mapped = @intCast(bindings.V4L2_BUF_FLAG_MAPPED),
-        queued = @intCast(bindings.V4L2_BUF_FLAG_QUEUED),
-        done = @intCast(bindings.V4L2_BUF_FLAG_DONE),
-        keyframe = @intCast(bindings.V4L2_BUF_FLAG_KEYFRAME),
-        pframe = @intCast(bindings.V4L2_BUF_FLAG_PFRAME),
-        bframe = @intCast(bindings.V4L2_BUF_FLAG_BFRAME),
-        err = @intCast(bindings.V4L2_BUF_FLAG_ERROR),
-        in_request = @intCast(bindings.V4L2_BUF_FLAG_IN_REQUEST),
-        timecode = @intCast(bindings.V4L2_BUF_FLAG_TIMECODE),
-        m2m_hold_capture_buf = @intCast(bindings.V4L2_BUF_FLAG_M2M_HOLD_CAPTURE_BUF),
-        prepared = @intCast(bindings.V4L2_BUF_FLAG_PREPARED),
-        no_cache_invalidate = @intCast(bindings.V4L2_BUF_FLAG_NO_CACHE_INVALIDATE),
-        no_cache_clean = @intCast(bindings.V4L2_BUF_FLAG_NO_CACHE_CLEAN),
-        timestamp_mask = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MASK),
-        timestamp_unknown = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_UNKNOWN),
-        timestamp_monotonic = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC),
-        timestamp_copy = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_COPY),
-        tstamp_src_mask = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_MASK),
-        tstamp_src_soe = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_SOE),
-        last = @intCast(bindings.V4L2_BUF_FLAG_LAST),
-        request_fd = @intCast(bindings.V4L2_BUF_FLAG_REQUEST_FD),
+    pub const Flag = struct {
+        pub const mapped: u32 = @intCast(bindings.V4L2_BUF_FLAG_MAPPED);
+        pub const queued: u32 = @intCast(bindings.V4L2_BUF_FLAG_QUEUED);
+        pub const done: u32 = @intCast(bindings.V4L2_BUF_FLAG_DONE);
+        pub const keyframe: u32 = @intCast(bindings.V4L2_BUF_FLAG_KEYFRAME);
+        pub const pframe: u32 = @intCast(bindings.V4L2_BUF_FLAG_PFRAME);
+        pub const bframe: u32 = @intCast(bindings.V4L2_BUF_FLAG_BFRAME);
+        pub const err: u32 = @intCast(bindings.V4L2_BUF_FLAG_ERROR);
+        pub const in_request: u32 = @intCast(bindings.V4L2_BUF_FLAG_IN_REQUEST);
+        pub const timecode: u32 = @intCast(bindings.V4L2_BUF_FLAG_TIMECODE);
+        pub const m2m_hold_capture_buf: u32 = @intCast(bindings.V4L2_BUF_FLAG_M2M_HOLD_CAPTURE_BUF);
+        pub const prepared: u32 = @intCast(bindings.V4L2_BUF_FLAG_PREPARED);
+        pub const no_cache_invalidate: u32 = @intCast(bindings.V4L2_BUF_FLAG_NO_CACHE_INVALIDATE);
+        pub const no_cache_clean: u32 = @intCast(bindings.V4L2_BUF_FLAG_NO_CACHE_CLEAN);
+        pub const timestamp_mask: u32 = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MASK);
+        pub const timestamp_unknown: u32 = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_UNKNOWN);
+        pub const timestamp_monotonic: u32 = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC);
+        pub const timestamp_copy: u32 = @intCast(bindings.V4L2_BUF_FLAG_TIMESTAMP_COPY);
+        pub const tstamp_src_mask: u32 = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_MASK);
+        pub const tstamp_src_soe: u32 = @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_SOE);
+        pub const last: u32 = @intCast(bindings.V4L2_BUF_FLAG_LAST);
+        pub const request_fd: u32 = @intCast(bindings.V4L2_BUF_FLAG_REQUEST_FD);
 
-        pub const tstamp_src_eof: Flag = .timestamp_unknown;
+        pub const tstamp_src_eof: u32 = timestamp_unknown;
     };
 
     pub const Request = extern struct {
@@ -165,20 +164,20 @@ pub const Buffer = extern struct {
         flags: u8,
         reserved: [3]u8,
 
-        pub const RequestFlag = enum(u8) {
-            non_coherent = @intCast(bindings.V4L2_MEMORY_FLAG_NON_COHERENT),
+        pub const RequestFlag = struct {
+            pub const non_coherent: u8 = @intCast(bindings.V4L2_MEMORY_FLAG_NON_COHERENT);
         };
 
-        pub const Capabilities = enum(u32) {
-            mmap = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MMAP),
-            userptr = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_USERPTR),
-            dmabuf = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_DMABUF),
-            requests = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_REQUESTS),
-            orphaned_bufs = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_ORPHANED_BUFS),
-            m2m_hold_capture_buf = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_M2M_HOLD_CAPTURE_BUF),
-            mmap_cache_hints = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MMAP_CACHE_HINTS),
-            max_num_buffers = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MAX_NUM_BUFFERS),
-            remove_bufs = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_REMOVE_BUFS),
+        pub const Capabilities = struct {
+            pub const mmap: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MMAP);
+            pub const userptr: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_USERPTR);
+            pub const dmabuf: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_DMABUF);
+            pub const requests: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_REQUESTS);
+            pub const orphaned_bufs: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_ORPHANED_BUFS);
+            pub const m2m_hold_capture_buf: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_M2M_HOLD_CAPTURE_BUF);
+            pub const mmap_cache_hints: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MMAP_CACHE_HINTS);
+            pub const max_num_buffers: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_MAX_NUM_BUFFERS);
+            pub const remove_bufs: u32 = @intCast(bindings.V4L2_BUF_CAP_SUPPORTS_REMOVE_BUFS);
         };
     };
 
@@ -231,8 +230,8 @@ test "Buffer ABI matches struct_v4l2_buffer" {
 }
 
 test "Buffer.Flag aliases match linux/videodev2.h" {
-    try std.testing.expectEqual(@intFromEnum(Buffer.Flag.timestamp_unknown), @intFromEnum(Buffer.Flag.tstamp_src_eof));
-    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_EOF)), @intFromEnum(Buffer.Flag.tstamp_src_eof));
+    try std.testing.expectEqual(Buffer.Flag.timestamp_unknown, Buffer.Flag.tstamp_src_eof);
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_BUF_FLAG_TSTAMP_SRC_EOF)), Buffer.Flag.tstamp_src_eof);
 }
 
 test "Buffer.m ABI matches unnamed union in struct_v4l2_buffer" {
@@ -344,5 +343,5 @@ test "Buffer.Remove ABI matches struct_v4l2_remove_buffers" {
 }
 
 test "Buffer.Request.RequestFlag matches linux/videodev2.h" {
-    try std.testing.expectEqual(@as(u8, @intCast(bindings.V4L2_MEMORY_FLAG_NON_COHERENT)), @intFromEnum(Buffer.Request.RequestFlag.non_coherent));
+    try std.testing.expectEqual(@as(u8, @intCast(bindings.V4L2_MEMORY_FLAG_NON_COHERENT)), Buffer.Request.RequestFlag.non_coherent);
 }
