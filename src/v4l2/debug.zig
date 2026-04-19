@@ -30,9 +30,9 @@ pub const Register = extern struct {
     reg: u64 align(1),
     val: u64 align(1),
 
-    pub const Flag = enum(u32) {
-        readable = @intCast(bindings.V4L2_CHIP_FL_READABLE),
-        writable = @intCast(bindings.V4L2_CHIP_FL_WRITABLE),
+    pub const Flag = struct {
+        pub const readable: u32 = @intCast(bindings.V4L2_CHIP_FL_READABLE);
+        pub const writable: u32 = @intCast(bindings.V4L2_CHIP_FL_WRITABLE);
     };
 };
 
