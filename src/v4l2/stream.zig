@@ -71,14 +71,14 @@ pub const Crop = extern struct {
 pub const Selection = extern struct {
     type: Buffer.Type,
     target: Crop.Target,
-    flags: Flag,
+    flags: u32,
     rectangle: Rectangle,
     reserved: [9]u32,
 
-    pub const Flag = enum(u32) {
-        ge = @intCast(bindings.V4L2_SEL_FLAG_GE),
-        le = @intCast(bindings.V4L2_SEL_FLAG_LE),
-        keep_config = @intCast(bindings.V4L2_SEL_FLAG_KEEP_CONFIG),
+    pub const Flag = struct {
+        pub const ge: u32 = @intCast(bindings.V4L2_SEL_FLAG_GE);
+        pub const le: u32 = @intCast(bindings.V4L2_SEL_FLAG_LE);
+        pub const keep_config: u32 = @intCast(bindings.V4L2_SEL_FLAG_KEEP_CONFIG);
     };
 };
 
@@ -99,12 +99,12 @@ pub const JpegCompression = extern struct {
     COM_data: [60]u8,
     jpeg_markers: u32,
 
-    pub const Marker = enum(u32) {
-        dht = @intCast(bindings.V4L2_JPEG_MARKER_DHT),
-        dqt = @intCast(bindings.V4L2_JPEG_MARKER_DQT),
-        dri = @intCast(bindings.V4L2_JPEG_MARKER_DRI),
-        com = @intCast(bindings.V4L2_JPEG_MARKER_COM),
-        app = @intCast(bindings.V4L2_JPEG_MARKER_APP),
+    pub const Marker = struct {
+        pub const dht: u32 = @intCast(bindings.V4L2_JPEG_MARKER_DHT);
+        pub const dqt: u32 = @intCast(bindings.V4L2_JPEG_MARKER_DQT);
+        pub const dri: u32 = @intCast(bindings.V4L2_JPEG_MARKER_DRI);
+        pub const com: u32 = @intCast(bindings.V4L2_JPEG_MARKER_COM);
+        pub const app: u32 = @intCast(bindings.V4L2_JPEG_MARKER_APP);
     };
 };
 
@@ -221,11 +221,11 @@ test "Stream target aliases and JPEG marker constants match linux/videodev2.h" {
     try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_SEL_TGT_CROP_ACTIVE)), @intFromEnum(Crop.Target.crop_active));
     try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_SEL_TGT_COMPOSE_ACTIVE)), @intFromEnum(Crop.Target.compose_active));
 
-    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DHT)), @intFromEnum(JpegCompression.Marker.dht));
-    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DQT)), @intFromEnum(JpegCompression.Marker.dqt));
-    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DRI)), @intFromEnum(JpegCompression.Marker.dri));
-    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_COM)), @intFromEnum(JpegCompression.Marker.com));
-    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_APP)), @intFromEnum(JpegCompression.Marker.app));
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DHT)), JpegCompression.Marker.dht);
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DQT)), JpegCompression.Marker.dqt);
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_DRI)), JpegCompression.Marker.dri);
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_COM)), JpegCompression.Marker.com);
+    try std.testing.expectEqual(@as(u32, @intCast(bindings.V4L2_JPEG_MARKER_APP)), JpegCompression.Marker.app);
 }
 
 test "Stream.Format ABI matches struct_v4l2_format" {
