@@ -244,10 +244,10 @@ pub const Entity = extern struct {
         dv_encoder = @intCast(c.MEDIA_ENT_F_DV_ENCODER),
     };
 
-    pub const Flag = enum(u32) {
-        default = @intCast(c.MEDIA_ENT_FL_DEFAULT),
-        connector = @intCast(c.MEDIA_ENT_FL_CONNECTOR),
-        id_flag_next = @intCast(c.MEDIA_ENT_ID_FLAG_NEXT),
+    pub const Flag = struct {
+        pub const default: u32 = @intCast(c.MEDIA_ENT_FL_DEFAULT);
+        pub const connector: u32 = @intCast(c.MEDIA_ENT_FL_CONNECTOR);
+        pub const id_flag_next: u32 = @intCast(c.MEDIA_ENT_ID_FLAG_NEXT);
     };
 
     pub const Legacy = struct {
@@ -284,10 +284,10 @@ pub const Pad = extern struct {
     flags: u32,
     reserved: [2]u32,
 
-    pub const Flag = enum(u32) {
-        sink = @intCast(c.MEDIA_PAD_FL_SINK),
-        source = @intCast(c.MEDIA_PAD_FL_SOURCE),
-        must_connect = @intCast(c.MEDIA_PAD_FL_MUST_CONNECT),
+    pub const Flag = struct {
+        pub const sink: u32 = @intCast(c.MEDIA_PAD_FL_SINK);
+        pub const source: u32 = @intCast(c.MEDIA_PAD_FL_SOURCE);
+        pub const must_connect: u32 = @intCast(c.MEDIA_PAD_FL_MUST_CONNECT);
     };
 };
 
