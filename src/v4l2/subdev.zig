@@ -106,9 +106,9 @@ pub const Capability = extern struct {
     capabilities: u32,
     reserved: [14]u32,
 
-    pub const Flag = enum(u32) {
-        ro_subdev = @intCast(c.V4L2_SUBDEV_CAP_RO_SUBDEV),
-        streams = @intCast(c.V4L2_SUBDEV_CAP_STREAMS),
+    pub const Flag = struct {
+        pub const ro_subdev: u32 = @intCast(c.V4L2_SUBDEV_CAP_RO_SUBDEV);
+        pub const streams: u32 = @intCast(c.V4L2_SUBDEV_CAP_STREAMS);
     };
 };
 
@@ -120,8 +120,8 @@ pub const Route = extern struct {
     flags: u32,
     reserved: [5]u32,
 
-    pub const Flag = enum(u32) {
-        active = @intCast(c.V4L2_SUBDEV_ROUTE_FL_ACTIVE),
+    pub const Flag = struct {
+        pub const active: u32 = @intCast(c.V4L2_SUBDEV_ROUTE_FL_ACTIVE);
     };
 };
 
@@ -136,9 +136,9 @@ pub const Routing = extern struct {
 pub const ClientCapability = extern struct {
     capabilities: u64,
 
-    pub const Flag = enum(u64) {
-        streams = @intCast(c.V4L2_SUBDEV_CLIENT_CAP_STREAMS),
-        interval_uses_which = @intCast(c.V4L2_SUBDEV_CLIENT_CAP_INTERVAL_USES_WHICH),
+    pub const Flag = struct {
+        pub const streams: u64 = @intCast(c.V4L2_SUBDEV_CLIENT_CAP_STREAMS);
+        pub const interval_uses_which: u64 = @intCast(c.V4L2_SUBDEV_CLIENT_CAP_INTERVAL_USES_WHICH);
     };
 };
 
@@ -301,12 +301,12 @@ test "Subdev constants match linux/v4l2-subdev.h" {
     try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_MBUS_CODE_CSC_HSV_ENC)), MbusCode.Flag.csc_hsv_enc);
     try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_MBUS_CODE_CSC_QUANTIZATION)), MbusCode.Flag.csc_quantization);
 
-    try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_CAP_RO_SUBDEV)), @intFromEnum(Capability.Flag.ro_subdev));
-    try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_CAP_STREAMS)), @intFromEnum(Capability.Flag.streams));
-    try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_ROUTE_FL_ACTIVE)), @intFromEnum(Route.Flag.active));
+    try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_CAP_RO_SUBDEV)), Capability.Flag.ro_subdev);
+    try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_CAP_STREAMS)), Capability.Flag.streams);
+    try std.testing.expectEqual(@as(u32, @intCast(c.V4L2_SUBDEV_ROUTE_FL_ACTIVE)), Route.Flag.active);
 
-    try std.testing.expectEqual(@as(u64, @intCast(c.V4L2_SUBDEV_CLIENT_CAP_STREAMS)), @intFromEnum(ClientCapability.Flag.streams));
-    try std.testing.expectEqual(@as(u64, @intCast(c.V4L2_SUBDEV_CLIENT_CAP_INTERVAL_USES_WHICH)), @intFromEnum(ClientCapability.Flag.interval_uses_which));
+    try std.testing.expectEqual(@as(u64, @intCast(c.V4L2_SUBDEV_CLIENT_CAP_STREAMS)), ClientCapability.Flag.streams);
+    try std.testing.expectEqual(@as(u64, @intCast(c.V4L2_SUBDEV_CLIENT_CAP_INTERVAL_USES_WHICH)), ClientCapability.Flag.interval_uses_which);
 }
 
 test "Subdev ioctl constants match linux/v4l2-subdev.h" {

@@ -405,9 +405,9 @@ pub const Pixel = extern struct {
         }
     };
 
-    pub const Flag = enum(u32) {
-        premul_alpha = @intCast(bindings.V4L2_PIX_FMT_FLAG_PREMUL_ALPHA),
-        set_csc = @intCast(bindings.V4L2_PIX_FMT_FLAG_SET_CSC),
+    pub const Flag = struct {
+        pub const premul_alpha: u32 = @intCast(bindings.V4L2_PIX_FMT_FLAG_PREMUL_ALPHA);
+        pub const set_csc: u32 = @intCast(bindings.V4L2_PIX_FMT_FLAG_SET_CSC);
     };
 
     pub const Colorspace = enum(u32) {

@@ -36,15 +36,15 @@ pub const picture = struct {
         frame = c.V4L2_MPEG2_PIC_FRAME,
     };
 
-    pub const Flag = enum(i32) {
-        top_field_first = c.V4L2_MPEG2_PIC_FLAG_TOP_FIELD_FIRST,
-        frame_pred_dct = c.V4L2_MPEG2_PIC_FLAG_FRAME_PRED_DCT,
-        concealment_mv = c.V4L2_MPEG2_PIC_FLAG_CONCEALMENT_MV,
-        q_scale_type = c.V4L2_MPEG2_PIC_FLAG_Q_SCALE_TYPE,
-        intra_vlc = c.V4L2_MPEG2_PIC_FLAG_INTRA_VLC,
-        alt_scan = c.V4L2_MPEG2_PIC_FLAG_ALT_SCAN,
-        repeat_first = c.V4L2_MPEG2_PIC_FLAG_REPEAT_FIRST,
-        progressive = c.V4L2_MPEG2_PIC_FLAG_PROGRESSIVE,
+    pub const Flag = struct {
+        pub const top_field_first: i32 = c.V4L2_MPEG2_PIC_FLAG_TOP_FIELD_FIRST;
+        pub const frame_pred_dct: i32 = c.V4L2_MPEG2_PIC_FLAG_FRAME_PRED_DCT;
+        pub const concealment_mv: i32 = c.V4L2_MPEG2_PIC_FLAG_CONCEALMENT_MV;
+        pub const q_scale_type: i32 = c.V4L2_MPEG2_PIC_FLAG_Q_SCALE_TYPE;
+        pub const intra_vlc: i32 = c.V4L2_MPEG2_PIC_FLAG_INTRA_VLC;
+        pub const alt_scan: i32 = c.V4L2_MPEG2_PIC_FLAG_ALT_SCAN;
+        pub const repeat_first: i32 = c.V4L2_MPEG2_PIC_FLAG_REPEAT_FIRST;
+        pub const progressive: i32 = c.V4L2_MPEG2_PIC_FLAG_PROGRESSIVE;
     };
 
     pub const Ctrl = extern struct {

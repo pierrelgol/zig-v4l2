@@ -16,9 +16,9 @@ pub const Format = extern struct {
     flags: u32,
     reserved: [2]u32,
 
-    pub const Flag = enum(u32) {
-        unsync = @intCast(bindings.V4L2_VBI_UNSYNC),
-        interlaced = @intCast(bindings.V4L2_VBI_INTERLACED),
+    pub const Flag = struct {
+        pub const unsync: u32 = @intCast(bindings.V4L2_VBI_UNSYNC);
+        pub const interlaced: u32 = @intCast(bindings.V4L2_VBI_INTERLACED);
     };
 
     pub const Itu = enum(u32) {
@@ -42,13 +42,13 @@ pub const SlicedCapabilities = extern struct {
     type: Buffer.Type,
     reserved: [3]u32,
 
-    pub const Service = enum(u16) {
-        teletext_b = @intCast(bindings.V4L2_SLICED_TELETEXT_B),
-        vps = @intCast(bindings.V4L2_SLICED_VPS),
-        caption_525 = @intCast(bindings.V4L2_SLICED_CAPTION_525),
-        wss_625 = @intCast(bindings.V4L2_SLICED_WSS_625),
-        vbi_525 = @intCast(bindings.V4L2_SLICED_VBI_525),
-        vbi_625 = @intCast(bindings.V4L2_SLICED_VBI_625),
+    pub const Service = struct {
+        pub const teletext_b: u16 = @intCast(bindings.V4L2_SLICED_TELETEXT_B);
+        pub const vps: u16 = @intCast(bindings.V4L2_SLICED_VPS);
+        pub const caption_525: u16 = @intCast(bindings.V4L2_SLICED_CAPTION_525);
+        pub const wss_625: u16 = @intCast(bindings.V4L2_SLICED_WSS_625);
+        pub const vbi_525: u16 = @intCast(bindings.V4L2_SLICED_VBI_525);
+        pub const vbi_625: u16 = @intCast(bindings.V4L2_SLICED_VBI_625);
     };
 };
 
